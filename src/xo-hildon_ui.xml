@@ -1,0 +1,134 @@
+<ui>
+	<popup action='HildonMainMenu'>
+		<menu action='FileMenu'>
+			<menuitem action='New'/>
+			<menuitem action='Open'/>
+			<menuitem action='OpenPDF'/>
+			<menuitem action='Save'/>
+			<menuitem action='SaveAs'/>
+			<menuitem action='ExportPDF'/>
+			<menu action='RecentMenu'>
+				<menuitem action='mru0'/>
+				<menuitem action='mru1'/>
+				<menuitem action='mru2'/>
+				<menuitem action='mru3'/>
+				<menuitem action='mru4'/>
+				<menuitem action='mru5'/>
+				<menuitem action='mru6'/>
+				<menuitem action='mru7'/>
+			</menu>
+		</menu>
+		<menu action='EditMenu'>
+			<menuitem action='Undo'/>
+			<menuitem action='Redo'/>
+			<separator/>
+			<menuitem action='Cut'/>
+			<menuitem action='Copy'/>
+			<menuitem action='Paste'/>
+			<menuitem action='Delete'/>
+		</menu>
+		<menu action='ViewMenu'>
+			<menuitem action='Continuous'/>
+			<menuitem action='OnePage'/>
+			<menuitem action='Fullscreen'/>
+			<separator/>
+			<menuitem action='FirstPage'/>
+			<menuitem action='PreviousPage'/>
+			<menuitem action='NextPage'/>
+			<menuitem action='LastPage'/>
+			<separator/>
+			<menuitem action='ShowLayer'/>
+			<menuitem action='HideLayer'/>
+			<menu action='ZoomMenu'>
+				<menuitem action='ZoomIn'/>
+				<menuitem action='NormalSize'/>
+				<menuitem action='ZoomOut'/>
+				<menuitem action='PageWidth'/>
+				<menuitem action='SetZoom'/>
+			</menu>
+		</menu>
+		<menu action='JournalMenu'>
+			<menuitem action='NewPageBefore'/>
+			<menuitem action='NewPageAfter'/>
+			<menuitem action='NewPageEnd'/>
+			<menuitem action='DeletePage'/>
+			<separator/>
+			<menuitem action='NewLayer'/>
+			<menuitem action='DeleteLayer'/>
+			<separator/>
+			<menuitem action='PaperSize'/>
+			<menu action='PaperColorMenu'>
+			</menu>
+			<menu action='PaperStyleMenu'>
+			</menu>
+			<menuitem action='ApplyAllPages'/>
+			<separator/>
+			<menuitem action='LoadBackground'/>
+			<menuitem action='Screenshot'/>
+			<menuitem action='DefaultBackground'/>
+			<menuitem action='JournalSetAsDefault'/>
+		</menu>
+		<menu action='ToolsMenu'>
+			<menuitem action='ShapeRecognizer'/>
+			<menuitem action='SelectRegion'/>
+			<menuitem action='VerticalSpace'/>
+			<menuitem action='Hand'/>
+			<separator/>
+			<menu action='PenOptionsMenu'>
+				<menuitem action='PenThicknessVeryFine'/>
+				<menuitem action='PenThicknessFine'/>
+				<menuitem action='PenThicknessMedium'/>
+				<menuitem action='PenThicknessThick'/>
+				<menuitem action='PenThicknessVeryThick'/>
+			</menu>
+			<menu action='EraserOptionsMenu'>
+				<menuitem action='EraserFine'/>
+				<menuitem action='EraserMedium'/>
+				<menuitem action='EraserThick'/>
+				<separator/>
+				<menuitem action='EraserStandard'/>
+				<menuitem action='EraserWhiteout'/>
+				<menuitem action='EraserDeleteStrokes'/>
+			</menu>
+			<menu action='HighlighterOptionsMenu'>
+				<menuitem action='HighlighterFine'/>
+				<menuitem action='HighlighterMedium'/>
+				<menuitem action='HighlighterThick'/>
+			</menu>
+			<menuitem action='TextFont'/>
+			<separator/>
+			<menuitem action='DefaultPen'/>
+			<menuitem action='DefaultEraser'/>
+			<menuitem action='DefaultHighlighter'/>
+			<menuitem action='DefaultText'/>
+			<menuitem action='ToolsSetAsDefault'/>
+		</menu>
+		<menu action='OptionsMenu'>
+			<menuitem action='Pressure'/>
+			<menuitem action='PrintRuling'/>
+			<menuitem action='AutoSavePrefs'/>
+			<menuitem action='SavePreferences'/>
+		</menu>
+		<menuitem action='Help'/>
+		<menuitem action='Quit'/>
+	</popup>
+	<toolbar action='HildonToolBar'>
+		<toolitem action='Pen'/>
+		<toolitem action='Eraser'/>
+		<toolitem action='Highlighter'/>
+		<toolitem action='Text'/>
+		<toolitem action='Ruler'/>
+		<toolitem action='Pressure'/>
+		<toolitem action='Hand'/>
+		<separator/>
+		<toolitem action='Copy'/>
+		<toolitem action='Cut'/>
+		<toolitem action='Paste'/>
+		<separator/>
+		<toolitem action='Color'/>
+		<toolitem action='Redo'/>
+		<toolitem action='PreviousPage'/>
+		<toolitem action='NextPage'/>
+		<toolitem action='NormalSize'/>
+	</toolbar>
+</ui>

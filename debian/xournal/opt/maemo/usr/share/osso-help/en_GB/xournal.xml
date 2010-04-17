@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ossohelpsource>
+	<folder>
+		<title>Xournal</title>
+		<topic>
+			<topictitle>1. Introduction</topictitle>
+			<context contextUID="help_xournal_intro"/>
+			<para>Xournal is an application for notetaking, sketching, keeping a journal using a stylus. It is free software (GNU GPL) and runs on Maemo, desktop Linux (recent distributions) and other GTK+ / Gnome platforms. It is similar to Microsoft Windows Journal or to other alternatives such as Jarnal  and Gournal.</para>
+			<para>Xournal aims to provide superior graphical quality (subpixel resolution) and overall functionality; however it lacks the collaborative features of Jarnal. Since Xournal is still in its early development stages, it may not be fully stable, and some features have not been implemented yet.</para>
+		</topic>
+		<topic>
+			<topictitle>2. The drawing and selection tools</topictitle>
+			<heading><graphic filename="pen"/>The pen</heading>
+			<para>The pen is the default drawing tool in Xournal. It comes in a variety of colors and thicknesses (see the <display_text>Pen Options</display_text> submenu of the <display_text>Tools</display_text> menu).</para>
+			<heading><graphic filename="eraser"/>The eraser</heading>
+			<para>The eraser lets you erase what you have drawn.</para> 
+			<para>The eraser comes in five different thicknesses, and can operate in three different modes (<display_text>Eraser Options</display_text> submenu of the <display_text>Tools</display_text> menu):
+			<list>
+				<listitem>Standard mode (default): the eraser deletes portions of strokes previously drawn using the pen or the highlighter. In this mode, if you erase in the middle of a stroke, the remaining portions of the stroke are automatically split into shorter strokes. The background of the page (and the lower layers) are not erased.</listitem>
+				<listitem>Whiteout: the eraser is actually a thick white pen, and simply covers whatever lies underneath, including the background of the page.</listitem>
+				<listitem>Delete strokes: whenever the eraser comes in contact with a previously drawn stroke, the entire stroke is deleted.</listitem>
+			</list>
+		</para>
+			<heading><graphic filename="highlighter"/>The highlighter</heading>
+			<para>Like the pen, the highlighter comes in a variety of colors (the default is yellow) and thicknesses. Use the color and thickness toolbar buttons to change these settings</para>
+			<heading><graphic filename="text"/>The text tool</heading>
+			<para> To insert a new text item, click at the location where the text is to be inserted on the page, then type it in or paste it using the contextual menu (note: no wrapping is performed). To modify a text item, click inside it. The font and point size can be modified using the <display_text>Text Font</display_text> command in the <display_text>Tools</display_text> menu). The color is the same as that currently selected for the pen (and can be modified using the toolbar color button).</para>
+			<para>Text items can contain arbitrary Unicode characters, provided that a suitable font is installed on your system. However, languages written in a direction other than left-to-right might not be handled properly. If a journal contains some items in a font that is unavailable on your system, another one will be substituted. (Also, text items will be lost if the document is opened in a version of Xournal prior to 0.4). Finally, note that the PDF export features only accept TrueType and Type 1 scalable fonts (do not use any bitmap fonts), and that the typesetting of the text may be slightly different in the printout.</para>
+			<heading><graphic filename="ruler"/>The ruler</heading>
+			<para>The ruler is not a tool by itself, but rather a special operating mode of the pen and highlighter tools. When it is enabled, these tools paint line segments instead of curvy strokes. For simplicity, selecting the ruler when not in pen or highlighter mode automatically selects the pen.</para>
+			<heading><graphic filename="shape_recognizer"/>The shape recognizer</heading>
+			<para>The shape recognizer is also a special operating mode of the pen and highlighter tools. When it is enabled, Xournal attempts to recognize geometric shapes as they are drawn, and if successful will replace the drawn strokes accordingly. The shapes that can be recognized are: line segments, circles, rectangles, arrows, triangles and quadrilaterals. Polygonal shapes can be drawn in a single stroke or in a sequence of consecutive strokes.</para>
+			<para> The recognizer is set to be as unobtrusive as possible, and should not interfere too much with handwriting. (It differs in this and other ways from another shape recognizer written for Xournal by Lukasz Kaiser). As a result, it may only recognize shapes if you draw them carefully and deliberately. Specific tips for better recognition: (1) for circles, a closed curve that isn't quite round works better than a rounder curve that doesn't close; (2) for arrows, it is better to lift the pen before drawing the tip of the arrow, and make sure the tip consists of two straight line segments; (3) for very elongated rectangles, recognition tends to be better if you lift the pen between consecutive sides.</para>
+			<heading><graphic filename="default_tools"/>Default tools</heading>
+			<para>Each tool (pen, eraser, highlighter, text) has a default setting (color, thickness, ... for the drawing tools, font and size for the text tool) associated to it. The <display_text>Default Pen</display_text>, <display_text>Default Eraser</display_text>, <display_text>Default Highlighter</display_text>, and <display_text>Default Text</display_text> entries of the <display_text>Tools</display_text> menu select the appropriate tool and reset its settings to the defaults. The toolbar also includes a <display_text>Default</display_text> button which resets the currently selected tool to its default settings, and a <display_text>Default Pen</display_text> button.</para>
+			<para>The <display_text>Set As Default</display_text> entry of the <display_text>Tools</display_text> menu takes the current settings of the currently selected tool and makes them the new default.</para>
+			<heading><graphic filename="thin"/><graphic filename="medium"/><graphic filename="thick"/>Thickness</heading>
+			<para>The are five different sizes for the thickness of the current drawing tool (pen, eraser, or highlighter). The thickness can be adjusted using the appropriate sub-menu of the <display_text>Tools</display_text> menu.</para>
+			<heading><graphic filename="rectangle_selection"/>Rectangle selection</heading>
+			<para>This tool lets you select a rectangular region of the current layer. All the strokes which are entirely contained within the rectangular region are selected. The selection can be moved within its page by clicking inside the selection rectangle and dragging the cursor. If the cursor is dragged to a different page, the selection will be moved to the topmost layer of that page.</para>
+			<para> The selection can be cut, duplicated, etc. (including to a different page or to a different journal) using the copy-paste toolbar buttons or the corresponding entries of the <display_text>Edit</display_text> menu.</para>
+			<heading><graphic filename="vertical_space"/>Vertical space</heading>
+			<para> This tool lets you insert or remove vertical space within the page: all the items of the current layer which lie entirely between the cursor position and the end of the page are moved up or down.</para>
+			<para>Note that the background, and items on other layers, are not affected. Also, if you insert too much vertical space, some items may fall below the bottom of the page and become invisible. These items are not lost: to retrieve them, either use the vertical space tool again to remove the excess vertical space, or change the page height to an appropriate value (using the <display_text>Paper Size</display_text> entry in the <display_text>Journal</display_text> menu).</para>
+			<para>If you drag the cursor below the bottom of the page (so that the entire block being moved has become invisible), the items will be moved to the next page (topmost layer); however, any items that were already present on the next page are left unchanged. Similarly, dragging the cursor above the top of the page so that the entire block being moved becomes invisible results in the items being moved to the previous page.</para>
+			<heading><graphic filename="hand_tool"/>Hand tool</heading>
+			<para> This tool lets you browse the journal; dragging the cursor scrolls the view.</para>
+			<heading>Undo and redo</heading>
+			<para>All operations performed on the currently open journal (drawing, erasing, cut-and-paste; adding, deleting, and reformatting pages; etc.) can be undone and redone at will using the Undo and Redo toolbar buttons or the corresponding entries in the <display_text>Edit</display_text> menu.
+There is no limit to the depth of the undo/redo stack. It is cleared only when you quit the application or open a new journal.</para>
+		</topic>
+		<topic>
+			<topictitle>3. Pages, layers and backgrounds</topictitle>
+			<context contextUID="help_xournal_pages_layers_backgrounds"/>
+			<para>A journal is composed of one or more pages, whose characteristics can be modified independently of each other. Each page consists of a background and one or more layers stacked on top of the background. All drawing operations take place within a single layer, and do not affect the background or the other layers. You can think of the layers as transparent overlays: drawing and erasing always takes place on the topmost visible overlay.
+				Layers are a convenient mechanism to add temporary annotations on top of a journal page: because of the logical separation between layers, erasing in the top layer will not affect the contents of the other layers, and the top layer can be easily discarded.</para>
+			<para>You can navigate the journal pages in several different ways:</para>
+			<list>
+				<listitem>using the navigation entries in the <display_text>View</display_text> menu to go back or forward one page, or to jump to the first or last page of the journal</listitem>
+				<listitem>in continuous mode, scrolling down to the desired page</listitem>
+			</list>
+			<para>As a convenient shortcut, going forward one page when already at the end of the journal creates a new page at the end of the journal.</para>
+			<note>Jumping to a page automatically selects the top-most layer in that page.</note>
+			<para></para>
+			<para>To navigate the layers of a page, either use the layer selection box at the bottom of the Xournal window, or use the <display_text>Show Layer</display_text> and <display_text>Hide Layer</display_text> entries in the <display_text>View</display_text> menu. The basic rule to remember is that the display shows all the layers underneath the currently select one, and while those above it are hidden.</para>
+			<note>The background layer cannot be drawn on; any attempt to draw on the background will generate an error message and switch back to the first layer.</note>
+			<para></para>
+			<heading>Managing pages and layers</heading>
+			<para>Pages can be added to the journal by using the <display_text>New Page ...</display_text> entries in the <display_text>Journal</display_text> menu. The newly created page has the same format and background as the current page (for the <display_text>New Page Before</display_text> and <display_text>New Page After</display_text> commands), or as the last page of the journal (for <display_text>New Page At End</display_text> Additionally, jumping to the next page when already on the last page creates a new page at the end of the journal.</para>
+			<para>The <display_text>Delete Page</display_text> entry in the <display_text>Journal</display_text> menu removes the current page from the journal. (Remember that you can always undo this operation if you deleted a page by accident).</para>
+			<para>The <display_text>New Layer</display_text> entry in the <display_text>Journal</display_text> menu creates a new layer immediately above the current one, while <display_text>Delete Layer</display_text> removes the current layer and its contents (if you attempt to delete the only layer of a page, a new empty layer will be automatically created).</para>
+			<heading>Paper formats and backgrounds</heading>
+			<para>The size of the current page can be modified using the <display_text>Paper Size</display_text> entry in the <display_text>Journal</display_text> menu. Standard and custom sizes are available.</para>
+			<para>The background is either one of several kinds of standard paper types, or a bitmap image, or a page of a PDF file.</para>
+			<para>To select a standard paper type as background for the current page, use the <display_text>Paper Style</display_text> submenu of the <display_text>Journal</display_text> menu. The paper color can also be changed using the <display_text>Paper Color</display_text> submenu of the <display_text>Journal</display_text> menu.</para>
+			<para>To use a PDF file as the background for a journal, see the paragraph on PDF annotation below.</para>
+			<para>To load a bitmap image file for use as background for the current page, use the <display_text>Load Background</display_text> entry of the <display_text>Journal</display_text> menu. This automatically resizes the current page according to the size of the bitmap image, and resets the zoom level to 100%. If ghostscript is installed on your system, you can also use this method to import a fixed-resolution bitmap version of a Postscript or PDF file; in that case, all pages will be imported sequentially as backgrounds into consecutive pages (this is not the recommended method; PDF annotation is better in many respects).</para>
+			<para>To capture a screenshot of a window or the entire screen and make it the background of the current page, use the <display_text>Background Screenshot</display_text> entry of the <display_text>Journal</display_text> menu. This will iconify the Xournal window; click in any window (after ensuring it is fully visible) to capture its contents, or click on the desktop (or screen background) to capture the entire screen.</para>
+			<important>by default, bitmap images loaded using the <display_text>Load Background</display_text> command will not be saved with the journal; instead, the journal file will contain a reference to the absolute location of the image file. This means that the background will become unavailable if the image file is moved or deleted. To avoid this, check the option <display_text>Attach file to the journal</display_text> at the bottom of the file selection dialog box.
+This option only applies to bitmap image files loaded from disk; screenshot backgrounds (and bitmaps converted from PS/PDF files using ghostscript) are automatically "attached" to the journal file: when the journal is saved, they will be saved (in PNG format) along with it (using file names of the form *.xoj.bg_*.png).</important>
+			<heading>Rescaling and anti-aliasing</heading>
+			<para>by default, bitmap backgrounds are rescaled and anti-aliased as needed when the zoom level is changed, to ensure their appearance always remains acceptable. Because this consumes a lot of memory and CPU resources, by default this rescaling is performed on-demand as each page becomes visible. This means that you will occasionally notice bitmap backgrounds being smoothed while you are scrolling inside the document (at large zoom levels, this can slow down the screen refresh rate noticeably). If you'd prefer all backgrounds to be rescaled immediately upon changing the zoom level (slower but maybe more intuitive), disable the <display_text>Progressive Backgrounds</display_text> option in the <display_text>Options</display_text> menu.
+				If you are handling large bitmaps, you can save memory and CPU resources (at the expense of quality) by disabling the <display_text>Antialiased Bitmaps</display_text> option in the <display_text>Options</display_text> menu
+			</para>
+			<heading>PDF annotation</heading>
+			<para>Xournal can be used to annotate PDF files, by loading the pages of a PDF file as backgrounds for a journal.</para>
+			<para>The <display_text>Annotate PDF</display_text> command in the <display_text>File</display_text> menu can be used to load a PDF file into a new (empty) journal. The page backgrounds and page sizes correspond to the contents of the PDF file. (Most unencrypted PDF files should be supported).</para>
+			<para>By default, the PDF file used to generate the backgrounds will not be saved with the journal; instead, the journal file will contain a reference to the absolute location of this file. This means that all backgrounds will become unavailable if the PDF file is moved or deleted (although Xournal will let you specify the updated location of the PDF file when opening the journal file). To avoid this, check the option <display_text>Attach file to the journal</display_text> at the bottom of the dialog box when opening the PDF file. The PDF file will then be saved along with the journal (using a file name of the form *.xoj.bg.pdf).</para>
+			<para>Upon zooming, the page backgrounds are asynchronously updated to fit the current display resolution. Since this process is quite slow and memory-intensive, the pages are normally updated only as needed, when they become visible on the screen (unless you disable the <display_text>Progressive Backgrounds</display_text> option in the <display_text>Options</display_text> menu). This means that you will occasionally notice the page backgrounds being updated while you are scrolling inside the document (at large zoom levels, it can take a while for the updated background to appear). However, since the backgrounds are generated asynchronously by a separate Unix process, you can keep drawing in the journal while the update process is still in progress.</para>
+			<para>It is strongly recommended that you do not resize PDF pages (using the <display_text>Paper Size</display_text> command). This will result in extremely ugly rendering, as the PDF converter is unable to render bitmaps with non-standard aspect ratios.</para>
+			<para>While you can perform all sorts of page operations on a journal file that was created from a PDF file (such as duplicating or deleting pages, inserting pages with blank or bitmapped backgrounds, ...), it is not possible to include pages from more than one PDF file into a single journal document. If you need to annotate two or more PDF files inside a same journal document, please consider using an external utility for merging PDF files (for example pdfmerge).</para>
+		</topic>
+		<topic>
+			<topictitle>4. Exporting to PDF</topictitle>
+			<context contextUID="help_xournal_exporting_to_pdf"/>
+			<para>Starting with version 0.3, Xournal provides its own PDF rendering engine. The <display_text>Export to PDF</display_text> command (in the <display_text>File</display_text> menu) produces a PDF-1.4 file from the currently loaded document. The resulting PDF file is much more compact than those produced via gnome-print, and its pages have the same size as in Xournal. Highlighter strokes are rendered in a partially transparent manner (note however that applications such as xpdf and ghostview do not always handle PDF transparency properly). Text items are rendered by embedding TrueType subsets or Type 1 fonts into the PDF document as appropriate.</para>
+			<para>Xournal also includes a PDF file parser compatible with PDF format version 1.4; the compression features of PDF 1.5 (Acrobat 6) are not supported. When exporting a document that uses PDF backgrounds, Xournal attempts to preserve most of the structure of the original PDF file (however, auxiliary data such as thumbnails, hyperlinks, and annotations are lost). If Xournal is unable to parse the PDF file, the backgrounds are converted to (compressed) bitmaps and a new PDF file is generated from scratch.</para>
+		</topic>
+		<topic>
+			<topictitle>5. Configuration</topictitle>
+			<context contextUID="help_xournal_configuration"/>
+			<para>Xournal's configuration settings can be saved to a file (~user/.xournal/config) by using the <display_text>Save Preferences</display_text> command in the <display_text>Options</display_text> menu. The settings saved in the configuration file include in particular:</para>
+			<list>
+				<listitem>general display preferences: zoom level, window size, ...</listitem>
+				<listitem>default paper settings (as set by the <display_text>Set As Default</display_text> command in the <display_text>Journal</display_text> menu)</listitem>
+				<listitem>default settings for the pen, eraser, highlighter, and text tools (as set by the <display_text>Set As Default</display_text> command in the <display_text>Tools</display_text> menu)</listitem>
+				<listitem>the various preferences set in the <display_text>Options</display_text> men</listitem>
+			</list>
+			<para>The configuration file also gives access to additional customization options which cannot be set from the user interface, such as: the display resolution in pixels per inch, the step increment in zoom factors, the tool selected at startup, the thickness of the various drawing tools, the default directory for opening and saving files, the visibility and position of the menu and toolbars, ...</para>
+		</topic>
+		<topic>
+			<topictitle>6. Author information, license, bug-reports</topictitle>
+			<context contextUID="help_xournal_author"/>
+			<para>Xournal is written by Denis Auroux (auroux@math.mit.edu) and has been ported to Maemo by Aniello Del Sorbo (anidel@dia.unisa.it)</para>
+			<para>It is distributed under the GNU General Public License.</para>
+			<para>Feel free to contact us with bug reports and suggestions; We apologize in advance if we are unable to respond properly to some requests.</para>
+			<para>If you find a sequence of operations which crashes Xournal in a reproducible manner, please send detailed instructions on how to reproduce the crash. A core file may also be helpful.</para>
+			<para>Bug reports and suggestions can also be submitted on Xournal's SourceForge page.</para>
+			<para>Bug reports for the Maemo port should be submitted on the garage bugzilla page</para>
+		</topic>
+	</folder>
+</ossohelpsource>

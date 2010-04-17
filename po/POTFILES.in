@@ -1,0 +1,6 @@
+../../src/main.c
+../../src/xo-callbacks.c
+../../src/xo-file.c
+../../src/xo-interface.c
+../../src/xo-misc.c
+../../src/xo-support.c

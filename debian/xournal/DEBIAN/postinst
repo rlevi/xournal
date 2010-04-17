@@ -1,0 +1,68 @@
+#!/bin/sh
+
+if [ -x /usr/bin/update-mime-database ]; then
+	update-mime-database /usr/share/mime
+fi
+
+if [ -x /usr/bin/update-desktop-database ]; then
+	update-desktop-database /usr/share/applications
+fi
+
+if [ -x /usr/bin/osso-update-category-database ]; then
+	osso-update-category-database /usr/share/mime
+fi
+
+if [ -x /usr/bin/gtk-update-icon-cache ]; then
+	gtk-update-icon-cache -f /usr/share/icons/hicolor
+fi
+
+if [ -x /usr/bin/maemo-select-menu-location ]; then
+	maemo-select-menu-location xournal.desktop tana_fi_tools
+fi
+
+if [ -e /home/user/.cache/launch/org.anidel.xournal.pvr ]; then
+	rm -f /home/user/.cache/launch/org.anidel.xournal.pvr 2> /dev/null
+fi
+
+if [ -e /home/user/.cache/launch/com.nokia.xournal.pvr ]; then
+	rm -f /home/user/.cache/launch/com.nokia.xournal.pvr 2> /dev/null
+fi
+
+if [ -e /home/user/.xournal/.autosave.xoj ]; then
+	rm -f /home/user/.xournal/.autosave.xoj 2> /dev/null
+fi
+#if [ -x /usr/bin/maemo-confirm-text ]; then
+#	maemo-confirm-text "Xournal release notes" /usr/share/xournal/NEWS
+#fi
+
+#chown user:users /home/user/.xournal
+#chown user:users /home/user/.xournal/config
+
+# Added by maemo-optify, with apologies.
+
+optify () {
+    f="$1"
+    if [ ! -h "/$f" ]; then
+
+        # This is not atomic, but re-startable: if interrupted, doing
+        # this again will eventually finish with the correct result.
+        #
+        # XXX - At least that's the idea, but tar needs to be properly
+        #       instructed to overwrite the targets.
+
+        echo >&2 "Optifying $f -> /opt/maemo/$f"
+        if [ -d "/$f" ]; then
+            (cd "/" && tar cf - "$f") | (cd "/opt/maemo/" && tar xf -)
+        fi
+        mv "/$f" "/$f.removed"
+        ln -s "/opt/maemo/$f" "/$f"
+    fi
+
+    if [ -e "/$f.removed" ]; then
+        rm -rf "/$f.removed"
+    fi
+}
+
+optify "usr/share/doc/xournal"
+optify "usr/share/xournal"
+optify "usr/share/pixmaps/xournal"

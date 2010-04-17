@@ -1,0 +1,81 @@
+Package: xournal
+Version: 0.4.2.1-1fremantle11
+Section: user/office
+Priority: optional
+Architecture: i386
+Depends: libart-2.0-2 (>= 2.3.16), libatk1.0-0 (>= 1.24.0), libc6 (>= 2.5.0-1), libcairo2, libdbus-1-3 (>= 1.1.4), libdbus-glib-1-2 (>= 0.76), libfontconfig1 (>= 2.6.0), libfreetype6 (>= 2.3.9), libgconf2-6 (>= 2.13.5), libglib2.0-0 (>= 2.20.0), libgnomecanvas2-0 (>= 2.11.1), libgnomeprint2.2-0 (>= 2.12.1), libgtk2.0-0 (>= 2:2.12.9-0osso1), libhildon1, libhildonfm2 (>= 1:2.28+0m5), libmodest-dbus-client, libosso-gnomevfs2-0, libosso1 (>= 2.23), libpango1.0-0, libx11-6, libxml2 (>= 2.6.32), zlib1g (>= 1:1.2.1), poppler-utils
+Installed-Size: 760
+Maintainer: Aniello Del Sorbo <anidel@gmail.com>
+Description: Maemo Application for note taking
+ Xournal is an application for notetaking, sketching and
+ keeping a journal using a stylus. It can also be used to
+ add annotations to PDF files.
+ Homepage: http://xournal.sourceforge.net/
+Maemo-Icon-26: 
+ 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
+ gg==

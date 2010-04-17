@@ -1,0 +1,28 @@
+#!/bin/sh
+
+if [ -x /usr/bin/update-mime-database ]; then
+	update-mime-database /usr/share/mime
+fi
+
+if [ -x /usr/bin/update-desktop-database ]; then
+	update-desktop-database /usr/share/applications
+fi
+
+if [ -x /usr/bin/osso-update-category-database ]; then
+	osso-update-category-database /usr/share/mime
+fi
+
+if [ -x /usr/bin/gtk-update-icon-cache ]; then
+	gtk-update-icon-cache -f /usr/share/icons/hicolor
+fi
+
+if [ -x /usr/bin/maemo-select-menu-location ]; then
+	maemo-select-menu-location xournal.desktop tana_fi_tools
+fi
+
+#if [ -x /usr/bin/maemo-confirm-text ]; then
+#	maemo-confirm-text "Xournal release notes" /usr/share/xournal/NEWS
+#fi
+
+#chown user:users /home/user/.xournal
+#chown user:users /home/user/.xournal/config

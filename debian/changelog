@@ -1,0 +1,209 @@
+xournal (0.4.5-1fremantle4) unstable; urgency=low
+  * Added About dialog
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Tue,  13 Apr 2010 23:20:00 -0800
+
+xournal (0.4.5-1fremantle3) unstable; urgency=low
+  * Should install on PR1.1
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Mon,  12 Apr 2010 10:23:25 -0800
+
+xournal (0.4.5-1fremantle2) unstable; urgency=low
+  * Layers are back
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Thu,  07 Apr 2010 22:42:35 +0100
+
+xournal (0.4.5-1fremantle1) unstable; urgency=low
+  * Sync to upstream 0.4.5
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Thu,  12 Feb 2010 22:42:35 +0100
+
+xournal (0.4.2.1-1fremantle21) unstable; urgency=low
+  * Use cursor keys to scroll around
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Sun,  09 Nov 2009 23:18:25 +0100
+
+xournal (0.4.2.1-1fremantle20) unstable; urgency=low
+  * Check for rotation at startup
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Sun,  08 Nov 2009 23:34:25 +0100
+
+xournal (0.4.2.1-1fremantle19) unstable; urgency=low
+  * Removed optification, still doesn't look good
+  * Service name reverted back to com.nokia.xournal
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Sun,  08 Nov 2009 22:59:25 +0100
+
+xournal (0.4.2.1-1fremantle18) unstable; urgency=low
+  * Package optified
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Sun,  08 Nov 2009 17:43:22 +0100
+
+xournal (0.4.2.1-1fremantle17) unstable; urgency=low
+  * mime-types icons for the File Manager
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Sun,  08 Nov 2009 15:59:14 +0100
+
+xournal (0.4.2.1-1fremantle16) unstable; urgency=low
+  * several fixes
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Sun,  08 Nov 2009 13:36:14 +0100
+
+xournal (0.4.2.1-1fremantle15) unstable; urgency=low
+  * added grab volume keys feature to map it to zoom in/out
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Fri,  06 Nov 2009 12:34:12 +0100
+
+xournal (0.4.2.1-1fremantle14) unstable; urgency=low
+  * Fixed pressure sensitivity
+  * Added a few descriptive banner notifications
+  * Changed version number to a shorter version
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Thu,  05 Nov 2009 23:50:02 +0100
+
+xournal (0.4.2.1-1fremantle13) unstable; urgency=low
+  * Removed Quit from the menu; Remove Share via service; Added few key
+  * bindings;
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Tue,  21 Oct 2009 23:17:56 +0100
+
+xournal (0.4.2.1-1fremantle12) unstable; urgency=low
+  * hidden Settings so that I can start promoting to Testing
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Tue,  09 Oct 2009 09:20:44 +0100
+
+xournal (0.4.2.1-1fremantle11) unstable; urgency=low
+  * hidden Settings so that I can start promoting to Testing
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Tue,  09 Oct 2009 09:20:44 +0100
+
+xournal (0.4.2.1-1fremantle10) unstable; urgency=low
+  * de-optified temporarily
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Tue,  04 Oct 2009 23:42:23 +0100
+ 
+xournal (0.4.2.1-1fremantle9) unstable; urgency=low
+  * Maemo Optified
+  * Mapped: Undo (Ctl-z), Redo (Ctl-y), New (Ctl-N), Save (Ctl-S)
+  * TODO: add controls to tools view, journal view, settings view, more views?
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Tue,  04 Oct 2009 19:59:23 +0100
+  
+xournal (0.4.2.1-1fremantle8) unstable; urgency=low
+  * Share buttons
+  * Tools empty pages
+  * TODO: add controls to tools view, journal view, settings view, more views?
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Tue,  04 Oct 2009 00:20:11 +0100
+
+xournal (0.4.2.1-1fremantle7) unstable; urgency=low
+  * Bug fix on fileSave
+  * Tools options
+  * TODO: same as usual :)
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Tue,  29 Sep 2009 13:29:23 +0100
+
+xournal (0.4.2.1-1fremantle6) unstable; urgency=low
+  * Maemo 5 menu style
+  * TODO: Fix pressure, setting in stackable window
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Tue,  26 Sep 2009 12:26:01 +0100
+
+xournal (0.4.2.1-1fremantle5) unstable; urgency=low
+  * Fourth alpha: Themeable icons
+  * TODO: Fix pressure, setting in stackable window
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Tue,  22 Sep 2009 20:28:14 +0100
+
+xournal (0.4.2.1-1fremantle4) unstable; urgency=low
+
+  * Third alpha: UI more Maemo5-like
+  * TODO: Fix pressure, icons, other...
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Sun,  16 Sep 2009 21:09:24 +0100
+
+xournal (0.4.2.1-1fremantle3) unstable; urgency=low
+
+  * Second alpha: fixed close (when hitting Close button)
+  * TODO: Fix pressure, icons, other...
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Sat,  15 Sep 2009 18:43:08 +0100
+
+xournal (0.4.2.1-1fremantle2) unstable; urgency=low
+
+  * First alpha version. Many things work.
+  * TODO: Fix pressure, icons, other...
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Sat,  15 Sep 2009 18:43:08 +0100
+
+xournal (0.4.2.1-1fremantle1) unstable; urgency=low
+
+  * Repackaged for Fremantle (Maemo 5)
+  * Fixed bug that prevented canvas to appear
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Sat,  2 Aug 2009 16:02:58 +0100
+
+xournal (0.4.2.1-1diablo1) unstable; urgency=low
+
+  * Repackaged for Diablo (Maemo 4.1)
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Wed,  2 Jul 2008 11:42:48 +0200
+
+xournal (0.4.2.1-1chinook5) unstable; urgency=low
+
+  * Improved Maemo support: added callback functions for hardware event
+    handlings, auto-save handling and so on...
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Tue, 22 Apr 2008 10:12:46 +0200
+
+xournal (0.4.2.1-1chinook4) unstable; urgency=low
+
+  * Fixed PDF annotation
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Fri, 18 Apr 2008 17:06:31 +0200
+
+xournal (0.4.2.1-1chinook3) unstable; urgency=low
+
+  * Fixed a bug saving Untitled documents
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Fri, 18 Apr 2008 16:13:10 +0200
+
+xournal (0.4.2.1-1chinook2) unstable; urgency=low
+
+  * Fixed a bug with the title of the application window
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Fri, 18 Apr 2008 15:55:49 +0200
+
+xournal (0.4.2.1-1chinook1) unstable; urgency=low
+
+  * Maemo port
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Tue,  8 Apr 2008 15:36:09 +0200
+
+xournal (0.4.2.1-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Tue,  8 Apr 2008 15:07:47 +0200
+
+xournal (0.4.1-1) unstable; urgency=low
+
+  * New upstream release (Closes: #410909, #441222, #458684)
+  * Fix FTBFS if build twice in a row (Closes: #442773)
+  * Removed deprecated Encoding key from desktop files
+  * Added Wl,--as-needed as linking options to remove linking to unused
+    libraries
+
+ -- Mathieu Bouchard <mbouchar@bioinfo.ulaval.ca>  Sat, 15 Sep 2007 23:18:10 -0400
+
+xournal (0.3.3-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- Mathieu Bouchard <mbouchar@bioinfo.ulaval.ca>  Wed, 14 Feb 2007 11:49:42 -0500
+
+xournal (0.3.2-1) unstable; urgency=low
+
+  * Initial release (Closes: #406496)
+
+ -- Mathieu Bouchard <mbouchar@bioinfo.ulaval.ca>  Wed, 10 Jan 2007 15:25:09 -0500

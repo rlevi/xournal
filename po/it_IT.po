@@ -1,0 +1,967 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#: ../../src/main.c:309 ../../src/xo-file.c:33 ../../src/xo-file.c:37
+#: ../../src/xo-file.c:38 ../../src/xo-file.c:233 ../../src/xo-file.c:1573
+#: ../../src/xo-interface.c:1715 ../../src/xo-interface.c:1919
+#: ../../src/xo-interface.c:2065
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: xournal 0.4.2.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-04-22 11:57+0200\n"
+"PO-Revision-Date: 2008-04-22 12:27+0200\n"
+"Last-Translator: Aniello Del Sorbo <anidel@gmail.com>\n"
+"Language-Team: Italian (IT)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../src/main.c:74
+#, c-format
+msgid "usage"
+msgstr "Parametri non validi su linea di comando\nUso: %s [filename.xoj]"
+
+#: ../../src/main.c:256 ../../src/xo-callbacks.c:93
+#: ../../src/xo-callbacks.c:272 ../../src/xo-callbacks.c:277
+#: ../../src/xo-callbacks.c:344 ../../src/xo-callbacks.c:349
+#: ../../src/xo-callbacks.c:3453 ../../src/xo-callbacks.c:3458
+#, c-format
+msgid "Error opening file '%s'"
+msgstr "Errore nell'aprire il file '%s'"
+
+#: ../../src/xo-callbacks.c:91 ../../src/xo-callbacks.c:270
+#: ../../src/xo-callbacks.c:342 ../../src/xo-callbacks.c:3451
+msgid "Error opening file ''"
+msgstr "Errore nell'aprire il file ''"
+
+#: ../../src/xo-callbacks.c:108
+msgid "Autosaving document..."
+msgstr "Autosalvataggio del documento..."
+
+#: ../../src/xo-callbacks.c:133
+msgid "Memory low! Close unused applications and save document"
+msgstr "Memoria di sistema bassa! Chiudere le applicationi non usate"
+
+#: ../../src/xo-callbacks.c:136
+msgid "Memory low! Close unused applications to free memory"
+msgstr "Memoria di sistema bassa! Chiudere le applicationi non usate per liberare memoria"
+
+#: ../../src/xo-callbacks.c:216 ../../src/xo-file.c:717
+msgid "Open PDF"
+msgstr "Apri PDF"
+
+#: ../../src/xo-callbacks.c:222 ../../src/xo-callbacks.c:317
+#: ../../src/xo-callbacks.c:448 ../../src/xo-callbacks.c:666
+#: ../../src/xo-callbacks.c:1780 ../../src/xo-file.c:723
+msgid "All files"
+msgstr "Tutti i file"
+
+#: ../../src/xo-callbacks.c:225 ../../src/xo-callbacks.c:669
+#: ../../src/xo-file.c:726
+msgid "PDF files"
+msgstr "File PDF"
+
+#: ../../src/xo-callbacks.c:233 ../../src/xo-callbacks.c:1803
+msgid "Attach file to the journal"
+msgstr "Attacca il documento al Taccuino"
+
+#: ../../src/xo-callbacks.c:311
+msgid "Open Journal"
+msgstr "Apri Taccuino"
+
+#: ../../src/xo-callbacks.c:320 ../../src/xo-callbacks.c:451
+msgid "Xournal files"
+msgstr "File di Xournal"
+
+#: ../../src/xo-callbacks.c:380 ../../src/xo-callbacks.c:506
+msgid "Error saving file ''"
+msgstr "Errore nel salvare il file ''"
+
+#: ../../src/xo-callbacks.c:382 ../../src/xo-callbacks.c:387
+#: ../../src/xo-callbacks.c:508 ../../src/xo-callbacks.c:513
+#, c-format
+msgid "Error saving file '%s'"
+msgstr "Errore nel salvare il file '%s'"
+
+#: ../../src/xo-callbacks.c:422
+msgid "Save Journal"
+msgstr "Salva il Taccuino"
+
+#: ../../src/xo-callbacks.c:476 ../../src/xo-callbacks.c:686
+msgid "Should the file '' be overwritten?"
+msgstr "Sovrascrivere il file '' ?"
+
+#: ../../src/xo-callbacks.c:478 ../../src/xo-callbacks.c:688
+#, c-format
+msgid "Should the file '%s' be overwritten?"
+msgstr "Sovrascrivere il file '%s'i ?"
+
+#: ../../src/xo-callbacks.c:480 ../../src/xo-callbacks.c:690
+#: ../../src/xo-file.c:697 ../../src/xo-misc.c:1728
+msgid "Yes"
+msgstr "Si"
+
+#: ../../src/xo-callbacks.c:480 ../../src/xo-callbacks.c:690
+#: ../../src/xo-file.c:697 ../../src/xo-misc.c:1728
+msgid "No"
+msgstr "No"
+
+#: ../../src/xo-callbacks.c:485 ../../src/xo-callbacks.c:695
+#, c-format
+msgid "Should the file %s be overwritten?"
+msgstr "Sovrascrivere il file %s ?"
+
+#: ../../src/xo-callbacks.c:552 ../../src/xo-callbacks.c:556
+msgid "Printer"
+msgstr "Stampante"
+
+#: ../../src/xo-callbacks.c:569
+msgid "Print"
+msgstr "Stampa"
+
+#: ../../src/xo-callbacks.c:572
+msgid "Current page"
+msgstr "Pagina corrente"
+
+#: ../../src/xo-callbacks.c:572
+msgid "Pages"
+msgstr "Pagine"
+
+#: ../../src/xo-callbacks.c:642
+msgid "Export to PDF"
+msgstr "Esporta in PDF"
+
+#: ../../src/xo-callbacks.c:708
+msgid "Error creating file ''"
+msgstr "Errore nel creare il file ''"
+
+#: ../../src/xo-callbacks.c:710 ../../src/xo-callbacks.c:716
+#, c-format
+msgid "Error creating file '%s'"
+msgstr "Errore nel crare il file '%s'"
+
+#: ../../src/xo-callbacks.c:1774
+msgid "Open Background"
+msgstr "Apri Sfondo"
+
+#: ../../src/xo-callbacks.c:1788
+msgid "Bitmap files"
+msgstr "File Bitmap"
+
+#: ../../src/xo-callbacks.c:1796
+msgid "PS/PDF files (as bitmaps)"
+msgstr "Files PS/PDF (come bitmap)"
+
+#: ../../src/xo-callbacks.c:1830
+msgid "Error opening background ''"
+msgstr "Errore nell'aprire lo sfondo ''"
+
+#: ../../src/xo-callbacks.c:1832 ../../src/xo-callbacks.c:1837
+#, c-format
+msgid "Error opening background '%s'"
+msgstr "Errore nell'aprire lo sfondo '%s'"
+
+#: ../../src/xo-callbacks.c:2394
+msgid "Select Font"
+msgstr "Seleziona Font"
+
+#: ../../src/xo-callbacks.c:2755 ../../src/xo-callbacks.c:2757
+#: ../../src/xo-callbacks.c:2761
+#, c-format
+msgid "drawind_is_not_allowed"
+msgstr "Impossibile disegnare sul layer di sfondo.\nPasso al Layer 1."
+
+#: ../../src/xo-file.c:127 ../../src/xo-file.c:169
+msgid "Could not write background ''. Continuing anyway."
+msgstr "Impossibile salvare lo sfondo ''. Proseguo con l'esecuzione."
+
+#: ../../src/xo-file.c:130 ../../src/xo-file.c:135 ../../src/xo-file.c:172
+#: ../../src/xo-file.c:177
+#, c-format
+msgid "Could not write background '%s'. Continuing anyway."
+msgstr "Impossibile salvare lo sfondo '%s'. Proseguo con l'esecuzione."
+
+#: ../../src/xo-file.c:275
+msgid "Invalid file contents"
+msgstr "Contenuto del file non valido"
+
+#: ../../src/xo-file.c:424
+msgid "Could not open background ''. Setting background to white."
+msgstr "Impossibile aprire lo sfondo ''. Uso il bianco come sfondo."
+
+#: ../../src/xo-file.c:427 ../../src/xo-file.c:433
+#, c-format
+msgid "Could not open background '%s'. Setting background to white."
+msgstr "Impossibile aprire lo sfondo '%s'. Uso il bianco come sfondo."
+
+#: ../../src/xo-file.c:693
+msgid ""
+"Could not open background ''.\n"
+"Select another file?"
+msgstr "Impossibile aprire lo sfondo ''.\nSelezionare un altro sfondo ?"
+
+#: ../../src/xo-file.c:695 ../../src/xo-file.c:701
+#, c-format
+msgid ""
+"Could not open background '%s'.\n"
+"Select another file?"
+msgstr "Impossibile aprire lo sfondo '%s'.\nSelezionare un altro sfondo ?"
+
+#: ../../src/xo-file.c:826
+msgid "Could not open background ''."
+msgstr "Impossibile aprire lo sfondo ''."
+
+#: ../../src/xo-file.c:828 ../../src/xo-file.c:832
+#, c-format
+msgid "Could not open background '%s'."
+msgstr "Impossibile aprire lo sfondo '%s'."
+
+#: ../../src/xo-file.c:1138
+msgid "Unable to start PDF loader ."
+msgstr "Impossibile far partire il loader PDF ."
+
+#: ../../src/xo-file.c:1140 ../../src/xo-file.c:1144
+#, c-format
+msgid "Unable to start PDF loader %s."
+msgstr "Impossibile far partire il loader PDF %s."
+
+#: ../../src/xo-interface.c:389 ../../src/xo-interface.c:393
+#: ../../src/xo-interface.c:396 ../../src/xo-interface.c:3168
+#: ../../src/xo-misc.c:1413 ../../src/xo-misc.c:1422
+msgid "Xournal"
+msgstr "Xournal"
+
+#: ../../src/xo-interface.c:412
+msgid "_File"
+msgstr "_Xournal"
+
+#: ../../src/xo-interface.c:423
+msgid "Annotate PD_F"
+msgstr "Annota PD_F"
+
+#: ../../src/xo-interface.c:444 ../../src/xo-interface.c:517
+msgid "_Export to PDF"
+msgstr "_Esporta in PDF"
+
+#: ../../src/xo-interface.c:457
+msgid "Recent Doc_uments"
+msgstr "Doc_umenti recenti"
+
+#: ../../src/xo-interface.c:501
+msgid "Print Options"
+msgstr "Opzioni di Stampa"
+
+#: ../../src/xo-interface.c:531
+msgid "_Close"
+msgstr "_Chiudi"
+
+#: ../../src/xo-interface.c:538
+msgid "_Edit"
+msgstr "_Modifica"
+
+#: ../../src/xo-interface.c:583
+msgid "_View"
+msgstr "_Visualizzazione"
+
+#: ../../src/xo-interface.c:590
+msgid "_Continuous"
+msgstr "_Continua"
+
+#: ../../src/xo-interface.c:596
+msgid "_One Page"
+msgstr "_Una Pagina"
+
+#: ../../src/xo-interface.c:607
+msgid "Full Screen"
+msgstr "Tutto schermo"
+
+#: ../../src/xo-interface.c:619
+msgid "_Zoom"
+msgstr ""
+
+#: ../../src/xo-interface.c:647
+msgid "Page _Width"
+msgstr "_Larghezza Pagina"
+
+#: ../../src/xo-interface.c:658
+msgid "_Set Zoom"
+msgstr "_Regola Zoom"
+
+#: ../../src/xo-interface.c:667
+msgid "_First Page"
+msgstr "Pr_ima Pagina"
+
+#: ../../src/xo-interface.c:678
+msgid "_Previous Page"
+msgstr "Pagina _Precedente"
+
+#: ../../src/xo-interface.c:689
+msgid "_Next Page"
+msgstr "Pagina _Successiva"
+
+#: ../../src/xo-interface.c:700
+msgid "_Last Page"
+msgstr "_Ultima Pagina"
+
+#: ../../src/xo-interface.c:716
+msgid "_Show Layer"
+msgstr "_Mostra Layer"
+
+#: ../../src/xo-interface.c:724
+msgid "_Hide Layer"
+msgstr "_Nascondi Layer"
+
+#: ../../src/xo-interface.c:732
+msgid "_Journal"
+msgstr "_Taccuino"
+
+#: ../../src/xo-interface.c:739
+msgid "New Page _Before"
+msgstr "_Precedi Nuova Pagina"
+
+#: ../../src/xo-interface.c:743
+msgid "New Page _After"
+msgstr "_Aggiungi Nuova Pagina"
+
+#: ../../src/xo-interface.c:747
+msgid "New Page At _End"
+msgstr "Nuova Pagina Alla _Fine"
+
+#: ../../src/xo-interface.c:751
+msgid "_Delete Page"
+msgstr "_Cancella Pagina"
+
+#: ../../src/xo-interface.c:760
+msgid "_New Layer"
+msgstr "_Nuovo Layer"
+
+#: ../../src/xo-interface.c:764
+msgid "Delete La_yer"
+msgstr "Cancella La_yer"
+
+#: ../../src/xo-interface.c:768
+msgid "_Flatten"
+msgstr ""
+
+#: ../../src/xo-interface.c:777
+msgid "Paper Si_ze"
+msgstr "_Dimensione Foglio"
+
+#: ../../src/xo-interface.c:781
+msgid "Paper _Color"
+msgstr "_Colore Foglio"
+
+#: ../../src/xo-interface.c:788
+msgid "_white paper"
+msgstr "foglio _bianco"
+
+#: ../../src/xo-interface.c:794
+msgid "_yellow paper"
+msgstr "foglio _giallo"
+
+#: ../../src/xo-interface.c:800
+msgid "_pink paper"
+msgstr "foglio _rosa"
+
+#: ../../src/xo-interface.c:806
+msgid "_orange paper"
+msgstr "foglio _arancione"
+
+#: ../../src/xo-interface.c:812
+msgid "_blue paper"
+msgstr "foglio bl_u"
+
+#: ../../src/xo-interface.c:818
+msgid "_green paper"
+msgstr "foglio _verde"
+
+#: ../../src/xo-interface.c:824 ../../src/xo-interface.c:1094
+msgid "other..."
+msgstr "altro..."
+
+#: ../../src/xo-interface.c:830 ../../src/xo-interface.c:866
+#: ../../src/xo-interface.c:1100 ../../src/xo-interface.c:1345
+#: ../../src/xo-interface.c:1421
+msgid "NA"
+msgstr ""
+
+#: ../../src/xo-interface.c:835
+msgid "Paper _Style"
+msgstr "_Stile Foglio"
+
+#: ../../src/xo-interface.c:842
+msgid "_plain"
+msgstr "_bianco"
+
+#: ../../src/xo-interface.c:848
+msgid "_lined"
+msgstr "_quaderno"
+
+#: ../../src/xo-interface.c:854
+msgid "_ruled"
+msgstr "a _righe"
+
+#: ../../src/xo-interface.c:860
+msgid "_graph"
+msgstr "a _quadretti"
+
+#: ../../src/xo-interface.c:871
+msgid "Apply _To All Pages"
+msgstr "Applicat a _Tutte le Pagine"
+
+#: ../../src/xo-interface.c:880
+msgid "_Load Background"
+msgstr "_Carica Sfondo"
+
+#: ../../src/xo-interface.c:888
+msgid "Background Screens_hot"
+msgstr "Screens_hot come Sfondo"
+
+#: ../../src/xo-interface.c:897
+msgid "Default _Paper"
+msgstr "Foglio di _default"
+
+#: ../../src/xo-interface.c:901
+msgid "Set As De_fault"
+msgstr "_Usa come default"
+
+#: ../../src/xo-interface.c:905
+msgid "A_ttrezzi"
+msgstr ""
+
+#: ../../src/xo-interface.c:912 ../../src/xo-interface.c:1281
+#: ../../src/xo-interface.c:1357
+msgid "_Pen"
+msgstr "_Penna"
+
+#: ../../src/xo-interface.c:921 ../../src/xo-interface.c:1287
+#: ../../src/xo-interface.c:1363
+msgid "_Eraser"
+msgstr "_Gomma"
+
+#: ../../src/xo-interface.c:930 ../../src/xo-interface.c:1293
+#: ../../src/xo-interface.c:1369
+msgid "_Highlighter"
+msgstr "_Evidenziatore"
+
+#: ../../src/xo-interface.c:939 ../../src/xo-interface.c:1299
+#: ../../src/xo-interface.c:1375
+msgid "_Text"
+msgstr "_Testo"
+
+#: ../../src/xo-interface.c:953
+msgid "_Shape Recognizer"
+msgstr "Riconoscitore _Forme"
+
+#: ../../src/xo-interface.c:960
+msgid "Ru_ler"
+msgstr "Ri_ghello"
+
+#: ../../src/xo-interface.c:972 ../../src/xo-interface.c:1305
+#: ../../src/xo-interface.c:1381
+msgid "Select Re_gion"
+msgstr "Seleziona _Area"
+
+#: ../../src/xo-interface.c:981 ../../src/xo-interface.c:1311
+#: ../../src/xo-interface.c:1387
+msgid "Select _Rectangle"
+msgstr "Seleziona _Rettangolo"
+
+#: ../../src/xo-interface.c:990 ../../src/xo-interface.c:1317
+#: ../../src/xo-interface.c:1393
+msgid "_Vertical Space"
+msgstr "Spazio _Verticale"
+
+#: ../../src/xo-interface.c:999 ../../src/xo-interface.c:1323
+#: ../../src/xo-interface.c:1399
+msgid "H_and Tool"
+msgstr "Spos_ta"
+
+#: ../../src/xo-interface.c:1012
+msgid "_Color"
+msgstr "_Colore"
+
+#: ../../src/xo-interface.c:1023
+msgid "blac_k"
+msgstr "_nero"
+
+#: ../../src/xo-interface.c:1029
+msgid "_blue"
+msgstr "_blu"
+
+#: ../../src/xo-interface.c:1035
+msgid "_red"
+msgstr "_rosso"
+
+#: ../../src/xo-interface.c:1041
+msgid "_green"
+msgstr "_verde"
+
+#: ../../src/xo-interface.c:1047
+msgid "gr_ay"
+msgstr "_grigio"
+
+#: ../../src/xo-interface.c:1058
+msgid "light bl_ue"
+msgstr "blu _chiaro"
+
+#: ../../src/xo-interface.c:1064
+msgid "light gr_een"
+msgstr "verde c_hiaro"
+
+#: ../../src/xo-interface.c:1070
+msgid "_magenta"
+msgstr "_magenta"
+
+#: ../../src/xo-interface.c:1076
+msgid "_orange"
+msgstr "_arancione"
+
+#: ../../src/xo-interface.c:1082
+msgid "_yellow"
+msgstr "_giallo"
+
+#: ../../src/xo-interface.c:1088
+msgid "_white"
+msgstr "bian_co"
+
+#: ../../src/xo-interface.c:1105
+msgid "Pen _Options"
+msgstr "_Opzioni Penna"
+
+#: ../../src/xo-interface.c:1112
+msgid "_very fine"
+msgstr "tratto _molto sottile"
+
+#: ../../src/xo-interface.c:1118 ../../src/xo-interface.c:1149
+#: ../../src/xo-interface.c:1197
+msgid "_fine"
+msgstr "tratto _sottile"
+
+#: ../../src/xo-interface.c:1124 ../../src/xo-interface.c:1155
+#: ../../src/xo-interface.c:1203
+msgid "_medium"
+msgstr "tratto _medio"
+
+#: ../../src/xo-interface.c:1130 ../../src/xo-interface.c:1161
+#: ../../src/xo-interface.c:1209
+msgid "_thick"
+msgstr "tratto s_pesso"
+
+#: ../../src/xo-interface.c:1136
+msgid "ver_y thick"
+msgstr "tratto molto sp_esso"
+
+#: ../../src/xo-interface.c:1142
+msgid "Eraser Optio_ns"
+msgstr "Opzioni _Gomma"
+
+#: ../../src/xo-interface.c:1172
+msgid "_standard"
+msgstr "_standard"
+
+#: ../../src/xo-interface.c:1178
+msgid "_whiteout"
+msgstr "_bianchetto"
+
+#: ../../src/xo-interface.c:1184
+msgid "_delete strokes"
+msgstr "_cancella tratti"
+
+#: ../../src/xo-interface.c:1190
+msgid "Highlighter Opt_ions"
+msgstr "Opzioni _Evidenziatore"
+
+#: ../../src/xo-interface.c:1215
+msgid "Text _Font..."
+msgstr "_Font Testo"
+
+#: ../../src/xo-interface.c:1231
+msgid "_Default Pen"
+msgstr "Penna di _Default"
+
+#: ../../src/xo-interface.c:1235
+msgid "Default Eraser"
+msgstr "Gomma di Default"
+
+#: ../../src/xo-interface.c:1239
+msgid "Default Highlighter"
+msgstr "Evidenziatore di Default"
+
+#: ../../src/xo-interface.c:1243
+msgid "Default Te_xt"
+msgstr "Testo Default"
+
+#: ../../src/xo-interface.c:1247
+msgid "Set As Default"
+msgstr "Usa come Default"
+
+#: ../../src/xo-interface.c:1251
+msgid "_Options"
+msgstr "_Opzioni"
+
+#: ../../src/xo-interface.c:1258
+msgid "Use _XInput"
+msgstr "Usa _XInput"
+
+#: ../../src/xo-interface.c:1262
+msgid "Discard _Core Events"
+msgstr "Scarta Eventi _Core"
+
+#: ../../src/xo-interface.c:1266
+msgid "_Eraser Tip"
+msgstr ""
+
+#: ../../src/xo-interface.c:1270
+msgid "_Pressure sensitivity"
+msgstr "Attiva _Pressione"
+
+#: ../../src/xo-interface.c:1274
+msgid "Button _2 Mapping"
+msgstr ""
+
+#: ../../src/xo-interface.c:1333 ../../src/xo-interface.c:1409
+msgid "_Link to Primary Brush"
+msgstr ""
+
+#: ../../src/xo-interface.c:1339 ../../src/xo-interface.c:1415
+msgid "_Copy of Current Brush"
+msgstr ""
+
+#: ../../src/xo-interface.c:1350
+msgid "Button _3 Mapping"
+msgstr ""
+
+#: ../../src/xo-interface.c:1431
+msgid "_Antialiased Bitmaps"
+msgstr "Bitmaps con _Antialiasing"
+
+#: ../../src/xo-interface.c:1435
+msgid "_Progressive Backgrounds"
+msgstr "Sfondi _Progressive"
+
+#: ../../src/xo-interface.c:1439
+msgid "Print Paper _Ruling"
+msgstr ""
+
+#: ../../src/xo-interface.c:1443
+msgid "Left-Handed Scrollbar"
+msgstr "Barra Scorrimento a _Sinistra"
+
+#: ../../src/xo-interface.c:1447
+msgid "Shorten _Menus"
+msgstr "_Accorcia Menu"
+
+#: ../../src/xo-interface.c:1456
+msgid "A_uto-Save Preferences"
+msgstr "Salvataggio A_utomatico delle Preferenze"
+
+#: ../../src/xo-interface.c:1460
+msgid "_Save Preferences"
+msgstr "Salva _Preferenze"
+
+#: ../../src/xo-interface.c:1464
+msgid "_Help"
+msgstr "_Aiuto"
+
+#: ../../src/xo-interface.c:1477
+msgid "_About"
+msgstr "_Informazioni"
+
+#: ../../src/xo-interface.c:1482
+msgid "H_elp..."
+msgstr "_Guida..."
+
+#: ../../src/xo-interface.c:1484
+msgid "_About..."
+msgstr "_Informazioni"
+
+#: ../../src/xo-interface.c:1590
+msgid "Save"
+msgstr "_Salva"
+
+#: ../../src/xo-interface.c:1595
+msgid "New"
+msgstr "_Nuovo"
+
+#: ../../src/xo-interface.c:1600
+msgid "Open"
+msgstr "_Apri"
+
+#: ../../src/xo-interface.c:1614
+msgid "Cut"
+msgstr "_Taglia"
+
+#: ../../src/xo-interface.c:1619
+msgid "Copy"
+msgstr "_Copia"
+
+#: ../../src/xo-interface.c:1624
+msgid "Paste"
+msgstr "_Incolla"
+
+#: ../../src/xo-interface.c:1638
+msgid "Undo"
+msgstr "_Annulla"
+
+#: ../../src/xo-interface.c:1643
+msgid "Redo"
+msgstr "_Ripristina"
+
+#: ../../src/xo-interface.c:1658
+msgid "First Page"
+msgstr "Prima Pagina"
+
+#: ../../src/xo-interface.c:1663
+msgid "Previous Page"
+msgstr "Pagina Precedente"
+
+#: ../../src/xo-interface.c:1668
+msgid "Next Page"
+msgstr "Pagina Successiva"
+
+#: ../../src/xo-interface.c:1673
+msgid "Last Page"
+msgstr "Ultima Pagina"
+
+#: ../../src/xo-interface.c:1688
+msgid "Ingrandisci"
+msgstr ""
+
+#: ../../src/xo-interface.c:1694 ../../src/xo-interface.c:3262
+msgid "Page Width"
+msgstr "Dimensione Pagina"
+
+#: ../../src/xo-interface.c:1701
+msgid "Riduci"
+msgstr ""
+
+#: ../../src/xo-interface.c:1706
+msgid "Normal Size"
+msgstr "Dimensione Normale"
+
+#: ../../src/xo-interface.c:1712 ../../src/xo-interface.c:3221
+msgid "Set Zoom"
+msgstr "Imposta Zoom"
+
+#: ../../src/xo-interface.c:1721
+msgid "Toggle Fullscreen"
+msgstr "Schermo Intero"
+
+#: ../../src/xo-interface.c:1733
+msgid "Pencil"
+msgstr "Matita"
+
+#: ../../src/xo-interface.c:1739
+msgid "Pen"
+msgstr "Penna"
+
+#: ../../src/xo-interface.c:1744 ../../src/xo-interface.c:1750
+msgid "Eraser"
+msgstr "Gomma"
+
+#: ../../src/xo-interface.c:1755 ../../src/xo-interface.c:1761
+msgid "Highlighter"
+msgstr "Evidenziatore"
+
+#: ../../src/xo-interface.c:1766 ../../src/xo-interface.c:1772
+msgid "Text"
+msgstr "Testo"
+
+#: ../../src/xo-interface.c:1778 ../../src/xo-interface.c:1784
+msgid "Shape Recognizer"
+msgstr "Riconoscitore Forme"
+
+#: ../../src/xo-interface.c:1788 ../../src/xo-interface.c:1794
+msgid "Ruler"
+msgstr "Righello"
+
+#: ../../src/xo-interface.c:1806 ../../src/xo-interface.c:1812
+msgid "Select Region"
+msgstr "Seleziona Area"
+
+#: ../../src/xo-interface.c:1817 ../../src/xo-interface.c:1823
+msgid "Select Rectangle"
+msgstr "Seleziona Rettangolo"
+
+#: ../../src/xo-interface.c:1828 ../../src/xo-interface.c:1834
+msgid "Vertical Space"
+msgstr "Spazio Verticale"
+
+#: ../../src/xo-interface.c:1839
+msgid "Hand Tool"
+msgstr ""
+
+#: ../../src/xo-interface.c:1858 ../../src/xo-interface.c:1862
+msgid "Default"
+msgstr ""
+
+#: ../../src/xo-interface.c:1866 ../../src/xo-interface.c:1869
+msgid "Default Pen"
+msgstr "Penna di Default"
+
+#: ../../src/xo-interface.c:1880 ../../src/xo-interface.c:1888
+msgid "Fine"
+msgstr "Tratto Sottile"
+
+#: ../../src/xo-interface.c:1893 ../../src/xo-interface.c:1901
+msgid "Medium"
+msgstr "Tratto Medio"
+
+#: ../../src/xo-interface.c:1906 ../../src/xo-interface.c:1914
+msgid "Thick"
+msgstr "Tratto Spesso"
+
+#: ../../src/xo-interface.c:1933 ../../src/xo-interface.c:1940
+msgid "Black"
+msgstr "Nero"
+
+#: ../../src/xo-interface.c:1945 ../../src/xo-interface.c:1952
+msgid "Blue"
+msgstr "Blu"
+
+#: ../../src/xo-interface.c:1957 ../../src/xo-interface.c:1964
+msgid "Red"
+msgstr "Rosso"
+
+#: ../../src/xo-interface.c:1969 ../../src/xo-interface.c:1976
+msgid "Green"
+msgstr "Verde"
+
+#: ../../src/xo-interface.c:1981 ../../src/xo-interface.c:1988
+msgid "Gray"
+msgstr "Grigio"
+
+#: ../../src/xo-interface.c:1993 ../../src/xo-interface.c:2000
+msgid "Light Blue"
+msgstr "Blu chiaro"
+
+#: ../../src/xo-interface.c:2005 ../../src/xo-interface.c:2012
+msgid "Light Green"
+msgstr "Verde chiaro"
+
+#: ../../src/xo-interface.c:2017 ../../src/xo-interface.c:2024
+msgid "Magenta"
+msgstr "Magenta"
+
+#: ../../src/xo-interface.c:2029 ../../src/xo-interface.c:2036
+msgid "Orange"
+msgstr "Arancione"
+
+#: ../../src/xo-interface.c:2041 ../../src/xo-interface.c:2048
+msgid "Yellow"
+msgstr "Giallo"
+
+#: ../../src/xo-interface.c:2053 ../../src/xo-interface.c:2060
+msgid "White"
+msgstr "Bianco"
+
+#: ../../src/xo-interface.c:2098
+msgid "  Page  "
+msgstr "  Pagina  "
+
+#: ../../src/xo-interface.c:2107
+msgid "Set page number"
+msgstr "Pagina Numero"
+
+#: ../../src/xo-interface.c:2111
+msgid " of n"
+msgstr " di n"
+
+#: ../../src/xo-interface.c:2119
+msgid "  Layer:  "
+msgstr "  Layer:  "
+
+#: ../../src/xo-interface.c:3043
+msgid "Set Paper Size"
+msgstr "Imposta Dimensione Foglio"
+
+#: ../../src/xo-interface.c:3055
+msgid "Standard paper sizes:"
+msgstr "Dimensioni Foglio Standard:"
+
+#: ../../src/xo-interface.c:3067
+msgid "Personalizzato"
+msgstr ""
+
+#: ../../src/xo-interface.c:3073
+msgid "Width:"
+msgstr "Larghezza:"
+
+#: ../../src/xo-interface.c:3082
+msgid "Height:"
+msgstr "Altezza:"
+
+#: ../../src/xo-interface.c:3096
+msgid "pixels"
+msgstr "pixels"
+
+#: ../../src/xo-interface.c:3173
+msgid ""
+"Written by Denis Auroux\n"
+"Ported to Maemo by Aniello Del Sorbo\n"
+"       http://xournal.sourceforge.net/       "
+msgstr "Scritto da Denis Auroux\nPortato su Maemo da Aniello Del Sorbo\n       http://xournal.sourceforge.net/       "
+
+#: ../../src/xo-interface.c:3237
+msgid "Zoom: "
+msgstr ""
+
+#: ../../src/xo-interface.c:3255
+msgid "Normal size (100%)"
+msgstr "Dimensione normale (100%)"
+
+#: ../../src/xo-interface.c:3269
+msgid "Page Height"
+msgstr "Altezza Pagina"
+
+#: ../../src/xo-misc.c:1283
+#, c-format
+msgid " of %d"
+msgstr " di %d"
+
+#: ../../src/xo-misc.c:1288
+msgid "Background"
+msgstr "Sfondo"
+
+#: ../../src/xo-misc.c:1296
+#, c-format
+msgid "Layer %d"
+msgstr "Layer %d"
+
+#: ../../src/xo-misc.c:1420
+#, c-format
+msgid "Xournal - %s"
+msgstr "Xournal - %s"
+
+#: ../../src/xo-misc.c:1722 ../../src/xo-misc.c:1750
+msgid "Untitled"
+msgstr "Senza Titolo"
+
+#: ../../src/xo-misc.c:1724
+msgid "Save changes to ''?"
+msgstr "Salva modifiche su ''?"
+
+#: ../../src/xo-misc.c:1725 ../../src/xo-misc.c:1749
+#, c-format
+msgid "Save changes to '%s'?"
+msgstr "Salva modifiche su '%s'?"
+
+#: ../../src/xo-support.c:41
+#, c-format
+msgid "Widget not found: %s"
+msgstr "Widget non trovato: %s"
+
+#: ../../src/xo-support.c:90 ../../src/xo-support.c:114
+#, c-format
+msgid "Couldn't find pixmap file: %s"
+msgstr "Impossibile trovare file pixmap: %s"
+
+#: ../../src/xo-support.c:121
+#, c-format
+msgid "Failed to load pixbuf file: %s: %s\n"
+msgstr "Errore nel caricare il file: %s: %s\n"
