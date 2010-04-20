@@ -1,3 +1,20 @@
+xournal (0.4.5-1fremantle7) unstable; urgency=low
+  * 
+  * 
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Sat,  17 Apr 2010 23:10:00 -0800
+
+xournal (0.4.5-1fremantle6) unstable; urgency=low
+  * Fixed PNG export file naming
+  * Added support for PNG export
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Sat,  17 Apr 2010 23:10:00 -0800
+
+xournal (0.4.5-1fremantle5) unstable; urgency=low
+  * Added support for PNG export
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Sat,  17 Apr 2010 23:10:00 -0800
+
 xournal (0.4.5-1fremantle4) unstable; urgency=low
   * Added About dialog
 

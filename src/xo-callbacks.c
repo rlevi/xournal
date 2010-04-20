@@ -16,9 +16,7 @@
 #include <hildon/hildon-file-chooser-dialog.h>
 #include <hildon/hildon-file-details-dialog.h>
 #include <hildon/hildon-note.h>
-
-#define HILDON_LIBSHARINGDIALOG_LIB "libsharingdialog.so.0"
-#include <dlfcn.h>
+#include <sharing-dialog.h>
 
 /*
 #include <hildon/hildon-help.h>
@@ -96,45 +94,6 @@ on_HildonHelp_activate (GtkWidget *widget, gchar *help_id)
 void
 on_HildonShowLayer_activate (GtkWidget *widget, gpointer data)
 {
-  GtkWidget *old_selector;
-  GtkWidget *selector;
-  gchar *label;
-  gint i;
-
-  old_selector = hildon_picker_button_get_selector (HILDON_PICKER_BUTTON (pickerButton));
-  // TODO: destroy it
-
-  selector = hildon_touch_selector_new_text ();
-
-  label = g_strdup_printf (_("Add new layer"));
-  hildon_touch_selector_append_text (HILDON_TOUCH_SELECTOR(selector),
-		label);
-  g_free (label);
-
-  label = g_strdup_printf (_("Background"));
-  hildon_touch_selector_append_text (HILDON_TOUCH_SELECTOR(selector),
-		label);
-  g_free (label);
-
-  for (i=0; i<ui.cur_page->nlayers;i++) {
-    label = g_strdup_printf (_("Layer %d"), i);
-    hildon_touch_selector_append_text (HILDON_TOUCH_SELECTOR(selector),
-		label);
-    g_free (label);
-  }
-
-  hildon_touch_selector_set_column_selection_mode (
-		HILDON_TOUCH_SELECTOR(selector),
-		HILDON_TOUCH_SELECTOR_SELECTION_MODE_SINGLE);
-
-  hildon_picker_button_set_selector (HILDON_PICKER_BUTTON(pickerButton),
-		HILDON_TOUCH_SELECTOR(selector));
-
-  g_signal_connect (G_OBJECT (selector), "changed",
-		G_CALLBACK (on_comboLayer_changed), (gpointer) "maemo");
-
-  printf ("Showing\n");
-  gtk_widget_show_all (HILDON_BUTTON(selector));
 }
 
 void
@@ -144,7 +103,7 @@ on_colorButton_activate (GtkWidget *widget, gpointer data)
   GtkWidget *selector;
   gint result;
 
-  selector = HILDON_COLOR_CHOOSER_DIALOG (widget);
+  //selector = HILDON_COLOR_CHOOSER_DIALOG (widget);
 /*  g_object_get (widget, "color", &color, NULL);*/
  /*
   selector = hildon_color_chooser_dialog_new();
@@ -557,11 +516,14 @@ on_fileSaveAs_activate                 (GtkMenuItem     *menuitem,
   model = HILDON_FILE_SYSTEM_MODEL(g_object_new(HILDON_TYPE_FILE_SYSTEM_MODEL,
 			  "ref_widget", GTK_WIDGET(winMain), NULL));
 
+  /*
   dialog = hildon_file_chooser_dialog_new_with_properties (
 		  GTK_WINDOW(winMain),
 		  "file_system_model", model,
 		  "action", GTK_FILE_CHOOSER_ACTION_SAVE,
 		  NULL);
+ */
+  dialog = hildon_file_chooser_dialog_new (GTK_WINDOW(winMain), GTK_FILE_CHOOSER_ACTION_SAVE);
 #else
   dialog = gtk_file_chooser_dialog_new(_("Save Journal"), GTK_WINDOW (winMain),
      GTK_FILE_CHOOSER_ACTION_SAVE, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
@@ -570,7 +532,8 @@ on_fileSaveAs_activate                 (GtkMenuItem     *menuitem,
   gtk_window_set_default_size(GTK_WINDOW(dialog), 500, 400);
 #endif
 #endif
-     
+  g_print ("ui.filename = %s\n", ui.filename);
+  g_print ("ui.default_path %s\n", ui.default_path);
   if (ui.filename!=NULL) {
     gtk_file_chooser_set_filename(GTK_FILE_CHOOSER (dialog), ui.filename);
     gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER (dialog), g_basename(ui.filename));
@@ -586,8 +549,10 @@ on_fileSaveAs_activate                 (GtkMenuItem     *menuitem,
   else {
     curtime = time(NULL);
     strftime(stime, 30, "%F-Note-%H-%M.xoj", localtime(&curtime));
-    if (ui.default_path!=NULL)
+    if (ui.default_path!=NULL) {
+	    g_print ("setting curr folder ui.default_path %s\n", ui.default_path);
       gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER (dialog), ui.default_path);
+    }
     gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER (dialog), stime);
   }
      
@@ -735,11 +700,12 @@ on_filePrintPDF_activate               (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
   GtkWidget *dialog, *warning_dialog;
-  GtkFileFilter *filt_all, *filt_pdf;
-  char *filename, *in_fn;
+  GtkFileFilter *filt_all, *filt_pdf, *filt_png, *tmpfilt;
+  char *filename, *in_fn, *tmpfilename;
   char stime[30];
   time_t curtime;
   gboolean warn;
+  int buffsize;
 #ifdef USE_HILDON
   HildonFileSystemModel *model = NULL;
 #endif
@@ -753,7 +719,7 @@ on_filePrintPDF_activate               (GtkMenuItem     *menuitem,
 		  GTK_WINDOW(winMain),
 		  GTK_FILE_CHOOSER_ACTION_SAVE);
 #else
-  dialog = gtk_file_chooser_dialog_new(_("Export to PDF"), GTK_WINDOW (winMain),
+  dialog = gtk_file_chooser_dialog_new(_("Export to..."), GTK_WINDOW (winMain),
      GTK_FILE_CHOOSER_ACTION_SAVE, GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
      GTK_STOCK_SAVE, GTK_RESPONSE_OK, NULL);
 #ifdef FILE_DIALOG_SIZE_BUGFIX
@@ -764,15 +730,14 @@ on_filePrintPDF_activate               (GtkMenuItem     *menuitem,
   if (ui.filename!=NULL) {
     if (g_str_has_suffix(ui.filename, ".xoj")) {
       in_fn = g_strdup(ui.filename);
-      g_strlcpy(g_strrstr(in_fn, "xoj"), "pdf", 4);
     } 
     else
-      in_fn = g_strdup_printf("%s.pdf", ui.filename);
+      in_fn = g_strdup_printf("%s", ui.filename);
     gtk_file_chooser_set_filename(GTK_FILE_CHOOSER (dialog), in_fn);
     gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER (dialog), g_basename(in_fn));
   } else {
     curtime = time(NULL);
-    strftime(stime, 30, "%F-Note-%H-%M.pdf", localtime(&curtime));
+    strftime(stime, 30, "%F-Note-%H-%M", localtime(&curtime));
 
     if (ui.default_path!=NULL)
       gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER (dialog), ui.default_path);
@@ -783,11 +748,17 @@ on_filePrintPDF_activate               (GtkMenuItem     *menuitem,
   filt_all = gtk_file_filter_new();
   gtk_file_filter_set_name(filt_all, _("All files"));
   gtk_file_filter_add_pattern(filt_all, "*");
+  filt_png = gtk_file_filter_new();
+  gtk_file_filter_set_name(filt_png, _("PNG files"));
+
+  gtk_file_filter_add_pattern(filt_png, "*.png");
+  gtk_file_filter_add_pattern(filt_png, "*.PNG");
   filt_pdf = gtk_file_filter_new();
   gtk_file_filter_set_name(filt_pdf, _("PDF files"));
   gtk_file_filter_add_pattern(filt_pdf, "*.pdf");
   gtk_file_filter_add_pattern(filt_pdf, "*.PDF");
   gtk_file_chooser_add_filter(GTK_FILE_CHOOSER (dialog), filt_pdf);
+  gtk_file_chooser_add_filter(GTK_FILE_CHOOSER (dialog), filt_png);
   gtk_file_chooser_add_filter(GTK_FILE_CHOOSER (dialog), filt_all);
   gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_OK);
   g_free(in_fn);
@@ -795,16 +766,10 @@ on_filePrintPDF_activate               (GtkMenuItem     *menuitem,
   do {
     if (gtk_dialog_run(GTK_DIALOG(dialog)) != GTK_RESPONSE_OK) {
       gtk_widget_destroy(dialog);
-      if (!ui.filename_pdf)
-        g_free (ui.filename_pdf);
-      ui.filename_pdf = NULL;
       return;
     }
     filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
     if (!filename) {
-      if (!ui.filename_pdf)
-        g_free (ui.filename_pdf);
-      ui.filename_pdf = NULL;
       return;
     }
 
@@ -827,10 +792,51 @@ on_filePrintPDF_activate               (GtkMenuItem     *menuitem,
     }
   } while(warn);
     
+  tmpfilt = gtk_file_chooser_get_filter (GTK_FILE_CHOOSER(dialog));
   gtk_widget_destroy(dialog);
-
   set_cursor_busy(TRUE);
-  if (!print_to_pdf(filename)) {
+
+  warn = 0;
+
+#ifdef USE_HILDON
+  if (g_str_has_suffix (filename, ".png") || g_str_has_suffix (filename, ".PNG")) {
+    buffsize = strlen (filename)+1;
+    filename = realloc (filename, (buffsize-3) * sizeof (char));
+    filename[buffsize-5] = '\0';
+    PangoLayout *layout = gtk_widget_create_pango_layout (winMain, NULL);
+    warn = print_to_pngs (&journal, layout, filename, &ui.png_files_list);
+    g_object_unref (layout);
+  } else { // assume PDF
+    if (!g_str_has_suffix (filename, ".pdf") && !g_str_has_suffix (filename, ".PDF")) {
+      tmpfilename = filename;
+      filename = g_strconcat (filename, ".pdf", NULL);
+      g_free (tmpfilename);
+    }
+    warn = print_to_pdf (filename);
+  }
+#else
+  if (filt_pdf == tmpfilt || filt_all == tmpfilt) {
+    if (!g_str_has_suffix(filename,".pdf")) {
+      tmpfilename = filename;
+      filename = g_strconcat (filename,".pdf",NULL);
+      g_free (tmpfilename);
+    }
+    warn = print_fo_pdf (filename);
+  } else if (filt_png == tmpfilt) {
+    if (g_str_has_suffix (filename,".png")) {
+      buffsize = strlen (filename)+1;
+      filename = realloc (filename, (buffsize-3) * sizeof (char));
+      filename[buffsize-4] = '\0';
+    }
+    PangoLayout *layout = gtk_widget_create_pango_layout (winMain, NULL);
+    warn = print_to_pngs (&journal, layout, filename);
+    g_object_unref (layout);
+  } else {
+    warn = TRUE;
+  }
+#endif
+
+  if (!warn) {
 #ifdef USE_HILDON
     gchar descr[strlen(_("Error creating file ''"))+ strlen(g_basename(filename))];
     sprintf (descr, _("Error creating file '%s'"), g_basename(filename));
@@ -846,11 +852,7 @@ on_filePrintPDF_activate               (GtkMenuItem     *menuitem,
   }
   set_cursor_busy(FALSE);
 
-#ifdef USE_HILDON
-  if (ui.filename_pdf != NULL)
-     g_free (ui.filename_pdf);
-  ui.filename_pdf = filename;
-#else
+#ifndef USE_HILDON
   g_free(filename);
 #endif
 }
@@ -4432,6 +4434,8 @@ hildon_share_via_email (GtkWidget *item, gpointer user_data)
 		list /*attachments*/);
 
 	g_slist_free(list);
+	g_free (ui.filename_pdf);
+	ui.filename_pdf = NULL;
 
 	gtk_widget_destroy (GTK_WIDGET(user_data));
 }
@@ -4478,8 +4482,9 @@ hildon_share_via_bt (GtkWidget *item, gpointer user_data)
 	}
 
 	g_strfreev(files);
-
 	g_object_unref(proxy);
+	g_free (ui.filename_pdf);
+	ui.filename_pdf = NULL;
 
 	gtk_widget_destroy (GTK_WIDGET(user_data));
 }
@@ -4488,48 +4493,44 @@ void
 hildon_share_tool (GtkMenuItem  *menuitem, gpointer user_data)
 {
 	GtkWidget *banner;
-	static void *dl_handle = NULL;
-	static void (*sharing_dialog_with_file) (osso_context_t *, GtkWidget *, const gchar *);
 	gchar *error;
 
 	banner=hildon_banner_show_information (GTK_WIDGET(winMain), NULL, _("File must be saved as PDF first..."));
 	hildon_banner_set_timeout (HILDON_BANNER(banner), 2000);
-
 	gtk_widget_destroy (banner);
 
+	g_print ("ui.filename_pdf = %s - ui.png_files_list - %p\n", ui.filename_pdf, ui.png_files_list);
 	on_filePrintPDF_activate (NULL, NULL);
+	g_print ("ui.filename_pdf = %s - ui.png_files_list - %p\n", ui.filename_pdf, ui.png_files_list);
 
-	if (!ui.filename_pdf) {
+	if (!ui.filename_pdf && !ui.png_files_list) {
+		banner=hildon_banner_show_information (GTK_WIDGET(winMain), NULL, _("An error occurred..."));
+		hildon_banner_set_timeout (HILDON_BANNER(banner), 2000);
+		gtk_widget_destroy (banner);
+
 		return;
 	}
 
-	if (!dl_handle) {
-		dl_handle = dlopen (HILDON_LIBSHARINGDIALOG_LIB,
-				RTLD_LAZY);
-		if (!dl_handle) {
-			g_printerr ("Error: %s\n", dlerror());
-
-			return;
-		}
-
-		*(void **)(&sharing_dialog_with_file) = dlsym (dl_handle,
-			"sharing_dialog_with_file");
-		if ((error = dlerror()) != NULL) {
-			g_printerr ("Error: %s\n", dlerror());
-			dlclose (dl_handle);
-
-			return;
-		}
-	}
-
-	banner=hildon_banner_show_information (GTK_WIDGET(winMain), NULL, _("Select how do you want to share the note"));
+	banner=hildon_banner_show_information (GTK_WIDGET(winMain), NULL, _("Select the method you want to use"));
 	hildon_banner_set_timeout (HILDON_BANNER(banner), 2000);
 
 	gtk_widget_destroy (banner);
 
-	sharing_dialog_with_file (ctx,
-			winMain,
+	if (ui.filename_pdf) {
+		sharing_dialog_with_file (ctx,
+			GTK_WINDOW(winMain),
 			ui.filename_pdf);
+		g_free (ui.filename_pdf);
+		ui.filename_pdf = NULL;
+	}
+
+	if (ui.png_files_list) {
+		sharing_dialog_with_files (ctx,
+			GTK_WINDOW(winMain),
+			ui.png_files_list);
+		g_slist_free (ui.png_files_list);
+		ui.png_files_list = NULL;
+	}
 }
 
 #if 0

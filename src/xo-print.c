@@ -1045,10 +1045,13 @@ void pdf_draw_page(struct Page *pg, GString *str, gboolean *use_hiliter,
   }
 
   for (layerlist = pg->layers; layerlist!=NULL; layerlist = layerlist->next) {
+    g_print ("PDF handling layer\n");
     l = (struct Layer *)layerlist->data;
     for (itemlist = l->items; itemlist!=NULL; itemlist = itemlist->next) {
+    g_print ("PDF handling item\n");
       item = (struct Item *)itemlist->data;
       if (item->type == ITEM_STROKE) {
+    g_print ("Item is a stroke\n");
         if ((item->brush.color_rgba & ~0xff) != old_rgba)
           g_string_append_printf(str, "%.2f %.2f %.2f RG ",
             RGBA_RGB(item->brush.color_rgba));
@@ -1068,9 +1071,13 @@ void pdf_draw_page(struct Page *pg, GString *str, gboolean *use_hiliter,
           g_string_append_printf(str,"S\n");
           old_thickness = item->brush.thickness;
         } else {
-          for (i=0; i<item->path->num_points-1; i++, pt+=2)
+          g_print ("Item has variable width\n");
+          for (i=0; i<item->path->num_points-1; i++, pt+=2) {
+            g_print ( "%.2f w %.2f %.2f m %.2f %.2f l S\n", 
+               item->widths[i], pt[0], pt[1], pt[2], pt[3]);
             g_string_append_printf(str, "%.2f w %.2f %.2f m %.2f %.2f l S\n", 
                item->widths[i], pt[0], pt[1], pt[2], pt[3]);
+	  }
           old_thickness = 0.0;
         }
         if ((item->brush.color_rgba & 0xf0) != 0xf0) // undo transparent
@@ -1192,6 +1199,11 @@ gboolean print_to_pdf(char *filename)
   struct PdfFont *font;
   char *tmpbuf;
   
+#ifdef USE_HILDON
+  if (ui.filename_pdf)
+    g_free (ui.filename_pdf);
+  ui.filename_pdf = NULL;
+#endif
   f = fopen(filename, "w");
   if (f == NULL) return FALSE;
   setlocale(LC_NUMERIC, "C");
@@ -1403,10 +1415,143 @@ gboolean print_to_pdf(char *filename)
   }
   fclose(f);
   g_string_free(pdfbuf, TRUE);
+#ifdef USE_HILDON
+  ui.filename_pdf = filename;
+#endif
   return TRUE;
 }
 
-#ifndef USE_HILDON
+gboolean print_to_pngs (Journal *ptrjournal, PangoLayout *layout, gchar *filenameprefix, GSList **files)
+{
+  GList *pagelist;
+  gchar *tmpfilename;
+  cairo_surface_t *crSurface;
+  cairo_status_t crstatus;
+  cairo_t *cr;
+  GtkWidget *warning_dialog;
+  int i;
+
+  if (files && *files) {
+    g_slist_free (*files);
+    *files = NULL;
+  }
+
+  crSurface = cairo_image_surface_create (CAIRO_FORMAT_RGB24, ui.cur_page->width, ui.cur_page->height);
+  cr = cairo_create (crSurface);
+
+  for (i=1, pagelist = ptrjournal->pages; pagelist != NULL; i++, pagelist = pagelist->next) {
+     tmpfilename = g_strdup_printf ("%s - Page %d.png", filenameprefix, i);
+     cairo_save (cr);
+     print_to_cairo_surface (pagelist->data, layout, cr);
+     cairo_restore (cr);
+
+     if (!crSurface) {
+       g_free (tmpfilename);
+
+       return FALSE;
+     }
+
+     crstatus = cairo_surface_write_to_png (crSurface, tmpfilename);
+     if (crstatus != CAIRO_STATUS_SUCCESS) {
+       warning_dialog = gtk_message_dialog_new (GTK_WINDOW(winMain),
+		       GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK,
+		       _("There was a problem writing png file"), cairo_status_to_string (crstatus));
+       gtk_widget_destroy (warning_dialog);
+       g_free (tmpfilename);
+       return FALSE;
+     } else {
+       if (files)
+         *files = g_slist_append (*files, tmpfilename);
+     }
+
+     g_free (tmpfilename);
+  }
+
+  cairo_destroy (cr);
+  cairo_surface_finish (crSurface);
+  cairo_surface_destroy (crSurface);
+
+  return TRUE;
+}
+
+void print_to_cairo_surface (Page *pg, PangoLayout *layout, cairo_t *cr)
+{
+  gint old_rgba;
+  double old_thickness;
+  GList *layerlist, *itemlist;
+  struct Layer *l;
+  struct Item *item;
+  int i;
+  double *pt;
+  PangoFontDescription *font_desc;
+
+  if (pg == NULL)
+    return;
+
+  cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);
+  cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
+
+  print_background (cr, pg);
+
+  old_rgba = predef_colors_rgba [COLOR_BLACK];
+  cairo_set_source_rgb (cr, 0, 0, 0);
+  old_thickness = 0.0;
+
+  for (layerlist = pg->layers; layerlist != NULL; layerlist = layerlist->next) {
+     l = (struct Layer *) layerlist->data;
+     g_print ("Handling layer\n");
+     for (itemlist = l->items; itemlist != NULL; itemlist = itemlist->next) {
+        g_print ("Handling item\n");
+	item = (struct Item *) itemlist->data;
+	if (item->type == ITEM_STROKE || item->type == ITEM_TEXT) {
+	  g_print ("setting color \n");
+          if (item->brush.color_rgba != old_rgba)
+            cairo_set_source_rgba (cr, RGBA_RGB (item->brush.color_rgba),
+			    RGBA_ALPHA (item->brush.color_rgba));
+	  old_rgba = item->brush.color_rgba;
+	}
+
+	if (item->type == ITEM_STROKE) {
+          g_print ("Handling STROKE: %d num points\n", item->path->num_points);
+	  if (item->brush.thickness != old_thickness)
+	    cairo_set_line_width (cr, item->brush.thickness);
+	  pt = item->path->coords;
+	  g_print ("Brush has varialble width: %d\n", item->brush.variable_width);
+	  if (!item->brush.variable_width) {
+	    cairo_move_to (cr, pt[0], pt[1]);
+	    for (i=1, pt+=2; i < item->path->num_points; i++, pt+=2)
+	       cairo_line_to (cr, pt[0], pt[1]);
+	    cairo_stroke (cr);
+	    old_thickness = item->brush.thickness;
+	  } else {
+	   double *widths = item->widths;
+	   for (i=0; i < item->path->num_points-1; i++, pt+=2, widths++) {
+	     g_print ("pt=%p - Line width %.2f (%.2f,%.2f)-(%.2f,%.2f)\n", pt, widths[0], pt[0], pt[1], pt[2], pt[3]);
+	     cairo_move_to (cr, pt[0], pt[1]);
+	     cairo_set_line_width (cr, *widths);
+	     cairo_line_to (cr, pt[2], pt[3]);
+	     cairo_stroke (cr);
+	   }
+	   old_thickness = 0.0;
+	  }
+	}
+
+	if (item->type == ITEM_TEXT) {
+          g_print ("Handling TEXT\n");
+	  font_desc = pango_font_description_from_string (item->font_name);
+	  if (item->font_size)
+	    pango_font_description_set_absolute_size (font_desc,
+			    item->font_size * PANGO_SCALE);
+	  pango_layout_set_font_description (layout, font_desc);
+	  pango_font_description_free (font_desc);
+	  pango_layout_set_text (layout, item->text, -1);
+	  cairo_move_to (cr, item->bbox.left, item->bbox.top);
+	  pango_cairo_show_layout (cr, layout);
+	}
+     }
+  }
+}
+
 /*********** Printing via gtk-print **********/
 
 #if GTK_CHECK_VERSION(2, 10, 0)
@@ -1476,6 +1621,7 @@ void print_background(cairo_t *cr, struct Page *pg)
   }
 }
 
+#ifndef USE_HILDON
 void print_job_render_page(GtkPrintOperation *print, GtkPrintContext *context, gint pageno, gpointer user_data)
 {
   cairo_t *cr;
@@ -1554,6 +1700,5 @@ void print_job_render_page(GtkPrintOperation *print, GtkPrintContext *context, g
     }
   }
 }
-
 #endif
 #endif

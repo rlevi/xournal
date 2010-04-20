@@ -223,6 +223,7 @@ void continue_stroke(GdkEvent *event)
     realloc_cur_widths(ui.cur_path.num_points);
     current_width = ui.cur_item->brush.thickness*get_pressure_multiplier(event);
     ui.cur_widths[ui.cur_path.num_points-1] = current_width;
+    printf ("thickness: %.2f - current_width: %.2f\n", ui.cur_item->brush.thickness, current_width);
   }
   else current_width = ui.cur_item->brush.thickness;
   

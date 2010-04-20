@@ -81,6 +81,10 @@ on_filePrintPDF_activate               (GtkMenuItem     *menuitem,
                                         gpointer         user_data);
 
 void
+on_filePrintPNG_activate               (GtkMenuItem     *menuitem,
+                                        gpointer         user_data);
+
+void
 on_fileQuit_activate                   (GtkMenuItem     *menuitem,
                                         gpointer         user_data);
 

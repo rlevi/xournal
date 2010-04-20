@@ -43,7 +43,7 @@ AC_CONFIG_FILES([Makefile
 		 po/Makefile.in
 		 po/Makefile])
 
-hildon_dependencies="gtk+-2.0 >= 2.4.0 libgnomecanvas-2.0 >= 2.4.0 poppler-glib hildon-1 hildon-fm-2 libosso dbus-1 libmodest-dbus-client-1.0 >= 1.0"
+hildon_dependencies="gtk+-2.0 >= 2.4.0 libgnomecanvas-2.0 >= 2.4.0 poppler-glib hildon-1 hildon-fm-2 libosso dbus-1 libmodest-dbus-client-1.0 >= 1.0 sharingdialog"
 
 PKG_CHECK_MODULES(PACKAGE, [$hildon_dependencies], USE_HILDON=yes, USE_HILDON=no)
 AC_SUBST(PACKAGE_CFLAGS)

@@ -4765,7 +4765,7 @@ fi
 ac_config_files="$ac_config_files Makefile src/Makefile src/ttsubset/Makefile data/Makefile po/Makefile.in po/Makefile"
 
 
-hildon_dependencies="gtk+-2.0 >= 2.4.0 libgnomecanvas-2.0 >= 2.4.0 poppler-glib hildon-1 hildon-fm-2 libosso dbus-1 libmodest-dbus-client-1.0 >= 1.0"
+hildon_dependencies="gtk+-2.0 >= 2.4.0 libgnomecanvas-2.0 >= 2.4.0 poppler-glib hildon-1 hildon-fm-2 libosso dbus-1 libmodest-dbus-client-1.0 >= 1.0 sharingdialog"
 
 
 

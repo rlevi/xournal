@@ -1,8 +1,8 @@
-ceeb87e177f608d53fb607bb87d9cf77  opt/maemo/usr/share/doc/xournal/TODO.gz
+940fed10770c8c7d0de2bdebe1bcb474  opt/maemo/usr/share/doc/xournal/TODO.gz
 22538b547e107e84e7abecbfef53e911  opt/maemo/usr/share/doc/xournal/README
 ec3d6e9b2b7e6183a133a24f4aec38fd  opt/maemo/usr/share/doc/xournal/changelog.gz
 3b48150f335e5ba0c957d577f74295de  opt/maemo/usr/share/doc/xournal/copyright
-f063b33ee19493a95c35ea49eb923b66  opt/maemo/usr/share/doc/xournal/changelog.Debian.gz
+bd1771d0cc195bef915e6e147b9887d2  opt/maemo/usr/share/doc/xournal/changelog.Debian.gz
 c50a16f00da43dd604caeed2c9aa7250  opt/maemo/usr/share/locale/it_IT/LC_MESSAGES/xournal.mo
 18e7b8f7a27e51814d6503594f85e3a1  opt/maemo/usr/share/xournal/config
 b464bdf7e10b52d3ecd2c769278970cd  opt/maemo/usr/share/xournal/NEWS
@@ -54,7 +54,7 @@ c19cc66f7291568da4575922933a2e03  opt/maemo/usr/share/icons/hicolor/scalable/hil
 a9aa453fa659746c0fe7f6758cf24ce8  opt/maemo/usr/share/osso-help/ru_RU/xournal.xml
 170d7d761ed2e78844bcf05f63ffa01f  opt/maemo/usr/share/osso-help/en_US/xournal.xml
 170d7d761ed2e78844bcf05f63ffa01f  opt/maemo/usr/share/osso-help/en_GB/xournal.xml
-0e85fef9a6493decada279dfe4ac723f  opt/maemo/usr/bin/xournal
+64d286510b2244ad033d24fe2d2e5306  opt/maemo/usr/bin/xournal
 d84beb18dea57185e49329bfc35cf336  usr/share/locale/en_GB/LC_MESSAGES/xournal.mo
 abb143500c3ac746e1983bc107b58223  usr/share/applications/hildon/xournal.desktop
 c79abc0a7b9f9183fb9860355fd21af1  usr/share/mime/packages/xournal.xml

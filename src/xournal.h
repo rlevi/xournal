@@ -164,7 +164,7 @@ typedef struct Item {
   struct Brush brush; // the brush to use, if ITEM_STROKE
   // 'brush" also contains color info for text items
   GnomeCanvasPoints *path;
-  gdouble *widths;
+  double *widths;
   GnomeCanvasItem *canvas_item; // the corresponding canvas item, or NULL
   struct BBox bbox;
   struct UndoErasureData *erasure; // for temporary use during erasures
@@ -274,6 +274,7 @@ typedef struct UIData {
   gboolean hand_scrollto_pending;
   char *filename;
 #ifdef USE_HILDON
+  GSList *png_files_list;
   char *filename_pdf;
 #endif
   gchar *default_path; // default path for new notes

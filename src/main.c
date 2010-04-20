@@ -63,6 +63,10 @@ void init_stuff (int argc, char *argv[])
   struct Brush *b;
   gboolean can_xinput, success;
   gchar *tmppath, *tmpfn;
+#ifdef USE_HILDON
+  gzFile f;
+  gchar *autosave_filename;
+#endif
 
 #ifndef USE_HILDON
   // create some data structures needed to populate the preferences
@@ -329,34 +333,32 @@ void init_stuff (int argc, char *argv[])
   init_mru();
   
 #ifdef USE_HILDON
-  // check if there's an auto-saved file and ask to load it
-  {
-    gzFile f;
-    gchar *filename = g_build_filename (HILDON_AUTOSAVE_DIR, HILDON_AUTOSAVE_FILENAME, NULL);
-
-    f = gzopen (filename, "r");
-    if (f!=NULL) {
-      // there's an auto-saved file
-      hildon_gtk_window_set_progress_indicator (GTK_WINDOW(winMain), 1);
-      success = open_journal (filename);
-      hildon_gtk_window_set_progress_indicator (GTK_WINDOW(winMain), 0);
-      if (!success) {
-	      /*
-    	    w = hildon_note_new_information (GTK_WINDOW (winMain), _("error_opening_autosave"));
-    	    gtk_dialog_run(GTK_DIALOG(w));
-   	    gtk_widget_destroy(w);
-	    */
-
-	    return ;
-      }
-
-      ui.filename = NULL;
-      ui.saved = FALSE;
-      set_cursor_busy(FALSE);
-    }
-  }
-
   ui.filename_pdf = NULL;
+  ui.png_files_list = NULL;
+
+  // check if there's an auto-saved file and ask to load it
+  autosave_filename = g_build_filename (HILDON_AUTOSAVE_DIR, HILDON_AUTOSAVE_FILENAME, NULL);
+
+  f = gzopen (autosave_filename, "r");
+  if (f!=NULL) {
+    gchar *old_default_path = ui.default_path;
+
+    g_print ("Opening autosaved file... old_default_path %s\n", old_default_path);
+
+    // there's an auto-saved file
+    hildon_gtk_window_set_progress_indicator (GTK_WINDOW(winMain), 1);
+    open_journal (autosave_filename);
+    hildon_gtk_window_set_progress_indicator (GTK_WINDOW(winMain), 0);
+
+    g_print ("ui.default_path = %s\n", ui.default_path);
+    // open_journal would have set this to HILDON_AUTOSAVE_DIR.
+    // Nope, that's not what I want
+    ui.default_path = old_default_path;
+    g_print ("ui.default_path = %s\n", ui.default_path);
+    ui.filename = NULL;
+    ui.saved = FALSE;
+    set_cursor_busy(FALSE);
+  }
 #endif
 
   // and finally, open a file specified on the command line

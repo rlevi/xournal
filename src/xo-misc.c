@@ -439,14 +439,19 @@ void fix_xinput_coords(GdkEvent *event)
 // Reading pressure on the Nokia Internet Tablets
 double get_pressure_multiplier(GdkEvent *event)
 {
-  gdouble rawpressure=0.00;
+  double rawpressure=0.00;
 
   if (!gdk_event_get_axis (event, GDK_AXIS_PRESSURE, &rawpressure)) {
       rawpressure = (((GdkEventMotion *)event)->state & GDK_BUTTON1_MASK) ? 1:0;
   }
 
-  rawpressure = 1-10*rawpressure;
+  g_print ("rawpressure: %f\n", rawpressure);
 
+  rawpressure = 1.00-10*rawpressure;
+
+  g_print ("rawpressure: %g\n", rawpressure);
+
+  g_print ("returning rawpressure: %.2f\n", ((1-rawpressure)*ui.width_minimum_multiplier + rawpressure*ui.width_maximum_multiplier));
   return ((1-rawpressure)*ui.width_minimum_multiplier + rawpressure*ui.width_maximum_multiplier);
 }
 #else

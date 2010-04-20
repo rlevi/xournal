@@ -66,6 +66,8 @@ gboolean pdf_parse_info(GString *pdfbuf, struct PdfInfo *pdfinfo, struct XrefTab
 // main printing functions
 
 gboolean print_to_pdf(char *filename);
+gboolean print_to_pngs (Journal *ptrjournal, PangoLayout *layout, gchar *filenameprefix, GSList **files_list);
+void print_to_cairo_surface (Page *pg, PangoLayout *layout, cairo_t *cr);
 
 #ifndef USE_HILDON
 #if GTK_CHECK_VERSION(2, 10, 0)

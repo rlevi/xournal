@@ -444,7 +444,7 @@ create_winMain (void)
   gtk_container_add (GTK_CONTAINER (menuFile_menu), fileSaveAs);
 
 #ifdef USE_HILDON
-  filePrintPDF = gtk_menu_item_new_with_mnemonic (_("_Export to PDF"));
+  filePrintPDF = gtk_menu_item_new_with_mnemonic (_("_Export to..."));
   gtk_widget_show (filePrintPDF);
   gtk_container_add (GTK_CONTAINER (menuFile_menu), filePrintPDF);
   gtk_widget_add_accelerator (filePrintPDF, "activate", accel_group,
