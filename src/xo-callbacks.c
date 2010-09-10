@@ -47,6 +47,7 @@
 #ifdef USE_HILDON
 #include "xo-hildon_ui.h"
 #include "hildon-extras/he-about-dialog.h"
+#include "hildon-extras/he-color-size-dialog.h"
 
 extern GtkWidget *tools_view, *settings_view, *journal_view;
 
@@ -100,34 +101,13 @@ void
 on_colorButton_activate (GtkWidget *widget, gpointer data)
 {
   GdkColor color = {0, 0, 0, 0};
-  GtkWidget *selector;
-  gint result;
 
-  //selector = HILDON_COLOR_CHOOSER_DIALOG (widget);
-/*  g_object_get (widget, "color", &color, NULL);*/
- /*
-  selector = hildon_color_chooser_dialog_new();
-  hildon_color_chooser_dialog_set_color(
-		  HILDON_COLOR_CHOOSER_DIALOG(selector),
-		  &color);
-  g_print ("Running gtk_dialog_run\n");
-  result = gtk_dialog_run(GTK_DIALOG(selector));
-  switch (result) {
-	  case GTK_RESPONSE_OK:
-*/
-  		  g_print ("Getting color\n");
-		  hildon_color_button_get_color
-			  (HILDON_COLOR_BUTTON(buttonColor), &color);
+//  hildon_color_button_get_color
+//	(HILDON_COLOR_BUTTON(buttonColor), &color);
+
+  he_color_button_get_color (buttonColor, &color);
 		  
-  		  g_print ("activating\n");
-		  hildon_process_color_activate (widget, &color);
-
-/*
-		  break;
-  }
-*/
-  
-  gtk_widget_destroy(selector);
+  hildon_process_color_activate (&color);
 }
 
 void osso_mime_callback (gpointer data, int argc, gchar **argv)
@@ -179,11 +159,13 @@ hildon_handle_saveunsaved (gpointer data)
 		NULL, _("Autosaving document..."));
   */
 
-  tmp_filename = ui.filename;
+  tmp_filename = g_strdup (ui.filename);
+  g_free (ui.filename);
   tmp_uisaved = ui.saved;
   ui.saved = FALSE;
   ui.filename = g_build_filename(HILDON_AUTOSAVE_DIR, HILDON_AUTOSAVE_FILENAME, NULL);
   on_fileSave_activate (NULL, NULL);
+  g_free (ui.filename);
   ui.filename = tmp_filename;
   ui.saved = tmp_uisaved;
 }
@@ -2195,9 +2177,7 @@ on_toolsHighlighter_activate           (GtkMenuItem     *menuitem,
   reset_selection();
   ui.toolno[ui.cur_mapping] = TOOL_HIGHLIGHTER;
   ui.cur_brush = &(ui.brushes[ui.cur_mapping][TOOL_HIGHLIGHTER]);
-//#ifndef USE_HILDON
   ui.cur_brush->ruler = ui.default_brushes[TOOL_HIGHLIGHTER].ruler;
-//#endif
   ui.cur_brush->recognizer = ui.default_brushes[TOOL_HIGHLIGHTER].recognizer;
   update_mapping_linkings(TOOL_HIGHLIGHTER);
   update_tool_buttons();
@@ -3431,7 +3411,6 @@ on_comboLayer_changed                  (GtkComboBox     *combobox,
 #ifdef USE_HILDON
   val = hildon_touch_selector_get_active (HILDON_TOUCH_SELECTOR(combobox), 0);
   if (val <= -1) return;
-  g_print ("raw val %d\n", val);
 
   if (val == (ui.layerbox_length-1)) {
     gchar info_str [512];
@@ -3439,7 +3418,6 @@ on_comboLayer_changed                  (GtkComboBox     *combobox,
 
     on_journalNewLayer_activate (NULL,NULL);
 
-    sprintf (info_str, _("Switched to newly added layer..."));
     banner = hildon_banner_show_information (GTK_WIDGET(winMain), NULL, info_str);
     hildon_banner_set_timeout (HILDON_BANNER(banner), 1000);
 
@@ -3456,7 +3434,6 @@ on_comboLayer_changed                  (GtkComboBox     *combobox,
   val = gtk_combo_box_get_active(combobox);
   if (val <= -1) return;
 #endif
-  g_print ("val = %d\nui.layerno = %d\nui.cur_page->nlayers %d\n", val, ui.layerno, ui.cur_page->nlayers);
 
   if (val == ui.layerno) return;
 
@@ -4487,6 +4464,16 @@ hildon_share_via_bt (GtkWidget *item, gpointer user_data)
 	ui.filename_pdf = NULL;
 
 	gtk_widget_destroy (GTK_WIDGET(user_data));
+}
+
+void
+hildon_test_tool (GtkMenuItem *menuitem, gpointer user_data)
+{
+	HeColorSizeDialog *selector;
+	
+	selector = he_color_size_dialog_new ();
+
+	gtk_widget_show_all (GTK_WIDGET (selector));
 }
 
 void

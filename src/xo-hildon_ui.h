@@ -9,6 +9,7 @@
 
 #include <libosso.h>
 
+#include "hildon-extras/he-color-button.h"
 #include "xo-callbacks.h"
 
 #define HILDON_NUM_TOOLBARS		6
@@ -22,11 +23,15 @@
 
 extern osso_context_t *ctx;
 
+GtkWidget *hildon_undo[HILDON_NUM_TOOLBARS];
+GtkWidget *hildon_redo[HILDON_NUM_TOOLBARS];
+
 GtkWidget *hildon_toolbars[HILDON_NUM_TOOLBARS];
 GtkWidget *hildon_cur_toolbar_portrait;
 GtkWidget *hildon_cur_toolbar_landscape;
 
-HildonColorButton *buttonColor;
+//HildonColorButton *buttonColor;
+HeColorButton *buttonColor;
 GtkWidget *pickerButton;
 
 GtkWidget* create_winMain (osso_context_t *);
@@ -87,8 +92,8 @@ static GtkActionEntry hildon_menu_entries[] = {
   { "Save", GTK_STOCK_SAVE, N_("_Save"), "<control>S", NULL, G_CALLBACK(on_fileSave_activate) },
   { "SaveAs", GTK_STOCK_SAVE, N_("Save _as"), NULL, NULL, G_CALLBACK(on_fileSaveAs_activate) },
   { "ExportPDF", GTK_STOCK_SAVE, N_("_Export to PDF"), NULL, NULL, G_CALLBACK(on_filePrintPDF_activate) },
-  { "Undo", GTK_STOCK_UNDO, N_("_Undo"), "<control>Z", NULL, G_CALLBACK(on_editUndo_activate) },
-  { "Redo", GTK_STOCK_REDO, N_("_Redo"), "<control>Y", NULL, G_CALLBACK(on_editRedo_activate) },
+  { "Undo", "general_undo", N_("_Undo"), "<control>Z", NULL, G_CALLBACK(on_editUndo_activate) },
+  { "Redo", "general_redo", N_("_Redo"), "<control>Y", NULL, G_CALLBACK(on_editRedo_activate) },
   { "Cut", GTK_STOCK_CUT, N_("_Cu_t"), "<control>X", NULL, G_CALLBACK(on_editCut_activate) },
   { "Copy", GTK_STOCK_COPY, N_("_Copy"), "<control>C", NULL, G_CALLBACK(on_editCopy_activate) },
   { "Paste", GTK_STOCK_PASTE, N_("_Paste"), "<control>V", NULL, G_CALLBACK(on_editPaste_activate) },
@@ -224,15 +229,17 @@ static XournalHildonMenu fremantle_menu_filters[] = {
 static XournalHildonMenu fremantle_menu_file_entries[] = {
 	{ "New", G_CALLBACK(on_fileNew_activate), 1, NULL },
 	{ "Open", G_CALLBACK(on_fileOpen_activate), 1, NULL },
+	{ "Open background", G_CALLBACK(on_journalLoadBackground_activate), 1, NULL },
 	{ "Save", G_CALLBACK(on_fileSave_activate), 1, NULL },
 	{ "Save As", G_CALLBACK(on_fileSaveAs_activate), 1, NULL },
 	{ "Export", G_CALLBACK(on_filePrintPDF_activate), 1, NULL },
-	{ "Share", G_CALLBACK(hildon_share_tool), 1, NULL },
+//	{ "Share", G_CALLBACK(hildon_share_tool), 1, NULL },
+	{ "Test", G_CALLBACK(hildon_test_tool), 1, NULL },
 	{ "Show layer", G_CALLBACK(on_comboLayer_changed), 1, NULL },
 	{ "Delete layer", G_CALLBACK(on_journalDeleteLayer_activate), 1, NULL },
 	{ "About", G_CALLBACK(hildon_about), 1, NULL }
 };
-#define HILDON_SHOW_LAYER_POS 6 // update this if you change position above
+#define HILDON_SHOW_LAYER_POS 7 // update this if you change position above
 
 static XournalHildonMenu fremantle_menu_tools_entries[] = {
 	{ "Pen...", G_CALLBACK(hildon_pen_activate), 0, NULL },

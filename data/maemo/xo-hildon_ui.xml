@@ -122,6 +122,7 @@
 		<toolitem action='Undo'/>
 		<toolitem action='Redo'/>
 		<separator expand='true' draw='false'/>
+		<toolitem action='Share'/>
 		<toolitem action='Fullscreen'/>
 	</toolbar>
 	<toolbar show-arrow='false' action='HildonToolBarNotePortrait'>
@@ -142,6 +143,7 @@
 		<toolitem action='Undo'/>
 		<toolitem action='Redo'/>
 		<separator expand='true' draw='false'/>
+		<toolitem action='Share'/>
 		<toolitem action='Fullscreen'/>
 	</toolbar>
 	<toolbar show-arrow='false' action='HildonToolBarPdfPortrait'>
@@ -162,6 +164,7 @@
 		<toolitem action='Undo'/>
 		<toolitem action='Redo'/>
 		<separator expand='true' draw='false'/>
+		<toolitem action='Share'/>
 		<toolitem action='Fullscreen'/>
 	</toolbar>
 	<toolbar show-arrow='false' action='HildonToolBarDrawPortrait'>

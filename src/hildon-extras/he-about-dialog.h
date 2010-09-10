@@ -34,21 +34,21 @@ typedef enum {
 G_BEGIN_DECLS
   #define                                         HE_TYPE_ABOUT_DIALOG \
                                                   (he_about_dialog_get_type ())
-
+  
   #define                                         HE_ABOUT_DIALOG(obj) \
                                                   (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
                                                   HE_TYPE_ABOUT_DIALOG, HeAboutDialog))
-
+  
   #define                                         HE_ABOUT_DIALOG_CLASS(vtable) \
                                                   (G_TYPE_CHECK_CLASS_CAST ((vtable), \
                                                   HE_TYPE_ABOUT_DIALOG, HeAboutDialogClass))
-
+  
   #define                                         HE_IS_ABOUT_DIALOG(obj) \
                                                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), HE_TYPE_ABOUT_DIALOG))
-
+  
   #define                                         HE_IS_ABOUT_DIALOG_CLASS(vtable) \
                                                   (G_TYPE_CHECK_CLASS_TYPE ((vtable), HE_TYPE_ABOUT_DIALOG))
-
+  
   #define                                         HE_ABOUT_DIALOG_GET_CLASS(inst) \
                                                   (G_TYPE_INSTANCE_GET_CLASS ((inst), \
                                                   HE_TYPE_ABOUT_DIALOG, HeAboutDialogClass))
@@ -63,7 +63,7 @@ struct					_HeAboutDialog
 {
 	GtkDialog parent;
 	/*< private > */
-	HeAboutDialogPrivate *priv;
+        HeAboutDialogPrivate *priv;
 };
 
 struct					_HeAboutDialogClass

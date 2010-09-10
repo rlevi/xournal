@@ -172,7 +172,6 @@ he_about_dialog_response (GtkDialog *dialog, gint response_id, HeAboutDialog* ad
     HeAboutDialogPrivate *priv = HE_ABOUT_DIALOG_GET_PRIVATE (ad);
 
     switch (response_id) {
-
         case HE_ABOUT_RESPONSE_WEBSITE:
             open_webbrowser(priv->website_url);
             break;

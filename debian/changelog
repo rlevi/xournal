@@ -1,14 +1,18 @@
-xournal (0.4.5-1fremantle7) unstable; urgency=low
-  * 
-  * 
+xournal (0.4.5-1fremantle8) unstable; urgency=low
+  * Fixed menu
 
- -- Aniello Del Sorbo <anidel@gmail.com>  Sat,  17 Apr 2010 23:10:00 -0800
+ -- Aniello Del Sorbo <anidel@gmail.com>  Sat,  23 Apr 2010 22:15:00 -0800
+
+xournal (0.4.5-1fremantle7) unstable; urgency=low
+  * Fixed color chooser
+  * Better Undo/Redo handling of button
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Sat,  23 Apr 2010 21:57:00 -0800
 
 xournal (0.4.5-1fremantle6) unstable; urgency=low
   * Fixed PNG export file naming
-  * Added support for PNG export
 
- -- Aniello Del Sorbo <anidel@gmail.com>  Sat,  17 Apr 2010 23:10:00 -0800
+ -- Aniello Del Sorbo <anidel@gmail.com>  Sun,  18 Apr 2010 21:10:00 -0800
 
 xournal (0.4.5-1fremantle5) unstable; urgency=low
   * Added support for PNG export

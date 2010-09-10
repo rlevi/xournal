@@ -341,20 +341,16 @@ void init_stuff (int argc, char *argv[])
 
   f = gzopen (autosave_filename, "r");
   if (f!=NULL) {
-    gchar *old_default_path = ui.default_path;
-
-    g_print ("Opening autosaved file... old_default_path %s\n", old_default_path);
+    gchar *old_default_path = g_strdup (ui.default_path);
 
     // there's an auto-saved file
     hildon_gtk_window_set_progress_indicator (GTK_WINDOW(winMain), 1);
     open_journal (autosave_filename);
     hildon_gtk_window_set_progress_indicator (GTK_WINDOW(winMain), 0);
 
-    g_print ("ui.default_path = %s\n", ui.default_path);
-    // open_journal would have set this to HILDON_AUTOSAVE_DIR.
-    // Nope, that's not what I want
+    g_free (ui.default_path);
     ui.default_path = old_default_path;
-    g_print ("ui.default_path = %s\n", ui.default_path);
+
     ui.filename = NULL;
     ui.saved = FALSE;
     set_cursor_busy(FALSE);
@@ -524,12 +520,8 @@ main (int argc, char *argv[])
 		dbus_error_free(&error);
 	}
 
-	if (!dbus_connection_add_filter (sys_conn,
-		  (DBusHandleMessageFunction) mce_filter_func, NULL, NULL)) {
-		printf("Error dbus_connection_add_filter failed\n");
-	} else {
-		printf ("DBUS filter added\n");
-	}
+	dbus_connection_add_filter (sys_conn,
+		  (DBusHandleMessageFunction) mce_filter_func, NULL, NULL);
   }
 
   winMain = create_winMain (ctx);

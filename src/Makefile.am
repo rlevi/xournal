@@ -23,6 +23,11 @@ xournal_SOURCES = \
 	xo-shapes.c xo-shapes.h \
 	hildon-extras/he-about-dialog.c hildon-extras/he-about-dialog.h \
 	hildon-extras/he-fullscreen-button.c hildon-extras/he-fullscreen-button.h \
-	hildon-extras/he-simple-color-dialog.c hildon-extras/he-simple-color-dialog.h
+	hildon-extras/he-color-selector.c hildon-extras/he-color-selector.h \
+	hildon-extras/he-color-dialog.c hildon-extras/he-color-dialog.h \
+	hildon-extras/he-simple-color-dialog.c hildon-extras/he-simple-color-dialog.h \
+	hildon-extras/he-color-button.c hildon-extras/he-color-button.h \
+	hildon-extras/he-color-size-selector.c hildon-extras/he-color-size-selector.h \
+	hildon-extras/he-color-size-dialog.c hildon-extras/he-color-size-dialog.h
 
 xournal_LDADD = ttsubset/libttsubset.a @PACKAGE_LIBS@ $(INTLLIBS)

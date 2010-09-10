@@ -10,6 +10,9 @@ hildon_about                            (GtkAction *action,
 					gpointer user_data);
 
 void
+hildon_test_tool (GtkMenuItem *menuitem, gpointer user_data);
+
+void
 hildon_share_tool			(GtkMenuItem  *menuitem,
                                          gpointer      user_data);
 

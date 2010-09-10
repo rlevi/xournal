@@ -63,7 +63,7 @@ void update_mapping_linkings(int toolno);
 void do_switch_page(int pg, gboolean rescroll, gboolean refresh_all);
 #ifdef USE_HILDON
 void hildon_set_cur_color(GdkColor *color);
-void hildon_process_color_activate(GtkWidget *menuitem, GdkColor * color);
+void hildon_process_color_activate(GdkColor * color);
 guint gdk_color_to_rgba (GdkColor *color, guint alpha_mask);
 guint gdk_color_to_rgb (GdkColor *color);
 /*

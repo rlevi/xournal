@@ -15,7 +15,11 @@
 #include <hildon/hildon-color-button.h>
 #include <hildon/hildon-note.h>
 #include <hildon/hildon-banner.h>
+
+#include "xo-hildon_ui.h"
+
 extern GtkWidget *pickerButton;
+extern GtkWidget *hildon_undo[], *hildon_redo[];
 #endif
 
 #include "xournal.h"
@@ -445,13 +449,8 @@ double get_pressure_multiplier(GdkEvent *event)
       rawpressure = (((GdkEventMotion *)event)->state & GDK_BUTTON1_MASK) ? 1:0;
   }
 
-  g_print ("rawpressure: %f\n", rawpressure);
-
   rawpressure = 1.00-10*rawpressure;
 
-  g_print ("rawpressure: %g\n", rawpressure);
-
-  g_print ("returning rawpressure: %.2f\n", ((1-rawpressure)*ui.width_minimum_multiplier + rawpressure*ui.width_maximum_multiplier));
   return ((1-rawpressure)*ui.width_minimum_multiplier + rawpressure*ui.width_maximum_multiplier);
 }
 #else
@@ -1589,8 +1588,15 @@ void update_file_name(char *filename)
 void update_undo_redo_enabled(void)
 {
 #ifdef USE_HILDON
-  gtk_widget_set_sensitive(GET_COMPONENT("Undo"), undo!=NULL);
-  gtk_widget_set_sensitive(GET_COMPONENT("Redo"), redo!=NULL);
+//  gtk_widget_set_sensitive(GET_COMPONENT("Undo"), undo!=NULL);
+//  gtk_widget_set_sensitive(GET_COMPONENT("Redo"), redo!=NULL);
+  gtk_widget_set_sensitive(GTK_WIDGET(hildon_undo[HILDON_TOOLBAR_NOTE_LANDSCAPE]), undo!=NULL);
+  gtk_widget_set_sensitive(GTK_WIDGET(hildon_undo[HILDON_TOOLBAR_PDF_LANDSCAPE]), undo!=NULL);
+  gtk_widget_set_sensitive(GTK_WIDGET(hildon_undo[HILDON_TOOLBAR_DRAW_LANDSCAPE]), undo!=NULL);
+
+  gtk_widget_set_sensitive(GTK_WIDGET(hildon_redo[HILDON_TOOLBAR_NOTE_LANDSCAPE]), redo!=NULL);
+  gtk_widget_set_sensitive(GTK_WIDGET(hildon_redo[HILDON_TOOLBAR_PDF_LANDSCAPE]), redo!=NULL);
+  gtk_widget_set_sensitive(GTK_WIDGET(hildon_redo[HILDON_TOOLBAR_DRAW_LANDSCAPE]), redo!=NULL);
 #else
   gtk_widget_set_sensitive(GET_COMPONENT("editUndo"), undo!=NULL);
   gtk_widget_set_sensitive(GET_COMPONENT("editRedo"), redo!=NULL);
@@ -1647,25 +1653,8 @@ void hildon_set_cur_color (GdkColor *color)
   update_mapping_linkings(ui.toolno[0]);
 }
 
-void hildon_process_color_activate(GtkWidget *menuitem, GdkColor *color)
+void hildon_process_color_activate(GdkColor *color)
 {
-  if (GTK_OBJECT_TYPE (menuitem) == GTK_TYPE_RADIO_MENU_ITEM) {
-    if (!gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM (menuitem))) {
-      return;
-    }
-  }
-
-  if (GTK_OBJECT_TYPE (menuitem) == HILDON_TYPE_COLOR_CHOOSER) {
-    printf ("menuitem == hildon_type_color_chooser\n");
-    return;
-  } 
-
-  if (GTK_OBJECT_TYPE (menuitem) == GTK_TYPE_TOGGLE_BUTTON) {
-    if (!gtk_toggle_tool_button_get_active(GTK_TOGGLE_TOOL_BUTTON (menuitem))) {
-      return;
-    }
-  }
-
   if (ui.cur_mapping != 0) return; // not user-generated
   reset_focus();
 

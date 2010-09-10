@@ -104,7 +104,7 @@ highlighter_color=yellow
 # default highlighter thickness (fine = 1, medium = 2, thick = 3)
 highlighter_thickness=2
 # default highlighter is in ruler mode (true/false)
-highlighter_ruler=false
+highlighter_ruler=true
 # default highlighter is in shape recognizer mode (true/false)
 highlighter_recognizer=false
 # button 2 tool (pen, eraser, highlighter, text, selectrect, vertspace, hand)

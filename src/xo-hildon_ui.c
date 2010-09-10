@@ -36,6 +36,8 @@ extern char *theme_name;
 extern GtkUIManager *ui_manager;
 extern GtkWidget *winMain, *hildon_cur_toolbar_landscape, *hildon_cur_toolbar_portrait;
 extern GtkWidget *hildon_toolbars[HILDON_NUM_TOOLBARS];
+extern GtkWidget *hildon_undo[HILDON_NUM_TOOLBARS];
+extern GtkWidget *hildon_redo[HILDON_NUM_TOOLBARS];
 
 GtkWidget *tools_view, *settings_view, *journal_view;
 
@@ -399,7 +401,18 @@ create_winMain (osso_context_t *ctx)
   hildon_window_add_toolbar (hildon_window, GTK_TOOLBAR (hildon_toolbars[HILDON_TOOLBAR_DRAW_LANDSCAPE]));
 //  gtk_widget_hide_all (GTK_WIDGET(hildon_toolbars[HILDON_TOOLBAR_NOTE_PORTRAIT]));
 
-  buttonColor = HILDON_COLOR_BUTTON (hildon_color_button_new());
+  // Undo / Redo buttons
+  hildon_undo[HILDON_TOOLBAR_NOTE_LANDSCAPE] = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarNoteLandscape/Undo");
+  hildon_redo[HILDON_TOOLBAR_NOTE_LANDSCAPE] = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarNoteLandscape/Redo");
+
+  hildon_undo[HILDON_TOOLBAR_PDF_LANDSCAPE] = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarPdfLandscape/Undo");
+  hildon_redo[HILDON_TOOLBAR_PDF_LANDSCAPE] = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarPdfLandscape/Redo");
+
+  hildon_undo[HILDON_TOOLBAR_DRAW_LANDSCAPE] = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarDrawLandscape/Undo");
+  hildon_redo[HILDON_TOOLBAR_DRAW_LANDSCAPE] = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarDrawLandscape/Redo");
+
+//  buttonColor = HILDON_COLOR_BUTTON (hildon_color_button_new());
+  buttonColor = he_color_button_new ();
   pickerButton = hildon_picker_button_new (HILDON_SIZE_AUTO,
 		  HILDON_BUTTON_ARRANGEMENT_VERTICAL);
   hildonSelector = hildon_touch_selector_new_text ();
@@ -432,7 +445,6 @@ create_winMain (osso_context_t *ctx)
 
   /* Hide all */
   for (i=0;i<HILDON_NUM_TOOLBARS;i++) {
-	printf ("%d - %p\n", i, hildon_toolbars[i]);
 	gtk_widget_hide_all (GTK_WIDGET (hildon_toolbars[i]));
   }
 
@@ -614,7 +626,7 @@ create_aboutDialog (void)
   gtk_box_pack_start (GTK_BOX (dialog_vbox2), labelTitle, FALSE, FALSE, 3);
   gtk_label_set_justify (GTK_LABEL (labelTitle), GTK_JUSTIFY_CENTER);
 
-  labelInfo = gtk_label_new (_("Written by Denis Auroux\nPorted to Maemo by Aniello Del Sorbo\n       http://xournal.sourceforge.net/       "));
+  labelInfo = gtk_label_new (_("Written by Denis Auroux       http://xournal.sourceforge.net/       "));
   gtk_widget_show (labelInfo);
   gtk_box_pack_start (GTK_BOX (dialog_vbox2), labelInfo, FALSE, FALSE, 0);
   gtk_label_set_justify (GTK_LABEL (labelInfo), GTK_JUSTIFY_CENTER);

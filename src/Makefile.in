@@ -55,7 +55,10 @@ am_xournal_OBJECTS = main.$(OBJEXT) xo-misc.$(OBJEXT) \
 	xo-support.$(OBJEXT) xo-hildon_ui.$(OBJEXT) \
 	xo-callbacks.$(OBJEXT) xo-shapes.$(OBJEXT) \
 	he-about-dialog.$(OBJEXT) he-fullscreen-button.$(OBJEXT) \
-	he-simple-color-dialog.$(OBJEXT)
+	he-color-selector.$(OBJEXT) he-color-dialog.$(OBJEXT) \
+	he-simple-color-dialog.$(OBJEXT) he-color-button.$(OBJEXT) \
+	he-color-size-selector.$(OBJEXT) \
+	he-color-size-dialog.$(OBJEXT)
 xournal_OBJECTS = $(am_xournal_OBJECTS)
 am__DEPENDENCIES_1 =
 xournal_DEPENDENCIES = ttsubset/libttsubset.a $(am__DEPENDENCIES_1)
@@ -63,6 +66,11 @@ DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/he-about-dialog.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/he-color-button.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/he-color-dialog.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/he-color-selector.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/he-color-size-dialog.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/he-color-size-selector.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/he-fullscreen-button.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/he-simple-color-dialog.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/main.Po ./$(DEPDIR)/xo-callbacks.Po \
@@ -267,7 +275,12 @@ xournal_SOURCES = \
 	xo-shapes.c xo-shapes.h \
 	hildon-extras/he-about-dialog.c hildon-extras/he-about-dialog.h \
 	hildon-extras/he-fullscreen-button.c hildon-extras/he-fullscreen-button.h \
-	hildon-extras/he-simple-color-dialog.c hildon-extras/he-simple-color-dialog.h
+	hildon-extras/he-color-selector.c hildon-extras/he-color-selector.h \
+	hildon-extras/he-color-dialog.c hildon-extras/he-color-dialog.h \
+	hildon-extras/he-simple-color-dialog.c hildon-extras/he-simple-color-dialog.h \
+	hildon-extras/he-color-button.c hildon-extras/he-color-button.h \
+	hildon-extras/he-color-size-selector.c hildon-extras/he-color-size-selector.h \
+	hildon-extras/he-color-size-dialog.c hildon-extras/he-color-size-dialog.h
 
 xournal_LDADD = ttsubset/libttsubset.a @PACKAGE_LIBS@ $(INTLLIBS)
 all: all-recursive
@@ -337,6 +350,11 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/he-about-dialog.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/he-color-button.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/he-color-dialog.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/he-color-selector.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/he-color-size-dialog.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/he-color-size-selector.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/he-fullscreen-button.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/he-simple-color-dialog.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
@@ -397,6 +415,38 @@ he-fullscreen-button.obj: hildon-extras/he-fullscreen-button.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o he-fullscreen-button.obj `if test -f 'hildon-extras/he-fullscreen-button.c'; then $(CYGPATH_W) 'hildon-extras/he-fullscreen-button.c'; else $(CYGPATH_W) '$(srcdir)/hildon-extras/he-fullscreen-button.c'; fi`
 
+he-color-selector.o: hildon-extras/he-color-selector.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT he-color-selector.o -MD -MP -MF "$(DEPDIR)/he-color-selector.Tpo" -c -o he-color-selector.o `test -f 'hildon-extras/he-color-selector.c' || echo '$(srcdir)/'`hildon-extras/he-color-selector.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/he-color-selector.Tpo" "$(DEPDIR)/he-color-selector.Po"; else rm -f "$(DEPDIR)/he-color-selector.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='hildon-extras/he-color-selector.c' object='he-color-selector.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/he-color-selector.Po' tmpdepfile='$(DEPDIR)/he-color-selector.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o he-color-selector.o `test -f 'hildon-extras/he-color-selector.c' || echo '$(srcdir)/'`hildon-extras/he-color-selector.c
+
+he-color-selector.obj: hildon-extras/he-color-selector.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT he-color-selector.obj -MD -MP -MF "$(DEPDIR)/he-color-selector.Tpo" -c -o he-color-selector.obj `if test -f 'hildon-extras/he-color-selector.c'; then $(CYGPATH_W) 'hildon-extras/he-color-selector.c'; else $(CYGPATH_W) '$(srcdir)/hildon-extras/he-color-selector.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/he-color-selector.Tpo" "$(DEPDIR)/he-color-selector.Po"; else rm -f "$(DEPDIR)/he-color-selector.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='hildon-extras/he-color-selector.c' object='he-color-selector.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/he-color-selector.Po' tmpdepfile='$(DEPDIR)/he-color-selector.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o he-color-selector.obj `if test -f 'hildon-extras/he-color-selector.c'; then $(CYGPATH_W) 'hildon-extras/he-color-selector.c'; else $(CYGPATH_W) '$(srcdir)/hildon-extras/he-color-selector.c'; fi`
+
+he-color-dialog.o: hildon-extras/he-color-dialog.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT he-color-dialog.o -MD -MP -MF "$(DEPDIR)/he-color-dialog.Tpo" -c -o he-color-dialog.o `test -f 'hildon-extras/he-color-dialog.c' || echo '$(srcdir)/'`hildon-extras/he-color-dialog.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/he-color-dialog.Tpo" "$(DEPDIR)/he-color-dialog.Po"; else rm -f "$(DEPDIR)/he-color-dialog.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='hildon-extras/he-color-dialog.c' object='he-color-dialog.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/he-color-dialog.Po' tmpdepfile='$(DEPDIR)/he-color-dialog.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o he-color-dialog.o `test -f 'hildon-extras/he-color-dialog.c' || echo '$(srcdir)/'`hildon-extras/he-color-dialog.c
+
+he-color-dialog.obj: hildon-extras/he-color-dialog.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT he-color-dialog.obj -MD -MP -MF "$(DEPDIR)/he-color-dialog.Tpo" -c -o he-color-dialog.obj `if test -f 'hildon-extras/he-color-dialog.c'; then $(CYGPATH_W) 'hildon-extras/he-color-dialog.c'; else $(CYGPATH_W) '$(srcdir)/hildon-extras/he-color-dialog.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/he-color-dialog.Tpo" "$(DEPDIR)/he-color-dialog.Po"; else rm -f "$(DEPDIR)/he-color-dialog.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='hildon-extras/he-color-dialog.c' object='he-color-dialog.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/he-color-dialog.Po' tmpdepfile='$(DEPDIR)/he-color-dialog.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o he-color-dialog.obj `if test -f 'hildon-extras/he-color-dialog.c'; then $(CYGPATH_W) 'hildon-extras/he-color-dialog.c'; else $(CYGPATH_W) '$(srcdir)/hildon-extras/he-color-dialog.c'; fi`
+
 he-simple-color-dialog.o: hildon-extras/he-simple-color-dialog.c
 @am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT he-simple-color-dialog.o -MD -MP -MF "$(DEPDIR)/he-simple-color-dialog.Tpo" -c -o he-simple-color-dialog.o `test -f 'hildon-extras/he-simple-color-dialog.c' || echo '$(srcdir)/'`hildon-extras/he-simple-color-dialog.c; \
 @am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/he-simple-color-dialog.Tpo" "$(DEPDIR)/he-simple-color-dialog.Po"; else rm -f "$(DEPDIR)/he-simple-color-dialog.Tpo"; exit 1; fi
@@ -412,6 +462,54 @@ he-simple-color-dialog.obj: hildon-extras/he-simple-color-dialog.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/he-simple-color-dialog.Po' tmpdepfile='$(DEPDIR)/he-simple-color-dialog.TPo' @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o he-simple-color-dialog.obj `if test -f 'hildon-extras/he-simple-color-dialog.c'; then $(CYGPATH_W) 'hildon-extras/he-simple-color-dialog.c'; else $(CYGPATH_W) '$(srcdir)/hildon-extras/he-simple-color-dialog.c'; fi`
+
+he-color-button.o: hildon-extras/he-color-button.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT he-color-button.o -MD -MP -MF "$(DEPDIR)/he-color-button.Tpo" -c -o he-color-button.o `test -f 'hildon-extras/he-color-button.c' || echo '$(srcdir)/'`hildon-extras/he-color-button.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/he-color-button.Tpo" "$(DEPDIR)/he-color-button.Po"; else rm -f "$(DEPDIR)/he-color-button.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='hildon-extras/he-color-button.c' object='he-color-button.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/he-color-button.Po' tmpdepfile='$(DEPDIR)/he-color-button.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o he-color-button.o `test -f 'hildon-extras/he-color-button.c' || echo '$(srcdir)/'`hildon-extras/he-color-button.c
+
+he-color-button.obj: hildon-extras/he-color-button.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT he-color-button.obj -MD -MP -MF "$(DEPDIR)/he-color-button.Tpo" -c -o he-color-button.obj `if test -f 'hildon-extras/he-color-button.c'; then $(CYGPATH_W) 'hildon-extras/he-color-button.c'; else $(CYGPATH_W) '$(srcdir)/hildon-extras/he-color-button.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/he-color-button.Tpo" "$(DEPDIR)/he-color-button.Po"; else rm -f "$(DEPDIR)/he-color-button.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='hildon-extras/he-color-button.c' object='he-color-button.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/he-color-button.Po' tmpdepfile='$(DEPDIR)/he-color-button.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o he-color-button.obj `if test -f 'hildon-extras/he-color-button.c'; then $(CYGPATH_W) 'hildon-extras/he-color-button.c'; else $(CYGPATH_W) '$(srcdir)/hildon-extras/he-color-button.c'; fi`
+
+he-color-size-selector.o: hildon-extras/he-color-size-selector.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT he-color-size-selector.o -MD -MP -MF "$(DEPDIR)/he-color-size-selector.Tpo" -c -o he-color-size-selector.o `test -f 'hildon-extras/he-color-size-selector.c' || echo '$(srcdir)/'`hildon-extras/he-color-size-selector.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/he-color-size-selector.Tpo" "$(DEPDIR)/he-color-size-selector.Po"; else rm -f "$(DEPDIR)/he-color-size-selector.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='hildon-extras/he-color-size-selector.c' object='he-color-size-selector.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/he-color-size-selector.Po' tmpdepfile='$(DEPDIR)/he-color-size-selector.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o he-color-size-selector.o `test -f 'hildon-extras/he-color-size-selector.c' || echo '$(srcdir)/'`hildon-extras/he-color-size-selector.c
+
+he-color-size-selector.obj: hildon-extras/he-color-size-selector.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT he-color-size-selector.obj -MD -MP -MF "$(DEPDIR)/he-color-size-selector.Tpo" -c -o he-color-size-selector.obj `if test -f 'hildon-extras/he-color-size-selector.c'; then $(CYGPATH_W) 'hildon-extras/he-color-size-selector.c'; else $(CYGPATH_W) '$(srcdir)/hildon-extras/he-color-size-selector.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/he-color-size-selector.Tpo" "$(DEPDIR)/he-color-size-selector.Po"; else rm -f "$(DEPDIR)/he-color-size-selector.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='hildon-extras/he-color-size-selector.c' object='he-color-size-selector.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/he-color-size-selector.Po' tmpdepfile='$(DEPDIR)/he-color-size-selector.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o he-color-size-selector.obj `if test -f 'hildon-extras/he-color-size-selector.c'; then $(CYGPATH_W) 'hildon-extras/he-color-size-selector.c'; else $(CYGPATH_W) '$(srcdir)/hildon-extras/he-color-size-selector.c'; fi`
+
+he-color-size-dialog.o: hildon-extras/he-color-size-dialog.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT he-color-size-dialog.o -MD -MP -MF "$(DEPDIR)/he-color-size-dialog.Tpo" -c -o he-color-size-dialog.o `test -f 'hildon-extras/he-color-size-dialog.c' || echo '$(srcdir)/'`hildon-extras/he-color-size-dialog.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/he-color-size-dialog.Tpo" "$(DEPDIR)/he-color-size-dialog.Po"; else rm -f "$(DEPDIR)/he-color-size-dialog.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='hildon-extras/he-color-size-dialog.c' object='he-color-size-dialog.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/he-color-size-dialog.Po' tmpdepfile='$(DEPDIR)/he-color-size-dialog.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o he-color-size-dialog.o `test -f 'hildon-extras/he-color-size-dialog.c' || echo '$(srcdir)/'`hildon-extras/he-color-size-dialog.c
+
+he-color-size-dialog.obj: hildon-extras/he-color-size-dialog.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT he-color-size-dialog.obj -MD -MP -MF "$(DEPDIR)/he-color-size-dialog.Tpo" -c -o he-color-size-dialog.obj `if test -f 'hildon-extras/he-color-size-dialog.c'; then $(CYGPATH_W) 'hildon-extras/he-color-size-dialog.c'; else $(CYGPATH_W) '$(srcdir)/hildon-extras/he-color-size-dialog.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/he-color-size-dialog.Tpo" "$(DEPDIR)/he-color-size-dialog.Po"; else rm -f "$(DEPDIR)/he-color-size-dialog.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='hildon-extras/he-color-size-dialog.c' object='he-color-size-dialog.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	depfile='$(DEPDIR)/he-color-size-dialog.Po' tmpdepfile='$(DEPDIR)/he-color-size-dialog.TPo' @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o he-color-size-dialog.obj `if test -f 'hildon-extras/he-color-size-dialog.c'; then $(CYGPATH_W) 'hildon-extras/he-color-size-dialog.c'; else $(CYGPATH_W) '$(srcdir)/hildon-extras/he-color-size-dialog.c'; fi`
 uninstall-info-am:
 
 # This directory's subdirectories are mostly independent; you can cd

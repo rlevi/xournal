@@ -223,7 +223,6 @@ void continue_stroke(GdkEvent *event)
     realloc_cur_widths(ui.cur_path.num_points);
     current_width = ui.cur_item->brush.thickness*get_pressure_multiplier(event);
     ui.cur_widths[ui.cur_path.num_points-1] = current_width;
-    printf ("thickness: %.2f - current_width: %.2f\n", ui.cur_item->brush.thickness, current_width);
   }
   else current_width = ui.cur_item->brush.thickness;
   
@@ -1265,7 +1264,6 @@ void start_text(GdkEvent *event, struct Item *item)
   rgb_to_gdkcolor(item->brush.color_rgba, &color);
   gtk_widget_modify_text(item->widget, GTK_STATE_NORMAL, &color);
   pango_font_description_free(font_desc);
-
   canvas_item = gnome_canvas_item_new(ui.cur_layer->group,
     gnome_canvas_widget_get_type(),
     "x", item->bbox.left, "y", item->bbox.top, 
