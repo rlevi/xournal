@@ -38,6 +38,8 @@ GtkWidget *winMain;
 GnomeCanvas *canvas;
 GtkUIManager *ui_manager;
 
+//gint two_half_button_click = 0, hildon_button_pressed = 0, hildon_button_released = 0, hildon_timer_running_already = 0;
+
 struct Journal journal; // the journal
 struct BgPdf bgpdf;  // the PDF loader stuff
 struct UIData ui;   // the user interface data
@@ -400,6 +402,7 @@ main (int argc, char *argv[])
   gchar *tmppath;
  
 #ifdef USE_HILDON
+  gchar title[30];
   osso_return_t osso_ret;
   DBusConnection *sys_conn;
 
@@ -538,6 +541,10 @@ main (int argc, char *argv[])
   
 #ifdef USE_HILDON
   hildon_grab_volume_keys (grab_volume_keys);
+
+  // Update the title with current page info
+  sprintf (title, "%s - %2d/%2d", _("Xournal"), ui.pageno+1, journal.npages);
+  gtk_window_set_title (GTK_WINDOW(winMain), title);
 #endif
 
   gtk_main ();

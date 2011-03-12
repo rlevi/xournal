@@ -199,11 +199,12 @@ he_color_button_class_init (HeColorButtonClass * class)
 static void
 he_color_button_init (HeColorButton *cb)
 {
-  //g_warning ("he_color_button_init");
+  g_warning ("he_color_button_init");
   cb->priv = HE_COLOR_BUTTON_GET_PRIVATE (cb);
   cb->priv->dialog=NULL;
   
   GtkWidget *event = gtk_event_box_new ();
+  //gtk_widget_set_size_request (event, 20,20);
   gtk_container_add (GTK_CONTAINER (cb), event);
   gtk_widget_show_all (GTK_WIDGET (cb));
 

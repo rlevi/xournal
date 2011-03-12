@@ -119,6 +119,7 @@
 		<toolitem action='Text'/>
 		<toolitem action='Hand'/>
 		<separator expand='true'/>
+		<toolitem action='PenColor'/>
 		<toolitem action='Undo'/>
 		<toolitem action='Redo'/>
 		<separator expand='true' draw='false'/>
@@ -130,6 +131,7 @@
 		<toolitem action='VerticalSpace'/>
 		<toolitem action='Text'/>
 		<toolitem action='Hand'/>
+		<toolitem action='PenColor'/>
 		<separator expand='true' draw='false'/>
 		<toolitem action='Fullscreen'/>
 	</toolbar>
@@ -140,6 +142,7 @@
 		<toolitem action='Text'/>
 		<toolitem action='Hand'/>
 		<separator expand='true'/>
+		<toolitem action='PenColor'/>
 		<toolitem action='Undo'/>
 		<toolitem action='Redo'/>
 		<separator expand='true' draw='false'/>
@@ -151,16 +154,17 @@
 		<toolitem action='Highlighter'/>
 		<toolitem action='Text'/>
 		<toolitem action='Hand'/>
+		<toolitem action='PenColor'/>
 		<separator expand='true' draw='false'/>
 		<toolitem action='Fullscreen'/>
 	</toolbar>
-
 	<toolbar show-arrow='false' action='HildonToolBarDrawLandscape'>
 		<toolitem action='Pen'/>
 		<toolitem action='Eraser'/>
 		<toolitem action='Highlighter'/>
 		<toolitem action='Hand'/>
 		<separator expand='true'/>
+		<toolitem action='PenColor'/>
 		<toolitem action='Undo'/>
 		<toolitem action='Redo'/>
 		<separator expand='true' draw='false'/>
@@ -171,6 +175,88 @@
 		<toolitem action='Pen'/>
 		<toolitem action='Eraser'/>
 		<toolitem action='Hand'/>
+		<toolitem action='PenColor'/>
+		<separator expand='true' draw='false'/>
+		<toolitem action='Fullscreen'/>
+	</toolbar>
+	<toolbar show-arrow='false' action='HildonToolBarEraserLandscape'>
+		<toolitem action='Back'/>
+		<toolitem action='Eraser'/>
+		<toolitem action='EraserThicknessVeryFine'/>
+		<toolitem action='EraserThicknessFine'/>
+		<toolitem action='EraserThicknessMedium'/>
+		<toolitem action='EraserThicknessThick'/>
+		<toolitem action='EraserThicknessVeryThick'/>
+		<separator expand='true' draw='false'/>
+		<toolitem action='Fullscreen'/>
+	</toolbar>
+	<toolbar show-arrow='false' action='HildonToolBarEraserPortrait'>
+		<toolitem action='Back'/>
+		<toolitem action='Eraser'/>
+		<toolitem action='EraserThinner'/>
+		<toolitem action='EraserThicker'/>
+		<separator expand='true' draw='false'/>
+		<toolitem action='Fullscreen'/>
+	</toolbar>
+	<toolbar show-arrow='false' action='HildonToolBarPenLandscape'>
+		<toolitem action='Back'/>
+		<toolitem action='Pen'/>
+		<toolitem action='PenThicknessVeryFine'/>
+		<toolitem action='PenThicknessFine'/>
+		<toolitem action='PenThicknessMedium'/>
+		<toolitem action='PenThicknessThick'/>
+		<toolitem action='PenThicknessVeryThick'/>
+		<separator expand='true' draw='false'/>
+		<toolitem action='Fullscreen'/>
+	</toolbar>
+	<toolbar show-arrow='false' action='HildonToolBarPenPortrait'>
+		<toolitem action='Back'/>
+		<toolitem action='Pen'/>
+		<toolitem action='PenThinner'/>
+		<toolitem action='PenThicker'/>
+		<separator expand='true' draw='false'/>
+		<toolitem action='Fullscreen'/>
+	</toolbar>
+	<toolbar show-arrow='false' action='HildonToolBarHandLandscape'>
+		<toolitem action='Back'/>
+		<toolitem action='Hand'/>
+		<toolitem action='NewPageBefore'/>
+		<toolitem action='DeletePage'/>
+		<toolitem action='NewPageAfter'/>
+		<toolitem action='NewPageEnd'/>
+		<separator expand='true' draw='false'/>
+		<toolitem action='PreviousPage'/>
+		<toolitem action='NextPage'/>
+		<separator expand='true' draw='false'/>
+		<toolitem action='Fullscreen'/>
+	</toolbar>
+	<toolbar show-arrow='false' action='HildonToolBarHandPortrait'>
+		<toolitem action='Back'/>
+		<toolitem action='Hand'/>
+		<separator expand='true' draw='false'/>
+		<toolitem action='PreviousPage'/>
+		<toolitem action='NextPage'/>
+		<separator expand='true' draw='false'/>
+		<toolitem action='Fullscreen'/>
+	</toolbar>
+	<toolbar show-arrow='false' action='HildonToolBarPenColorLandscape'>
+		<toolitem action='Back'/>
+		<toolitem action='Black'/>
+		<toolitem action='Blue'/>
+		<toolitem action='Red'/>
+		<toolitem action='Green'/>
+		<toolitem action='Yellow'/>
+		<toolitem action='Orange'/>
+		<toolitem action='Magenta'/>
+		<separator expand='true' draw='false'/>
+		<toolitem action='Fullscreen'/>
+	</toolbar>
+	<toolbar show-arrow='false' action='HildonToolBarPenColorPortrait'>
+		<toolitem action='Back'/>
+		<toolitem action='Black'/>
+		<toolitem action='Blue'/>
+		<toolitem action='Red'/>
+		<toolitem action='Green'/>
 		<separator expand='true' draw='false'/>
 		<toolitem action='Fullscreen'/>
 	</toolbar>

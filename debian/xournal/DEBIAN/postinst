@@ -63,6 +63,6 @@ optify () {
     fi
 }
 
-optify "usr/share/doc/xournal"
 optify "usr/share/xournal"
 optify "usr/share/pixmaps/xournal"
+optify "usr/share/doc/xournal"

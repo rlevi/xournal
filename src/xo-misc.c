@@ -20,6 +20,8 @@
 
 extern GtkWidget *pickerButton;
 extern GtkWidget *hildon_undo[], *hildon_redo[];
+extern GtkWidget *hildon_undo_prev_image, *hildon_undo_default_image;
+extern GtkWidget *hildon_redo_next_image, *hildon_redo_default_image;
 #endif
 
 #include "xournal.h"
@@ -1289,14 +1291,19 @@ void do_switch_page(int pg, gboolean rescroll, gboolean refresh_all)
   GList *list;
 #ifdef USE_HILDON
   gchar info_str[512];
+  gchar title[30];
   GtkWidget *banner;
 #endif
 
 #ifdef USE_HILDON
-  sprintf (info_str, _("Switching to page %02d/%02d..."), pg+1, journal.npages);
+  sprintf (info_str, "%s %2d/%2d...", _("Switching to page"), pg+1, journal.npages);
+  sprintf (title, "%s %2d/%2d", _("Xournal"), pg+1, journal.npages);
   
+  // banner is automatically destroyed - no memory leak
   banner=hildon_banner_show_information (GTK_WIDGET(winMain), NULL, info_str);
   hildon_banner_set_timeout (HILDON_BANNER(banner), 500);
+
+  gtk_window_set_title (GTK_WINDOW(winMain), title);
 #endif
   
   ui.pageno = pg;
@@ -1421,7 +1428,6 @@ void update_page_stuff(void)
 
     ui.layerbox_length--;
 
-    printf ("Requesting new size...\n");
 //    hildon_touch_selector_optimal_size_request (HILDON_TOUCH_SELETOR(layerbox),
 	//	    &requisition);
 //   gtk_widget_set_size_request (GTK_WIDGET(layerbox), -1, -1);
@@ -1588,14 +1594,12 @@ void update_file_name(char *filename)
 void update_undo_redo_enabled(void)
 {
 #ifdef USE_HILDON
-//  gtk_widget_set_sensitive(GET_COMPONENT("Undo"), undo!=NULL);
-//  gtk_widget_set_sensitive(GET_COMPONENT("Redo"), redo!=NULL);
   gtk_widget_set_sensitive(GTK_WIDGET(hildon_undo[HILDON_TOOLBAR_NOTE_LANDSCAPE]), undo!=NULL);
-  gtk_widget_set_sensitive(GTK_WIDGET(hildon_undo[HILDON_TOOLBAR_PDF_LANDSCAPE]), undo!=NULL);
+  gtk_widget_set_sensitive(GTK_WIDGET(hildon_undo[HILDON_TOOLBAR_PDF_LANDSCAPE]),  undo!=NULL);
   gtk_widget_set_sensitive(GTK_WIDGET(hildon_undo[HILDON_TOOLBAR_DRAW_LANDSCAPE]), undo!=NULL);
 
   gtk_widget_set_sensitive(GTK_WIDGET(hildon_redo[HILDON_TOOLBAR_NOTE_LANDSCAPE]), redo!=NULL);
-  gtk_widget_set_sensitive(GTK_WIDGET(hildon_redo[HILDON_TOOLBAR_PDF_LANDSCAPE]), redo!=NULL);
+  gtk_widget_set_sensitive(GTK_WIDGET(hildon_redo[HILDON_TOOLBAR_PDF_LANDSCAPE]),  redo!=NULL);
   gtk_widget_set_sensitive(GTK_WIDGET(hildon_redo[HILDON_TOOLBAR_DRAW_LANDSCAPE]), redo!=NULL);
 #else
   gtk_widget_set_sensitive(GET_COMPONENT("editUndo"), undo!=NULL);
@@ -1650,7 +1654,7 @@ void hildon_set_cur_color (GdkColor *color)
 	  ui.cur_brush->color_rgba &= ui.hiliter_alpha_mask;
   }
 
-  update_mapping_linkings(ui.toolno[0]);
+  //update_mapping_linkings(ui.toolno[0]);
 }
 
 void hildon_process_color_activate(GdkColor *color)
@@ -1667,15 +1671,16 @@ void hildon_process_color_activate(GdkColor *color)
     update_color_menu();
   }
 
-  if (ui.toolno[0] != TOOL_PEN && ui.toolno[0] != TOOL_HIGHLIGHTER
-	          && ui.toolno[0] != TOOL_TEXT) {
-    if (ui.selection != NULL) return;
-    end_text();
-    ui.toolno[0] = TOOL_PEN;
-    ui.cur_brush = &(ui.brushes[0][TOOL_PEN]);
-    update_tool_buttons();
-    update_tool_menu();
-  }
+// Do not switch to Pen (yet)
+//  if (ui.toolno[0] != TOOL_PEN && ui.toolno[0] != TOOL_HIGHLIGHTER
+//	          && ui.toolno[0] != TOOL_TEXT) {
+//    if (ui.selection != NULL) return;
+//    end_text();
+//    ui.toolno[0] = TOOL_PEN;
+//    ui.cur_brush = &(ui.brushes[0][TOOL_PEN]);
+//    update_tool_buttons();
+//    update_tool_menu();
+//  }
 
   hildon_set_cur_color(color);
   update_color_buttons();
@@ -1724,6 +1729,7 @@ void recolor_temp_text(int color_no, guint color_rgba)
 
 void process_color_activate(GtkMenuItem *menuitem, int color_no, guint color_rgba)
 {
+#ifndef USE_HILDON
   if (GTK_OBJECT_TYPE(menuitem) == GTK_TYPE_RADIO_MENU_ITEM) {
     if (!gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM (menuitem)))
       return;
@@ -1734,6 +1740,7 @@ void process_color_activate(GtkMenuItem *menuitem, int color_no, guint color_rgb
   }
 
   if (ui.cur_mapping != 0 && !ui.button_switch_mapping) return; // not user-generated
+#endif
 
   if (ui.cur_item_type == ITEM_TEXT)
     recolor_temp_text(color_no, color_rgba);
@@ -1765,6 +1772,7 @@ void process_thickness_activate(GtkMenuItem *menuitem, int tool, int val)
 {
   int which_mapping;
 
+#ifndef USE_HILDON
   if (GTK_OBJECT_TYPE(menuitem) == GTK_TYPE_RADIO_MENU_ITEM) {
     if (!gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM (menuitem)))
       return;
@@ -1779,6 +1787,7 @@ void process_thickness_activate(GtkMenuItem *menuitem, int tool, int val)
     rethicken_selection(val);
     update_thickness_buttons();
   }
+#endif
 
   if (tool >= NUM_STROKE_TOOLS) {
     update_thickness_buttons(); // undo illegal button selection

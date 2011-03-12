@@ -6,6 +6,10 @@ void
 on_toolStackableWindow (void);
 
 void
+reset_undoredo_icons                    (GtkWidget *item,
+					gpointer user_data);
+
+void
 hildon_about                            (GtkAction *action,
 					gpointer user_data);
 
@@ -15,6 +19,12 @@ hildon_test_tool (GtkMenuItem *menuitem, gpointer user_data);
 void
 hildon_share_tool			(GtkMenuItem  *menuitem,
                                          gpointer      user_data);
+
+void
+hildon_penOptions_radio_action          (GtkAction *action);
+
+void
+hildon_penColor_radio_action          (GtkAction *action);
 
 void
 hildon_tools_radio_action		(GtkAction *action);

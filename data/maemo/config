@@ -8,6 +8,7 @@ theme=default
 grab_volume_keys=1
 
 [general]
+poppler_force_cairo=true
 # the display resolution, in pixels per inch
 display_dpi=96.00
 # the initial zoom level, in percent
@@ -27,7 +28,7 @@ zoom_dialog_increment=1
 # the multiplicative factor for zoom in/out
 zoom_step_factor=1.500
 # document view (true = continuous, false = single page)
-view_continuous=true
+view_continuous=false
 # use XInput extensions (true/false)
 use_xinput=true
 # discard Core Pointer events in XInput mode (true/false)

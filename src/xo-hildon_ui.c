@@ -28,18 +28,38 @@
 #include <libintl.h>
 #define _(String) gettext (String)
 
+#include "xournal.h"
 #include "xo-callbacks.h"
 #include "xo-hildon_ui.h"
 #include "xo-support.h"
 
 extern char *theme_name;
 extern GtkUIManager *ui_manager;
-extern GtkWidget *winMain, *hildon_cur_toolbar_landscape, *hildon_cur_toolbar_portrait;
+extern GtkWidget *winMain;
+extern GtkWidget *hildon_cur_toolbar_landscape,
+	*hildon_cur_toolbar_portrait,
+	*switch_to_toolbar;
 extern GtkWidget *hildon_toolbars[HILDON_NUM_TOOLBARS];
 extern GtkWidget *hildon_undo[HILDON_NUM_TOOLBARS];
 extern GtkWidget *hildon_redo[HILDON_NUM_TOOLBARS];
 
+extern char *hildonToolbars[HILDON_NUM_TOOLBARS] = {
+	"HildonToolBarNoteLandscape",
+	"HildonToolBarNotePortrait",
+	"HildonToolBarPdfLandscape",
+	"HildonToolBarPdfPortrait",
+	"HildonToolBarDrawLandscape",
+	"HildonToolBarDrawPortrait",
+	"HildonToolBarHandLandscape",
+	"HildonToolBarHandPortrait",
+	"HildonToolBarPenLandscape",
+	"HildonToolBarPenPortrait",
+	"HildonToolBarPenColorLandscape",
+	"HildonToolBarPenColorPortrait"
+};
+
 GtkWidget *tools_view, *settings_view, *journal_view;
+//extern gint two_half_button_click, hildon_button_pressed, hildon_button_released, hildon_timer_running_already;
 
 #define GLADE_HOOKUP_OBJECT(component,widget,name) \
   g_object_set_data_full (G_OBJECT (component), name, \
@@ -61,6 +81,10 @@ register_hildon_stock_icons (void)
 
   for (i=0;i<n_stock_icons;i++) {
 	  char *filename=calloc(1024,1);
+	  GtkIconSize *sizes = NULL;
+	  gint nsize;
+	  gint j;
+
 	  icon_set = gtk_icon_set_new ();
 	  icon_source = gtk_icon_source_new ();
 	  snprintf (filename, 1024, hildon_stock_icons[i].filename, theme_name);
@@ -195,8 +219,65 @@ void hildon_paper_activate (GtkWidget *item, gpointer user_data)
 {
 }
 
+void hildon_toolbar_switch_do (gint toolbar_no)
+{
+  if (switch_to_toolbar_landscape != NULL) {
+    return;
+  }
+
+  switch_to_toolbar_portrait = hildon_cur_toolbar_portrait;
+  switch_to_toolbar_landscape = hildon_cur_toolbar_landscape;
+
+  if (device_is_portrait_mode (ctx)) {
+    gtk_widget_hide (GTK_WIDGET(hildon_cur_toolbar_portrait));
+    gtk_widget_show (GTK_WIDGET(hildon_toolbars[toolbar_no+1]));
+  } else {
+    gtk_widget_hide (GTK_WIDGET(hildon_cur_toolbar_landscape));
+    gtk_widget_show (GTK_WIDGET(hildon_toolbars[toolbar_no]));
+  }
+
+  hildon_cur_toolbar_landscape = hildon_toolbars[toolbar_no];
+  hildon_cur_toolbar_portrait = hildon_toolbars[toolbar_no+1];
+}
+
+int hildon_toolbar_switch_back ()
+{
+  if (switch_to_toolbar_landscape == NULL) {
+    return;
+  }
+
+  if (device_is_portrait_mode (ctx)) {
+    gtk_widget_hide (GTK_WIDGET(hildon_cur_toolbar_portrait));
+    gtk_widget_show (GTK_WIDGET(switch_to_toolbar_portrait));
+  } else {
+    gtk_widget_hide (GTK_WIDGET(hildon_cur_toolbar_landscape));
+    gtk_widget_show (GTK_WIDGET(switch_to_toolbar_landscape));
+  }
+
+  hildon_cur_toolbar_landscape = switch_to_toolbar_landscape;
+  hildon_cur_toolbar_portrait = switch_to_toolbar_portrait;
+
+  switch_to_toolbar_landscape = NULL;
+  switch_to_toolbar_portrait = NULL;
+
+  return FALSE;
+}
+
+void hildon_toolbar_switch (GtkWidget *item, gpointer user_data)
+{
+  gint toolbar_no = (gint) user_data;
+
+  if (gtk_toggle_tool_button_get_active (GTK_TOGGLE_TOOL_BUTTON(item))) {
+    hildon_toolbar_switch_do (toolbar_no);
+  } else {
+    hildon_toolbar_switch_back ();
+  }
+}
+
 void hildon_draw_switch (GtkWidget *item, gpointer user_data)
 {
+  hildon_toolbar_switch_back ();
+
   if (device_is_portrait_mode (ctx)) {
      gtk_widget_hide (GTK_WIDGET(hildon_cur_toolbar_portrait));
      gtk_widget_show (GTK_WIDGET(hildon_toolbars[HILDON_TOOLBAR_DRAW_PORTRAIT]));
@@ -211,6 +292,8 @@ void hildon_draw_switch (GtkWidget *item, gpointer user_data)
 
 void hildon_pdf_switch (GtkWidget *item, gpointer user_data)
 {
+  hildon_toolbar_switch_back ();
+
   if (device_is_portrait_mode (ctx)) {
      gtk_widget_hide (GTK_WIDGET(hildon_cur_toolbar_portrait));
      gtk_widget_show (GTK_WIDGET(hildon_toolbars[HILDON_TOOLBAR_PDF_PORTRAIT]));
@@ -225,6 +308,8 @@ void hildon_pdf_switch (GtkWidget *item, gpointer user_data)
 
 void hildon_note_switch (GtkWidget *item, gpointer user_data)
 {
+  hildon_toolbar_switch_back ();
+
   if (device_is_portrait_mode (ctx)) {
      gtk_widget_hide (GTK_WIDGET(hildon_cur_toolbar_portrait));
      gtk_widget_show (GTK_WIDGET(hildon_toolbars[HILDON_TOOLBAR_NOTE_PORTRAIT]));
@@ -288,6 +373,9 @@ create_winMain (osso_context_t *ctx)
   GtkActionGroup *action_group;
   GtkAction *action_eraser, *action_pen;
   GtkWidget *widget_eraser, *widget_pen;
+  GtkWidget *undo_widget;
+  GtkWidget *redo_widget;
+  GtkWidget *widget;
   GtkToolItem *colorItem;
   GError *error;
   gchar *label;
@@ -305,6 +393,7 @@ create_winMain (osso_context_t *ctx)
   hildon_window = HILDON_WINDOW (hildon_stackable_window_new ());
 
   hildon_program_add_window (hildon_program, hildon_window);
+
   //
   // check for device orientation
   if (device_is_portrait_mode (ctx)) {
@@ -317,28 +406,41 @@ create_winMain (osso_context_t *ctx)
 
   gtk_action_group_add_actions (action_group, hildon_menu_entries,
 		  G_N_ELEMENTS (hildon_menu_entries), hildon_window);
+
   gtk_action_group_add_actions (action_group, hildon_toggle_entries,
 		  G_N_ELEMENTS (hildon_toggle_entries), hildon_window);
+
   gtk_action_group_add_radio_actions (action_group, hildon_view_radio_entries,
 		  G_N_ELEMENTS(hildon_view_radio_entries), 0, NULL, hildon_window);
+
   gtk_action_group_add_radio_actions (action_group, hildon_paperColor_radio_entries,
 		  G_N_ELEMENTS(hildon_paperColor_radio_entries), 0, NULL, hildon_window);
+
   gtk_action_group_add_radio_actions (action_group, hildon_paperStyle_radio_entries,
 		  G_N_ELEMENTS(hildon_paperStyle_radio_entries), 1, NULL, hildon_window);
+
   gtk_action_group_add_radio_actions (action_group, hildon_tools_radio_entries,
 		  G_N_ELEMENTS(hildon_tools_radio_entries), 0, G_CALLBACK(hildon_tools_radio_action), hildon_window);
+
   gtk_action_group_add_toggle_actions (action_group, hildon_toolsOther_toggle_entries,
 		  G_N_ELEMENTS(hildon_toolsOther_toggle_entries), hildon_window);
+
   gtk_action_group_add_radio_actions (action_group, hildon_penOptions_radio_entries,
-		  G_N_ELEMENTS(hildon_penOptions_radio_entries), 2, NULL, hildon_window);
+		  G_N_ELEMENTS(hildon_penOptions_radio_entries), 2, G_CALLBACK(hildon_penOptions_radio_action), hildon_window);
+
+  gtk_action_group_add_radio_actions (action_group, hildon_penColor_radio_entries,
+		  G_N_ELEMENTS(hildon_penColor_radio_entries), 3, G_CALLBACK(hildon_penColor_radio_action), hildon_window);
+
   gtk_action_group_add_radio_actions (action_group,
 		  hildon_eraserThicknessOptions_radio_entries,
 		  G_N_ELEMENTS(hildon_eraserThicknessOptions_radio_entries), 1, NULL,
 		  hildon_window);
+
   gtk_action_group_add_radio_actions (action_group,
 		  hildon_eraserTypeOptions_radio_entries,
 		  G_N_ELEMENTS(hildon_eraserTypeOptions_radio_entries), 0, NULL,
 		  hildon_window);
+
   gtk_action_group_add_radio_actions (action_group,
 		  hildon_highlighterThicknessOptions_radio_entries,
 		  G_N_ELEMENTS(hildon_highlighterThicknessOptions_radio_entries), 1, NULL,
@@ -382,48 +484,82 @@ create_winMain (osso_context_t *ctx)
   /* Load toolbars */
   hildon_toolbars[HILDON_TOOLBAR_NOTE_PORTRAIT] = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarNotePortrait");
   hildon_window_add_toolbar (hildon_window, GTK_TOOLBAR (hildon_toolbars[HILDON_TOOLBAR_NOTE_PORTRAIT]));
-//  gtk_widget_hide_all (GTK_WIDGET(hildon_toolbars[HILDON_TOOLBAR_NOTE_PORTRAIT]));
   hildon_toolbars[HILDON_TOOLBAR_NOTE_LANDSCAPE] = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarNoteLandscape");
   hildon_window_add_toolbar (hildon_window, GTK_TOOLBAR (hildon_toolbars[HILDON_TOOLBAR_NOTE_LANDSCAPE]));
-//  gtk_widget_hide_all (GTK_WIDGET(hildon_toolbars[HILDON_TOOLBAR_NOTE_LANDSCAPE]));
 
   hildon_toolbars[HILDON_TOOLBAR_PDF_PORTRAIT] = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarPdfPortrait");
   hildon_window_add_toolbar (hildon_window, GTK_TOOLBAR (hildon_toolbars[HILDON_TOOLBAR_PDF_PORTRAIT]));
-//  gtk_widget_hide_all (GTK_WIDGET(hildon_toolbars[HILDON_TOOLBAR_NOTE_PORTRAIT]));
   hildon_toolbars[HILDON_TOOLBAR_PDF_LANDSCAPE] = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarPdfLandscape");
   hildon_window_add_toolbar (hildon_window, GTK_TOOLBAR (hildon_toolbars[HILDON_TOOLBAR_PDF_LANDSCAPE]));
-//  gtk_widget_hide_all (GTK_WIDGET(hildon_toolbars[HILDON_TOOLBAR_NOTE_PORTRAIT]));
 
   hildon_toolbars[HILDON_TOOLBAR_DRAW_PORTRAIT] = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarDrawPortrait");
   hildon_window_add_toolbar (hildon_window, GTK_TOOLBAR (hildon_toolbars[HILDON_TOOLBAR_DRAW_PORTRAIT]));
-//  gtk_widget_hide_all (GTK_WIDGET(hildon_toolbars[HILDON_TOOLBAR_NOTE_PORTRAIT]));
   hildon_toolbars[HILDON_TOOLBAR_DRAW_LANDSCAPE] = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarDrawLandscape");
   hildon_window_add_toolbar (hildon_window, GTK_TOOLBAR (hildon_toolbars[HILDON_TOOLBAR_DRAW_LANDSCAPE]));
-//  gtk_widget_hide_all (GTK_WIDGET(hildon_toolbars[HILDON_TOOLBAR_NOTE_PORTRAIT]));
+
+  hildon_toolbars[HILDON_TOOLBAR_HAND_PORTRAIT] = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarHandPortrait");
+  hildon_window_add_toolbar (hildon_window, GTK_TOOLBAR (hildon_toolbars[HILDON_TOOLBAR_HAND_PORTRAIT]));
+  hildon_toolbars[HILDON_TOOLBAR_HAND_LANDSCAPE] = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarHandLandscape");
+  hildon_window_add_toolbar (hildon_window, GTK_TOOLBAR (hildon_toolbars[HILDON_TOOLBAR_HAND_LANDSCAPE]));
+
+  hildon_toolbars[HILDON_TOOLBAR_PEN_PORTRAIT] = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarPenPortrait");
+  hildon_window_add_toolbar (hildon_window, GTK_TOOLBAR (hildon_toolbars[HILDON_TOOLBAR_PEN_PORTRAIT]));
+  hildon_toolbars[HILDON_TOOLBAR_PEN_LANDSCAPE] = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarPenLandscape");
+  hildon_window_add_toolbar (hildon_window, GTK_TOOLBAR (hildon_toolbars[HILDON_TOOLBAR_PEN_LANDSCAPE]));
+
+  hildon_toolbars[HILDON_TOOLBAR_COLOR_PORTRAIT] = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarPenColorPortrait");
+  hildon_window_add_toolbar (hildon_window, GTK_TOOLBAR (hildon_toolbars[HILDON_TOOLBAR_COLOR_PORTRAIT]));
+  hildon_toolbars[HILDON_TOOLBAR_COLOR_LANDSCAPE] = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarPenColorLandscape");
+  hildon_window_add_toolbar (hildon_window, GTK_TOOLBAR (hildon_toolbars[HILDON_TOOLBAR_COLOR_LANDSCAPE]));
 
   // Undo / Redo buttons
-  hildon_undo[HILDON_TOOLBAR_NOTE_LANDSCAPE] = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarNoteLandscape/Undo");
-  hildon_redo[HILDON_TOOLBAR_NOTE_LANDSCAPE] = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarNoteLandscape/Redo");
+  undo_widget = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarNoteLandscape/Undo");
+  redo_widget = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarNoteLandscape/Redo");
 
-  hildon_undo[HILDON_TOOLBAR_PDF_LANDSCAPE] = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarPdfLandscape/Undo");
-  hildon_redo[HILDON_TOOLBAR_PDF_LANDSCAPE] = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarPdfLandscape/Redo");
+  for (i=0;i<HILDON_NUM_TOOLBARS;i++) {
+    char widget_path[256];
 
-  hildon_undo[HILDON_TOOLBAR_DRAW_LANDSCAPE] = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarDrawLandscape/Undo");
-  hildon_redo[HILDON_TOOLBAR_DRAW_LANDSCAPE] = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarDrawLandscape/Redo");
+    sprintf (widget_path, "/%s/Hand", hildonToolbars[i]);
+
+    widget = gtk_ui_manager_get_widget (ui_manager, widget_path);
+    g_signal_connect (G_OBJECT (widget), "clicked",
+	G_CALLBACK (hildon_toolbar_switch), (gpointer)HILDON_TOOLBAR_HAND_LANDSCAPE);
+
+    sprintf (widget_path, "/%s/Pen", hildonToolbars[i]);
+
+    widget = gtk_ui_manager_get_widget (ui_manager, widget_path);
+    g_signal_connect (G_OBJECT (widget), "clicked",
+	G_CALLBACK (hildon_toolbar_switch), (gpointer)HILDON_TOOLBAR_PEN_LANDSCAPE);
+
+    sprintf (widget_path, "/%s/PenColor", hildonToolbars[i]);
+
+    widget = gtk_ui_manager_get_widget (ui_manager, widget_path);
+    g_signal_connect (G_OBJECT (widget), "clicked",
+	G_CALLBACK (hildon_toolbar_switch), (gpointer)HILDON_TOOLBAR_COLOR_LANDSCAPE);
+  }
+
+  hildon_undo[HILDON_TOOLBAR_NOTE_LANDSCAPE] = undo_widget;
+  hildon_redo[HILDON_TOOLBAR_NOTE_LANDSCAPE] = redo_widget;
+
+  hildon_undo[HILDON_TOOLBAR_PDF_LANDSCAPE] = undo_widget;
+  hildon_redo[HILDON_TOOLBAR_PDF_LANDSCAPE] = redo_widget;
+
+  hildon_undo[HILDON_TOOLBAR_DRAW_LANDSCAPE] = undo_widget;
+  hildon_redo[HILDON_TOOLBAR_DRAW_LANDSCAPE] = redo_widget;
 
 //  buttonColor = HILDON_COLOR_BUTTON (hildon_color_button_new());
-  buttonColor = he_color_button_new ();
+//  buttonColor = he_color_button_new ();
   pickerButton = hildon_picker_button_new (HILDON_SIZE_AUTO,
 		  HILDON_BUTTON_ARRANGEMENT_VERTICAL);
   hildonSelector = hildon_touch_selector_new_text ();
 
-  hildon_button_set_title (HILDON_BUTTON(pickerButton),
-		  _("Select layer"));
+  hildon_button_set_title (HILDON_BUTTON(pickerButton), _("Select layer"));
 
   hildon_touch_selector_set_column_selection_mode (
 		HILDON_TOUCH_SELECTOR(hildonSelector),
  		HILDON_TOUCH_SELECTOR_SELECTION_MODE_SINGLE);
 
+#if 0
   for (i=0;i<HILDON_NUM_TOOLBARS;i+=2) {
      int num_items = gtk_toolbar_get_n_items (GTK_TOOLBAR(hildon_toolbars[i]));
 
@@ -435,6 +571,7 @@ create_winMain (osso_context_t *ctx)
 
   g_signal_connect (G_OBJECT (buttonColor), "clicked",
 		G_CALLBACK (on_colorButton_activate), NULL);
+#endif
 
   g_signal_connect (G_OBJECT (hildonSelector), "changed",
 		G_CALLBACK (on_comboLayer_changed), (gpointer) "maemo");
@@ -1003,3 +1140,22 @@ device_is_portrait_mode(osso_context_t* ctx)
 
 	return result;
 }
+
+/*
+gint
+hildon_button_pressed_timedout (gpointer data) {
+	GdkEventButton *event = (GdkEventButton *)data;
+
+	if (two_half_button_click) {
+		return;
+	}
+
+	hildon_button_pressed = 0;
+	hildon_button_released = 0;
+	hildon_timer_running_already = 0;
+
+	printf ("Timer expired\n");
+
+	return 0;
+}
+*/

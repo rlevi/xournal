@@ -50,6 +50,8 @@
 #include "hildon-extras/he-color-size-dialog.h"
 
 extern GtkWidget *tools_view, *settings_view, *journal_view;
+//extern gint two_half_button_click, hildon_button_pressed, hildon_button_released;
+extern gint hildon_timer_running_already;
 
 /* Maemo specific handlers */
 void
@@ -95,6 +97,45 @@ on_HildonHelp_activate (GtkWidget *widget, gchar *help_id)
 void
 on_HildonShowLayer_activate (GtkWidget *widget, gpointer data)
 {
+  GtkWidget *old_selector;
+  GtkWidget *selector;
+  gchar *label;
+  gint i;
+
+  printf ("Ciao\n");
+  old_selector = GTK_WIDGET(hildon_picker_button_get_selector (HILDON_PICKER_BUTTON (pickerButton)));
+  // TODO: destroy it
+
+  selector = hildon_touch_selector_new_text ();
+
+  label = g_strdup_printf (_("Add new layer"));
+  hildon_touch_selector_append_text (HILDON_TOUCH_SELECTOR(selector),
+		label);
+  g_free (label);
+
+  label = g_strdup_printf (_("Background"));
+  hildon_touch_selector_append_text (HILDON_TOUCH_SELECTOR(selector),
+		label);
+  g_free (label);
+
+  for (i=0; i<ui.cur_page->nlayers;i++) {
+    label = g_strdup_printf (_("Layer %d"), i);
+    hildon_touch_selector_append_text (HILDON_TOUCH_SELECTOR(selector),
+		label);
+    g_free (label);
+  }
+
+  hildon_touch_selector_set_column_selection_mode (
+		HILDON_TOUCH_SELECTOR(selector),
+		HILDON_TOUCH_SELECTOR_SELECTION_MODE_SINGLE);
+
+  hildon_picker_button_set_selector (HILDON_PICKER_BUTTON(pickerButton),
+		HILDON_TOUCH_SELECTOR(selector));
+
+  g_signal_connect (G_OBJECT (selector), "changed",
+		G_CALLBACK (on_comboLayer_changed), (gpointer) "maemo");
+
+  gtk_widget_show_all (selector);
 }
 
 void
@@ -102,10 +143,10 @@ on_colorButton_activate (GtkWidget *widget, gpointer data)
 {
   GdkColor color = {0, 0, 0, 0};
 
-//  hildon_color_button_get_color
-//	(HILDON_COLOR_BUTTON(buttonColor), &color);
+  hildon_color_button_get_color
+	(HILDON_COLOR_BUTTON(buttonColor), &color);
 
-  he_color_button_get_color (buttonColor, &color);
+//  he_color_button_get_color (buttonColor, &color);
 		  
   hildon_process_color_activate (&color);
 }
@@ -296,6 +337,8 @@ on_fileNewBackground_activate          (GtkMenuItem     *menuitem,
     return;
   }
   filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+  gchar *dirName = g_path_get_dirname (filename);
+  ui.default_path = dirName;
 
   gtk_widget_destroy(dialog);
 
@@ -398,6 +441,9 @@ on_fileOpen_activate                   (GtkMenuItem     *menuitem,
     return;
   }
   filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+  gchar *dirName = g_path_get_dirname (filename);
+  ui.default_path = dirName;
+
   gtk_widget_destroy(dialog);
 
 #ifdef USE_HILDON
@@ -2814,6 +2860,28 @@ on_canvas_button_press_event           (GtkWidget       *widget,
     event->device->name, event->x, event->y, event->button, event->state);
 #endif
 
+#ifdef USE_HILDON
+  /*
+  hildon_button_pressed++;
+  printf ("==============PRESSED START==========\n");
+  printf ("nButton pressed: %d\n", hildon_button_pressed);
+  printf ("Button released: %d\n", hildon_button_pressed);
+  printf ("Timer: %d\n", hildon_timer_running_already);
+
+  if (!hildon_timer_running_already) {
+    hildon_timer_running_already = 1;
+    g_timeout_add (500, hildon_button_pressed_timedout, (gpointer)event);
+  }
+
+  if (hildon_button_pressed == 2 && hildon_button_released == 1) {
+    // Ok 2 & 1/2 button click
+    printf ("Two & 1/2 button click detected!\n");
+    two_half_button_click = 1;
+  }
+  printf ("==============PRESSED END============\n");
+  */
+#endif
+
   // abort any page changes pending in the spin button, and take the focus
   gtk_spin_button_set_value(GTK_SPIN_BUTTON(GET_COMPONENT("spinPageNo")), ui.pageno+1);
   reset_focus();
@@ -2904,6 +2972,7 @@ on_canvas_button_press_event           (GtkWidget       *widget,
     ui.pageno++;
     tmppage = g_list_nth_data(journal.pages, ui.pageno);
   }
+  if (page_change) printf ("Switching to page %d\n", ui.pageno);
   if (page_change) do_switch_page(ui.pageno, FALSE, FALSE);
   
   // can't paint on the background...
@@ -2988,6 +3057,24 @@ on_canvas_button_release_event         (GtkWidget       *widget,
 #ifdef INPUT_DEBUG
   printf("DEBUG: ButtonRelease (%s) (x,y)=(%.2f,%.2f), button %d, modifier %x\n", 
       event->device->name, event->x, event->y, event->button, event->state);
+#endif
+
+#ifdef USE_HILDON
+  /*
+  printf ("==============RELEASED START==========\n");
+  if (two_half_button_click) {
+    printf ("Two & 1/2 button click reset!\n");
+    // reset
+    two_half_button_click = 0;
+    hildon_button_pressed = 0;
+    hildon_button_released = 0;
+    hildon_timer_running_already = 0;
+  } else {
+    hildon_button_released++;
+    printf ("Button released: %d\n", hildon_button_released);
+  }
+  printf ("==============RELEASED END============\n");
+  */
 #endif
 
   is_core = (event->device == gdk_device_get_core_pointer());
@@ -4318,6 +4405,7 @@ void hildon_tools_radio_action (GtkAction *action)
       			gtk_toggle_tool_button_set_active(
  			       GTK_TOGGLE_TOOL_BUTTON(ruler_button), FALSE);
 			on_toolsPen_activate (NULL, NULL);
+			printf ("Radio action\n");
 			break;
 		case 1:
   			ruler_button = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBar/Ruler");
@@ -4356,6 +4444,22 @@ void hildon_tools_radio_action (GtkAction *action)
 			on_toolsHand_activate (NULL, NULL);
 			break;
 	}
+}
+
+void
+hildon_penOptions_radio_action (GtkAction *action)
+{
+	gint thickness = gtk_radio_action_get_current_value(GTK_RADIO_ACTION (action));
+
+	process_thickness_activate(NULL, TOOL_PEN, thickness);
+}
+
+void
+hildon_penColor_radio_action (GtkAction *action)
+{
+	gint color = gtk_radio_action_get_current_value (GTK_RADIO_ACTION (action));
+
+	process_color_activate(NULL, color, predef_colors_rgba[color]);
 }
 
 void

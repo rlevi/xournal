@@ -1,3 +1,11 @@
+xournal (0.4.5-1fremantle9) unstable; urgency=low
+  * Added Page support
+  * Switched to non-continuos mode
+  * Fixed Color button
+  * Added Layer support
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Sat, 12 Mar 2011 17:31:22 -0500
+
 xournal (0.4.5-1fremantle8) unstable; urgency=low
   * Fixed menu
 
