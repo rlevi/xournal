@@ -132,7 +132,6 @@
 		<toolitem action='Text'/>
 		<toolitem action='Hand'/>
 		<toolitem action='PenColor'/>
-		<separator expand='true' draw='false'/>
 		<toolitem action='Fullscreen'/>
 	</toolbar>
 
@@ -155,7 +154,6 @@
 		<toolitem action='Text'/>
 		<toolitem action='Hand'/>
 		<toolitem action='PenColor'/>
-		<separator expand='true' draw='false'/>
 		<toolitem action='Fullscreen'/>
 	</toolbar>
 	<toolbar show-arrow='false' action='HildonToolBarDrawLandscape'>
@@ -195,7 +193,6 @@
 		<toolitem action='Eraser'/>
 		<toolitem action='EraserThinner'/>
 		<toolitem action='EraserThicker'/>
-		<separator expand='true' draw='false'/>
 		<toolitem action='Fullscreen'/>
 	</toolbar>
 	<toolbar show-arrow='false' action='HildonToolBarPenLandscape'>
@@ -211,10 +208,10 @@
 	</toolbar>
 	<toolbar show-arrow='false' action='HildonToolBarPenPortrait'>
 		<toolitem action='Back'/>
-		<toolitem action='Pen'/>
-		<toolitem action='PenThinner'/>
-		<toolitem action='PenThicker'/>
-		<separator expand='true' draw='false'/>
+		<toolitem action='PenThicknessVeryFine'/>
+		<toolitem action='PenThicknessFine'/>
+		<toolitem action='PenThicknessThick'/>
+		<toolitem action='PenThicknessVeryThick'/>
 		<toolitem action='Fullscreen'/>
 	</toolbar>
 	<toolbar show-arrow='false' action='HildonToolBarHandLandscape'>
@@ -236,7 +233,6 @@
 		<separator expand='true' draw='false'/>
 		<toolitem action='PreviousPage'/>
 		<toolitem action='NextPage'/>
-		<separator expand='true' draw='false'/>
 		<toolitem action='Fullscreen'/>
 	</toolbar>
 	<toolbar show-arrow='false' action='HildonToolBarPenColorLandscape'>
@@ -247,7 +243,7 @@
 		<toolitem action='Green'/>
 		<toolitem action='Yellow'/>
 		<toolitem action='Orange'/>
-		<toolitem action='Magenta'/>
+		<toolitem action='Fuchsia'/>
 		<separator expand='true' draw='false'/>
 		<toolitem action='Fullscreen'/>
 	</toolbar>
@@ -257,7 +253,6 @@
 		<toolitem action='Blue'/>
 		<toolitem action='Red'/>
 		<toolitem action='Green'/>
-		<separator expand='true' draw='false'/>
 		<toolitem action='Fullscreen'/>
 	</toolbar>
 </ui>

@@ -52,6 +52,7 @@
 extern GtkWidget *tools_view, *settings_view, *journal_view;
 //extern gint two_half_button_click, hildon_button_pressed, hildon_button_released;
 extern gint hildon_timer_running_already;
+extern gint volume_keys_bind_thickness;
 
 /* Maemo specific handlers */
 void
@@ -497,8 +498,8 @@ on_fileSave_activate                   (GtkMenuItem     *menuitem,
   
   end_text();
   if (ui.filename == NULL) {
-    on_fileSaveAs_activate(menuitem, user_data);
-    return;
+      on_fileSaveAs_activate(menuitem, user_data);
+      return;
   }
   set_cursor_busy(TRUE);
   if (save_journal(ui.filename)) { // success
@@ -615,7 +616,7 @@ on_fileSaveAs_activate                 (GtkMenuItem     *menuitem,
 #ifdef USE_HILDON
       gchar descr[strlen(_("Should the file '' be overwritten?"))+ strlen(g_basename(filename))];
       sprintf (descr, _("Should the file '%s' be overwritten?"), g_basename(filename));
-      warning_dialog = hildon_note_new_information (GTK_WINDOW (winMain), descr);
+      warning_dialog = hildon_note_new_confirmation (GTK_WINDOW (winMain), descr);
       hildon_note_set_button_texts (HILDON_NOTE(warning_dialog), _("Yes"), _("No"));
       if (gtk_dialog_run(GTK_DIALOG(warning_dialog)) == GTK_RESPONSE_OK)
 #else
@@ -756,11 +757,22 @@ on_filePrintPDF_activate               (GtkMenuItem     *menuitem,
 #endif
      
   if (ui.filename!=NULL) {
+#ifdef USE_HILDON
+    in_fn = g_basename (ui.filename);
+    /* TODO: it's a ugly hack. Cut out the extension */
+    if (g_str_has_suffix(in_fn, ".xoj")) {
+      in_fn[strlen(in_fn)-4] = '\0';
+    }
+
+    if (ui.default_path!=NULL)
+      gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER (dialog), ui.default_path);
+#else
     if (g_str_has_suffix(ui.filename, ".xoj")) {
       in_fn = g_strdup(ui.filename);
     } 
     else
       in_fn = g_strdup_printf("%s", ui.filename);
+#endif
     gtk_file_chooser_set_filename(GTK_FILE_CHOOSER (dialog), in_fn);
     gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER (dialog), g_basename(in_fn));
   } else {
@@ -773,6 +785,7 @@ on_filePrintPDF_activate               (GtkMenuItem     *menuitem,
     in_fn = NULL;
   }
      
+#ifndef USE_HILDON
   filt_all = gtk_file_filter_new();
   gtk_file_filter_set_name(filt_all, _("All files"));
   gtk_file_filter_add_pattern(filt_all, "*");
@@ -790,7 +803,8 @@ on_filePrintPDF_activate               (GtkMenuItem     *menuitem,
   gtk_file_chooser_add_filter(GTK_FILE_CHOOSER (dialog), filt_all);
   gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_OK);
   g_free(in_fn);
-  
+#endif
+
   do {
     if (gtk_dialog_run(GTK_DIALOG(dialog)) != GTK_RESPONSE_OK) {
       gtk_widget_destroy(dialog);
@@ -800,6 +814,13 @@ on_filePrintPDF_activate               (GtkMenuItem     *menuitem,
     if (!filename) {
       return;
     }
+
+#ifdef USE_HILDON
+    if (!g_str_has_suffix (filename, ".png") && !g_str_has_suffix (filename, ".pdf")) {
+      /* Assume PDF */
+      filename = g_strdup_printf ("%s.pdf", filename);
+    }
+#endif
 
     warn = g_file_test(filename, G_FILE_TEST_EXISTS);
     if (warn) {
@@ -1476,7 +1497,9 @@ on_viewNextPage_activate               (GtkMenuItem     *menuitem,
 {
   end_text();
   if (ui.pageno == journal.npages-1) { // create a page at end
+#ifndef USE_HILDON
     on_journalNewPageEnd_activate(menuitem, user_data);
+#endif
     return;
   }
   do_switch_page(ui.pageno+1, TRUE, FALSE);
@@ -2972,7 +2995,6 @@ on_canvas_button_press_event           (GtkWidget       *widget,
     ui.pageno++;
     tmppage = g_list_nth_data(journal.pages, ui.pageno);
   }
-  if (page_change) printf ("Switching to page %d\n", ui.pageno);
   if (page_change) do_switch_page(ui.pageno, FALSE, FALSE);
   
   // can't paint on the background...
@@ -3208,6 +3230,30 @@ on_canvas_key_press_event              (GtkWidget       *widget,
        global_hildon_scroll_right_ctrl = 100;
 
    switch (event->keyval) {
+	  case GDK_q:
+		  on_fileQuit_activate (NULL, NULL);
+
+		  return TRUE;
+	  case GDK_t:
+		  if (device_is_portrait_mode ()) {
+			if (hildon_cur_toolbar_visible) {
+		  		gtk_widget_hide (hildon_cur_toolbar_portrait);
+				hildon_cur_toolbar_visible = FALSE;
+			} else {
+		  		gtk_widget_show (hildon_cur_toolbar_portrait);
+				hildon_cur_toolbar_visible = TRUE;
+			}
+		  } else {
+			if (hildon_cur_toolbar_visible) {
+	          		gtk_widget_hide (hildon_cur_toolbar_landscape);
+				hildon_cur_toolbar_visible = FALSE;
+		 	} else {
+	          		gtk_widget_show (hildon_cur_toolbar_landscape);
+				hildon_cur_toolbar_visible = TRUE;
+			}
+		  }
+
+		  return TRUE;
 	  case GDK_s:
 		  if (event->state & GDK_CONTROL_MASK) {
  		  	on_fileSave_activate (NULL, user_data);
@@ -3260,6 +3306,17 @@ on_canvas_key_press_event              (GtkWidget       *widget,
  		  return TRUE;
 #ifdef HILDON_HARDKEY_INCREASE
 	  case HILDON_HARDKEY_INCREASE:
+		  if (volume_keys_bind_thickness) {
+			int which_mapping;
+		  	if (ui.cur_mapping>0 && ui.linked_brush[ui.cur_mapping]!=BRUSH_LINKED) {
+				which_mapping = ui.cur_mapping;
+			  } else {
+				which_mapping = 0;
+			  }
+			  process_thickness_activate (NULL, TOOL_PEN, ui.brushes[which_mapping][TOOL_PEN].thickness_no+1);
+
+			  return TRUE;
+		  }
 #else
  	  case GDK_F7:
 #endif
@@ -3277,6 +3334,17 @@ on_canvas_key_press_event              (GtkWidget       *widget,
  		  return TRUE;
 #ifdef HILDON_HARDKEY_DECREASE
 	  case HILDON_HARDKEY_DECREASE:
+		  if (volume_keys_bind_thickness) {
+			int which_mapping;
+		  	if (ui.cur_mapping>0 && ui.linked_brush[ui.cur_mapping]!=BRUSH_LINKED) {
+				which_mapping = ui.cur_mapping;
+			  } else {
+				which_mapping = 0;
+			  }
+			  process_thickness_activate (NULL, TOOL_PEN, ui.brushes[which_mapping][TOOL_PEN].thickness_no-1);
+
+			  return TRUE;
+		  }
 #else
  	  case GDK_F8:
 #endif
@@ -4405,7 +4473,6 @@ void hildon_tools_radio_action (GtkAction *action)
       			gtk_toggle_tool_button_set_active(
  			       GTK_TOGGLE_TOOL_BUTTON(ruler_button), FALSE);
 			on_toolsPen_activate (NULL, NULL);
-			printf ("Radio action\n");
 			break;
 		case 1:
   			ruler_button = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBar/Ruler");

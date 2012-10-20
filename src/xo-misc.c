@@ -1291,19 +1291,26 @@ void do_switch_page(int pg, gboolean rescroll, gboolean refresh_all)
   GList *list;
 #ifdef USE_HILDON
   gchar info_str[512];
-  gchar title[30];
+  gchar title[100], *p;
   GtkWidget *banner;
 #endif
 
 #ifdef USE_HILDON
-  sprintf (info_str, "%s %2d/%2d...", _("Switching to page"), pg+1, journal.npages);
-  sprintf (title, "%s %2d/%2d", _("Xournal"), pg+1, journal.npages);
+  if (ui.filename == NULL) {
+    g_snprintf (title, 100, "%d/%d %s", pg+1, journal.npages, _("Xournal"));
+  } else {
+    p = g_utf8_strrchr(ui.filename, -1, '/');
+    if (p == NULL) p = ui.filename; 
+    else p = g_utf8_next_char(p);
+    g_snprintf (title, 100, "%d/%d %s", pg+1, journal.npages, p);
+  }
   
+  gtk_window_set_title (GTK_WINDOW(winMain), title);
+
   // banner is automatically destroyed - no memory leak
+  g_snprintf (info_str, 512L, "%s %d/%d...", _("Switching to page"), pg+1, journal.npages);
   banner=hildon_banner_show_information (GTK_WIDGET(winMain), NULL, info_str);
   hildon_banner_set_timeout (HILDON_BANNER(banner), 500);
-
-  gtk_window_set_title (GTK_WINDOW(winMain), title);
 #endif
   
   ui.pageno = pg;
@@ -1339,10 +1346,14 @@ void do_switch_page(int pg, gboolean rescroll, gboolean refresh_all)
 
 void update_page_stuff(void)
 {
-  gchar tmp[10];
-  GtkComboBox *layerbox;
   int i;
+  gchar tmp[10];
   GList *pglist;
+#ifndef USE_HILDON
+  GtkComboBox *layerbox;
+#else
+  HildonTouchSelector *layerbox;
+#endif
   GtkSpinButton *spin;
   struct Page *pg;
   double vertpos, maxwidth;
@@ -1406,7 +1417,7 @@ void update_page_stuff(void)
   gtk_combo_box_set_active(layerbox, ui.cur_page->nlayers-1-ui.layerno);
 #else
   ui.in_update_page_stuff = TRUE; // avoid a bad retroaction
-  layerbox = hildon_picker_button_get_selector (HILDON_PICKER_BUTTON(pickerButton));
+  layerbox = HILDON_TOUCH_SELECTOR (hildon_picker_button_get_selector (HILDON_PICKER_BUTTON(pickerButton)));
   if (ui.layerbox_length == 0) {
     hildon_touch_selector_prepend_text (HILDON_TOUCH_SELECTOR(layerbox), _("Background layer"));
     hildon_touch_selector_prepend_text (HILDON_TOUCH_SELECTOR(layerbox), _("Add new layer"));
@@ -1428,9 +1439,6 @@ void update_page_stuff(void)
 
     ui.layerbox_length--;
 
-//    hildon_touch_selector_optimal_size_request (HILDON_TOUCH_SELETOR(layerbox),
-	//	    &requisition);
-//   gtk_widget_set_size_request (GTK_WIDGET(layerbox), -1, -1);
     gtk_widget_queue_resize (GTK_WIDGET(pickerButton));
   }
 
@@ -1566,6 +1574,7 @@ void update_toolbar_and_menu(void)
 void update_file_name(char *filename)
 {
   gchar tmp[100], *p;
+
   if (ui.filename != NULL) g_free(ui.filename);
   ui.filename = filename;
 
@@ -1577,12 +1586,12 @@ void update_file_name(char *filename)
   p = g_utf8_strrchr(filename, -1, '/');
   if (p == NULL) p = filename; 
   else p = g_utf8_next_char(p);
-  g_snprintf(tmp, 100, _("Xournal - %s"), p);
 #ifdef USE_HILDON
-  gtk_window_set_title(GTK_WINDOW (winMain), _("Xournal"));
+  g_snprintf(tmp, 100, "%d/%d - %s", ui.pageno+1, journal.npages, p);
 #else
-  gtk_window_set_title(GTK_WINDOW (winMain), tmp);
+  g_snprintf(tmp, 100, _("Xournal - %s"), p);
 #endif
+  gtk_window_set_title(GTK_WINDOW (winMain), tmp);
   new_mru_entry(filename);
 
   if (filename[0]=='/') {
@@ -1798,6 +1807,8 @@ void process_thickness_activate(GtkMenuItem *menuitem, int tool, int val)
     which_mapping = ui.cur_mapping;
   else which_mapping = 0;
   if (ui.brushes[which_mapping][tool].thickness_no == val) return;
+  if (val >= THICKNESS_MAX) return;
+  if (val <  THICKNESS_VERYFINE) return;
   end_text();
   ui.brushes[which_mapping][tool].thickness_no = val;
   ui.brushes[which_mapping][tool].thickness = predef_thickness[tool][val];

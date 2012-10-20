@@ -1,3 +1,0 @@
-[D-BUS Service]
-Name=com.nokia.xournal
-Exec=/usr/bin/xournal

@@ -19,7 +19,7 @@
 # MA  02110-1301, USA.
 #
 
-AC_INIT(xournal, 0.4.5)
+AC_INIT(xournal, 0.4.5fremantle17)
 AC_PREREQ(2.59)
 
 AM_INIT_AUTOMAKE([1.7.9])
@@ -98,7 +98,7 @@ helpgraphicsdir=$datadir/osso-help/graphics
 newsdir=$datadir/xournal
 
 # config file install directory
-dotconfigdir=$datadir/xournal
+dotconfigdir=/home/user/.xournal
 
 # UI xml file
 uixmldir=$datadir/xournal

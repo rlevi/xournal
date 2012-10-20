@@ -1,3 +1,49 @@
+xournal (0.4.5-1fremantle17) stable; urgency=low
+  * ENH: Next Page won't add new pages at the end
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Tue, 22 Jun 2011 10:40:00 -0500
+
+xournal (0.4.5-1fremantle16) stable; urgency=low
+  * FIX: Undo/Redo on PDF and Draw toolbars get properly enabled/disable
+  * FIX: Remove .xoj when saving as PDF or PNG
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Tue, 15 Jun 2011 20:06:00 -0500
+
+xournal (0.4.5-1fremantle15) stable; urgency=low
+  * FIX: fixed handling of hide/show toolbars
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Tue, 11 Jun 2011 17:28:00 -0500
+
+xournal (0.4.5-1fremantle14) stable; urgency=low
+  * The 't' key will hide/show the current toolbar
+  * Added 'volume_keys_bind_to_thickness' into the config file
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Tue, 11 Jun 2011 16:51:00 -0500
+
+xournal (0.4.5-1fremantle13) stable; urgency=low
+  * HOT FIX: fixed pen color icon not showing the color toolbar
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Tue, 10 Jun 2011 12:05:00 -0500
+
+xournal (0.4.5-1fremantle12) stable; urgency=low
+  * Switch back to config file in home dir
+  * Made Undo/Redo icons user selectable (Fullscreen and Share are still
+    default ones)
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Tue, 15 Mar 2011 22:33:00 -0500
+
+xournal (0.4.5-1fremantle11) stable; urgency=low
+  * Proper way of handling rotation
+  * Bug Fix: 12057
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Tue, 15 Mar 2011 22:33:00 -0500
+
+xournal (0.4.5-1fremantle10) stable; urgency=low
+  * Changes to window title
+  * Added Maemo specific details to control file
+
+ -- Aniello Del Sorbo <anidel@gmail.com>  Sun, 13 Mar 2011 12:21:25 -0500
+
 xournal (0.4.5-1fremantle9) unstable; urgency=low
   * Added Page support
   * Switched to non-continuos mode

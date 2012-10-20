@@ -21,11 +21,7 @@
 
 // PREF FILES INFO
 
-#ifdef USE_HILDON
-#define CONFIG_DIR "xournal"
-#else
 #define CONFIG_DIR ".xournal"
-#endif
 #define MRU_FILE "recent-files"
 #define MRU_SIZE 8 
 #define CONFIG_FILE "config"
@@ -49,7 +45,7 @@
 
 #define XOURNAL_SCREENSHOT_PATH "/home/user/.cache/launch/org.anidel.xournal.pvr"
 #define HILDON_AUTOSAVE_DIR "/home/user/.xournal"
-#define HILDON_AUTOSAVE_FILENAME ".autosave.xoj"
+#define HILDON_AUTOSAVE_FILENAME ".autosave"
 #define HILDON_SHARE_EMAIL   1
 #define HILDON_SHARE_BT      2
 #define HILDON_SHARE_SERVICE 3
@@ -57,7 +53,8 @@
 
 extern osso_context_t *ctx;
 extern char *theme_name;
-extern int grab_volume_keys;
+extern gint grab_volume_keys;
+extern gint volume_keys_bind_thickness;
 gboolean autosave_disabled;
 extern GtkUIManager *ui_manager;
 #endif
@@ -121,6 +118,7 @@ typedef struct Brush {
 #define COLOR_LIGHTBLUE  5
 #define COLOR_LIGHTGREEN 6
 #define COLOR_MAGENTA    7
+#define COLOR_FUCHSIA    7
 #define COLOR_ORANGE     8
 #define COLOR_YELLOW     9
 #define COLOR_WHITE     10

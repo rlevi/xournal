@@ -1933,6 +1933,7 @@ void load_config_from_file(void)
 #ifdef USE_HILDON
   parse_keyval_string("hildon", "theme", &theme_name);
   parse_keyval_int("hildon", "grab_volume_keys", &grab_volume_keys, 0, 1);
+  parse_keyval_int("hildon", "volume_keys_bind_to_thickness", &volume_keys_bind_thickness, 0, 1);
 #endif
   if (parse_keyval_float("general", "display_dpi", &f, 10., 500.))
     DEFAULT_ZOOM = f/72.0;

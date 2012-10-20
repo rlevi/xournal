@@ -35,5 +35,5 @@ fi
 #	maemo-confirm-text "Xournal release notes" /usr/share/xournal/NEWS
 #fi
 
-#chown user:users /home/user/.xournal
-#chown user:users /home/user/.xournal/config
+chown user:users /home/user/.xournal
+chown user:users /home/user/.xournal/config

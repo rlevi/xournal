@@ -1,1 +1,0 @@
-/opt/maemo/usr/share/locale/it_IT/LC_MESSAGES/xournal.mo

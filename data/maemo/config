@@ -5,7 +5,13 @@
 
 [hildon]
 theme=default
+
+# Handle volume keys
+# By default bind them to zoom in/out
 grab_volume_keys=1
+
+# set to 1 to bind volume keys to Pen thickness
+volume_keys_bind_to_thickness=0
 
 [general]
 poppler_force_cairo=true

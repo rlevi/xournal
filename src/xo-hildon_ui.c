@@ -15,8 +15,6 @@
 #include <gtk/gtk.h>
 
 #include <dbus/dbus.h>
-#include <mce/mode-names.h>
-#include <mce/dbus-names.h>
 #include <hildon/hildon-program.h>
 #include <hildon/hildon-window.h>
 #include <hildon/hildon-button.h>
@@ -43,7 +41,9 @@ extern GtkWidget *hildon_toolbars[HILDON_NUM_TOOLBARS];
 extern GtkWidget *hildon_undo[HILDON_NUM_TOOLBARS];
 extern GtkWidget *hildon_redo[HILDON_NUM_TOOLBARS];
 
-extern char *hildonToolbars[HILDON_NUM_TOOLBARS] = {
+gboolean hildon_cur_toolbar_visible = TRUE;
+
+char *hildonToolbars[HILDON_NUM_TOOLBARS] = {
 	"HildonToolBarNoteLandscape",
 	"HildonToolBarNotePortrait",
 	"HildonToolBarPdfLandscape",
@@ -219,6 +219,50 @@ void hildon_paper_activate (GtkWidget *item, gpointer user_data)
 {
 }
 
+void hildon_toolbar_refresh_color (GtkWidget *item, gpointer user_data)
+{
+	gint toolbar = (gint) user_data;
+	gchar widget_path[200];
+	GtkWidget *widget;
+
+	switch (ui.cur_brush->color_no) {
+		case COLOR_BLACK:
+    			sprintf (widget_path, "/%s/Black", hildonToolbars[toolbar]);
+			widget = gtk_ui_manager_get_widget (ui_manager, widget_path);
+			break;
+		case COLOR_BLUE:
+    			sprintf (widget_path, "/%s/Blue", hildonToolbars[toolbar]);
+			widget = gtk_ui_manager_get_widget (ui_manager, widget_path);
+			break;
+		case COLOR_RED:
+    			sprintf (widget_path, "/%s/Red", hildonToolbars[toolbar]);
+			widget = gtk_ui_manager_get_widget (ui_manager, widget_path);
+			break;
+		case COLOR_GREEN:
+    			sprintf (widget_path, "/%s/Green", hildonToolbars[toolbar]);
+			widget = gtk_ui_manager_get_widget (ui_manager, widget_path);
+			break;
+		case COLOR_YELLOW:
+    			sprintf (widget_path, "/%s/Yellow", hildonToolbars[toolbar]);
+			widget = gtk_ui_manager_get_widget (ui_manager, widget_path);
+			break;
+		case COLOR_ORANGE:
+    			sprintf (widget_path, "/%s/Orange", hildonToolbars[toolbar]);
+			widget = gtk_ui_manager_get_widget (ui_manager, widget_path);
+			break;
+		case COLOR_MAGENTA:
+    			sprintf (widget_path, "/%s/Fuchsia", hildonToolbars[toolbar]);
+			widget = gtk_ui_manager_get_widget (ui_manager, widget_path);
+			break;
+		default:
+			widget = NULL;
+	}
+
+	if (widget) {
+		gtk_toggle_tool_button_set_active (GTK_TOGGLE_TOOL_BUTTON(widget), TRUE);
+	}
+}
+
 void hildon_toolbar_switch_do (gint toolbar_no)
 {
   if (switch_to_toolbar_landscape != NULL) {
@@ -228,30 +272,34 @@ void hildon_toolbar_switch_do (gint toolbar_no)
   switch_to_toolbar_portrait = hildon_cur_toolbar_portrait;
   switch_to_toolbar_landscape = hildon_cur_toolbar_landscape;
 
-  if (device_is_portrait_mode (ctx)) {
-    gtk_widget_hide (GTK_WIDGET(hildon_cur_toolbar_portrait));
-    gtk_widget_show (GTK_WIDGET(hildon_toolbars[toolbar_no+1]));
-  } else {
-    gtk_widget_hide (GTK_WIDGET(hildon_cur_toolbar_landscape));
-    gtk_widget_show (GTK_WIDGET(hildon_toolbars[toolbar_no]));
+  if (hildon_cur_toolbar_visible) {
+    if (device_is_portrait_mode ()) {
+      gtk_widget_hide (GTK_WIDGET(hildon_cur_toolbar_portrait));
+      gtk_widget_show (GTK_WIDGET(hildon_toolbars[toolbar_no+1]));
+    } else {
+      gtk_widget_hide (GTK_WIDGET(hildon_cur_toolbar_landscape));
+      gtk_widget_show (GTK_WIDGET(hildon_toolbars[toolbar_no]));
+    }
   }
 
   hildon_cur_toolbar_landscape = hildon_toolbars[toolbar_no];
   hildon_cur_toolbar_portrait = hildon_toolbars[toolbar_no+1];
 }
 
-int hildon_toolbar_switch_back ()
+void hildon_toolbar_switch_back ()
 {
   if (switch_to_toolbar_landscape == NULL) {
     return;
   }
 
-  if (device_is_portrait_mode (ctx)) {
-    gtk_widget_hide (GTK_WIDGET(hildon_cur_toolbar_portrait));
-    gtk_widget_show (GTK_WIDGET(switch_to_toolbar_portrait));
-  } else {
-    gtk_widget_hide (GTK_WIDGET(hildon_cur_toolbar_landscape));
-    gtk_widget_show (GTK_WIDGET(switch_to_toolbar_landscape));
+  if (hildon_cur_toolbar_visible) {
+    if (device_is_portrait_mode ()) {
+      gtk_widget_hide (GTK_WIDGET(hildon_cur_toolbar_portrait));
+      gtk_widget_show (GTK_WIDGET(switch_to_toolbar_portrait));
+    } else {
+      gtk_widget_hide (GTK_WIDGET(hildon_cur_toolbar_landscape));
+      gtk_widget_show (GTK_WIDGET(switch_to_toolbar_landscape));
+    }
   }
 
   hildon_cur_toolbar_landscape = switch_to_toolbar_landscape;
@@ -259,8 +307,6 @@ int hildon_toolbar_switch_back ()
 
   switch_to_toolbar_landscape = NULL;
   switch_to_toolbar_portrait = NULL;
-
-  return FALSE;
 }
 
 void hildon_toolbar_switch (GtkWidget *item, gpointer user_data)
@@ -278,7 +324,7 @@ void hildon_draw_switch (GtkWidget *item, gpointer user_data)
 {
   hildon_toolbar_switch_back ();
 
-  if (device_is_portrait_mode (ctx)) {
+  if (device_is_portrait_mode ()) {
      gtk_widget_hide (GTK_WIDGET(hildon_cur_toolbar_portrait));
      gtk_widget_show (GTK_WIDGET(hildon_toolbars[HILDON_TOOLBAR_DRAW_PORTRAIT]));
   } else {
@@ -288,13 +334,15 @@ void hildon_draw_switch (GtkWidget *item, gpointer user_data)
 
   hildon_cur_toolbar_portrait = hildon_toolbars[HILDON_TOOLBAR_DRAW_PORTRAIT];
   hildon_cur_toolbar_landscape = hildon_toolbars[HILDON_TOOLBAR_DRAW_LANDSCAPE];
+
+  hildon_cur_toolbar_visible = TRUE;
 }
 
 void hildon_pdf_switch (GtkWidget *item, gpointer user_data)
 {
   hildon_toolbar_switch_back ();
 
-  if (device_is_portrait_mode (ctx)) {
+  if (device_is_portrait_mode ()) {
      gtk_widget_hide (GTK_WIDGET(hildon_cur_toolbar_portrait));
      gtk_widget_show (GTK_WIDGET(hildon_toolbars[HILDON_TOOLBAR_PDF_PORTRAIT]));
   } else {
@@ -304,13 +352,15 @@ void hildon_pdf_switch (GtkWidget *item, gpointer user_data)
 
   hildon_cur_toolbar_portrait = hildon_toolbars[HILDON_TOOLBAR_PDF_PORTRAIT];
   hildon_cur_toolbar_landscape = hildon_toolbars[HILDON_TOOLBAR_PDF_LANDSCAPE];
+
+  hildon_cur_toolbar_visible = TRUE;
 }
 
 void hildon_note_switch (GtkWidget *item, gpointer user_data)
 {
   hildon_toolbar_switch_back ();
 
-  if (device_is_portrait_mode (ctx)) {
+  if (device_is_portrait_mode ()) {
      gtk_widget_hide (GTK_WIDGET(hildon_cur_toolbar_portrait));
      gtk_widget_show (GTK_WIDGET(hildon_toolbars[HILDON_TOOLBAR_NOTE_PORTRAIT]));
   } else {
@@ -320,6 +370,8 @@ void hildon_note_switch (GtkWidget *item, gpointer user_data)
 
   hildon_cur_toolbar_portrait = hildon_toolbars[HILDON_TOOLBAR_NOTE_PORTRAIT];
   hildon_cur_toolbar_landscape = hildon_toolbars[HILDON_TOOLBAR_NOTE_LANDSCAPE];
+
+  hildon_cur_toolbar_visible = TRUE;
 }
 
 void hildon_file_menu_activate (GtkWidget *item, gpointer user_data)
@@ -393,14 +445,6 @@ create_winMain (osso_context_t *ctx)
   hildon_window = HILDON_WINDOW (hildon_stackable_window_new ());
 
   hildon_program_add_window (hildon_program, hildon_window);
-
-  //
-  // check for device orientation
-  if (device_is_portrait_mode (ctx)) {
-	// rotate
-	hildon_gtk_window_set_portrait_flags(GTK_WINDOW(hildon_window),
-			HILDON_PORTRAIT_MODE_REQUEST);
-  }
 
   action_group = gtk_action_group_new ("HildonActions");
 
@@ -512,10 +556,6 @@ create_winMain (osso_context_t *ctx)
   hildon_toolbars[HILDON_TOOLBAR_COLOR_LANDSCAPE] = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarPenColorLandscape");
   hildon_window_add_toolbar (hildon_window, GTK_TOOLBAR (hildon_toolbars[HILDON_TOOLBAR_COLOR_LANDSCAPE]));
 
-  // Undo / Redo buttons
-  undo_widget = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarNoteLandscape/Undo");
-  redo_widget = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarNoteLandscape/Redo");
-
   for (i=0;i<HILDON_NUM_TOOLBARS;i++) {
     char widget_path[256];
 
@@ -538,17 +578,27 @@ create_winMain (osso_context_t *ctx)
 	G_CALLBACK (hildon_toolbar_switch), (gpointer)HILDON_TOOLBAR_COLOR_LANDSCAPE);
   }
 
+  g_signal_connect (G_OBJECT(hildon_toolbars[HILDON_TOOLBAR_COLOR_PORTRAIT]), "show",
+	G_CALLBACK (hildon_toolbar_refresh_color), (gpointer)HILDON_TOOLBAR_COLOR_PORTRAIT);
+  g_signal_connect (G_OBJECT(hildon_toolbars[HILDON_TOOLBAR_COLOR_LANDSCAPE]), "show",
+	G_CALLBACK (hildon_toolbar_refresh_color), (gpointer)HILDON_TOOLBAR_COLOR_LANDSCAPE);
+
+  // Undo / Redo buttons
+  undo_widget = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarNoteLandscape/Undo");
+  redo_widget = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarNoteLandscape/Redo");
   hildon_undo[HILDON_TOOLBAR_NOTE_LANDSCAPE] = undo_widget;
   hildon_redo[HILDON_TOOLBAR_NOTE_LANDSCAPE] = redo_widget;
 
+  undo_widget = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarPdfLandscape/Undo");
+  redo_widget = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarPdfLandscape/Redo");
   hildon_undo[HILDON_TOOLBAR_PDF_LANDSCAPE] = undo_widget;
   hildon_redo[HILDON_TOOLBAR_PDF_LANDSCAPE] = redo_widget;
 
+  undo_widget = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarDrawLandscape/Undo");
+  redo_widget = gtk_ui_manager_get_widget (ui_manager, "/HildonToolBarDrawLandscape/Redo");
   hildon_undo[HILDON_TOOLBAR_DRAW_LANDSCAPE] = undo_widget;
   hildon_redo[HILDON_TOOLBAR_DRAW_LANDSCAPE] = redo_widget;
 
-//  buttonColor = HILDON_COLOR_BUTTON (hildon_color_button_new());
-//  buttonColor = he_color_button_new ();
   pickerButton = hildon_picker_button_new (HILDON_SIZE_AUTO,
 		  HILDON_BUTTON_ARRANGEMENT_VERTICAL);
   hildonSelector = hildon_touch_selector_new_text ();
@@ -558,20 +608,6 @@ create_winMain (osso_context_t *ctx)
   hildon_touch_selector_set_column_selection_mode (
 		HILDON_TOUCH_SELECTOR(hildonSelector),
  		HILDON_TOUCH_SELECTOR_SELECTION_MODE_SINGLE);
-
-#if 0
-  for (i=0;i<HILDON_NUM_TOOLBARS;i+=2) {
-     int num_items = gtk_toolbar_get_n_items (GTK_TOOLBAR(hildon_toolbars[i]));
-
-     colorItem = gtk_tool_item_new ();
-     gtk_container_add(GTK_CONTAINER(colorItem), GTK_WIDGET(buttonColor));
-
-     gtk_toolbar_insert (GTK_TOOLBAR(hildon_toolbars[i]), colorItem, num_items-5);
-  }
-
-  g_signal_connect (G_OBJECT (buttonColor), "clicked",
-		G_CALLBACK (on_colorButton_activate), NULL);
-#endif
 
   g_signal_connect (G_OBJECT (hildonSelector), "changed",
 		G_CALLBACK (on_comboLayer_changed), (gpointer) "maemo");
@@ -592,12 +628,6 @@ create_winMain (osso_context_t *ctx)
   gtk_widget_show_all (pickerButton);
 
   fremantle_menu_file_entries[HILDON_SHOW_LAYER_POS].widget = GTK_WIDGET (pickerButton);
-
-  if (device_is_portrait_mode (ctx)) {
-  	gtk_widget_show_all (GTK_WIDGET (hildon_cur_toolbar_portrait));
-  } else {
-  	gtk_widget_show_all (GTK_WIDGET (hildon_cur_toolbar_landscape));
-  }
 
   g_signal_connect ((gpointer) hildon_window, "delete_event",
 		G_CALLBACK (on_winMain_delete_event),
@@ -1083,62 +1113,47 @@ hildon_rotate_ui (const gchar *mode)
 {
 	GtkWidget *hildon_toolbar;
 
-	if (!strcmp (mode, MCE_ORIENTATION_PORTRAIT)) {
-		// hide landscape toolbar
-		gtk_widget_hide (hildon_cur_toolbar_landscape);
-		// rotate
-		hildon_gtk_window_set_portrait_flags(GTK_WINDOW(winMain),
-				HILDON_PORTRAIT_MODE_REQUEST);
-		// show portrait toolbar
-		gtk_widget_show (hildon_cur_toolbar_portrait);
-	}
-
-	if (!strcmp (mode, MCE_ORIENTATION_LANDSCAPE)) {
-		// hide portrait toolbar
-		gtk_widget_hide (hildon_cur_toolbar_portrait);
-		// rotate
-		hildon_gtk_window_set_portrait_flags(GTK_WINDOW(winMain),
-				~HILDON_PORTRAIT_MODE_REQUEST);
-		// show landscape toolbar
-		gtk_widget_show (hildon_cur_toolbar_landscape);
-	}
-}
-
-DBusHandlerResult
-mce_filter_func (DBusConnection *connection, DBusMessage *message, void *data)
-{
-	DBusMessageIter iter;
-	const gchar *mode = NULL;
-
-	if (dbus_message_is_signal(message, MCE_SIGNAL_IF, MCE_DEVICE_ORIENTATION_SIG)) {
-		if (dbus_message_iter_init(message, &iter)) {
-			dbus_message_iter_get_basic(&iter, &mode);
-
-			hildon_rotate_ui (mode);
+	if (!strcmp (mode, "portrait")) {
+		if (hildon_cur_toolbar_visible) {
+			// hide landscape toolbar
+			gtk_widget_hide (hildon_cur_toolbar_landscape);
+			// show portrait toolbar
+			gtk_widget_show (hildon_cur_toolbar_portrait);
 		}
 	}
 
-	return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+	if (!strcmp (mode, "landscape")) {
+		if (hildon_cur_toolbar_visible) {
+			// hide portrait toolbar
+			gtk_widget_hide (hildon_cur_toolbar_portrait);
+			// show landscape toolbar
+			gtk_widget_show (hildon_cur_toolbar_landscape);
+		}
+	}
+}
+
+void
+hildon_orientationChanged_process (GdkScreen *screen, GtkWidget *widget)
+{
+	if (device_is_portrait_mode ()) {
+		hildon_rotate_ui ("portrait");
+	} else {
+		hildon_rotate_ui ("landscape");
+	}
 }
 
 gboolean
-device_is_portrait_mode(osso_context_t* ctx)
+device_is_portrait_mode()
 {
-	osso_rpc_t ret;
-	gboolean result = FALSE;
+	GdkScreen *screen = gtk_widget_get_screen (winMain);
+	int width = gdk_screen_get_width (screen);
+	int height = gdk_screen_get_height (screen);
 
-	if (osso_rpc_run_system(ctx, MCE_SERVICE, MCE_REQUEST_PATH,
-		MCE_REQUEST_IF, MCE_DEVICE_ORIENTATION_GET, &ret, DBUS_TYPE_INVALID) == OSSO_OK) {
-		if (strcmp(ret.value.s, MCE_ORIENTATION_PORTRAIT) == 0) {
-			result = TRUE;
-		}
-
-		osso_rpc_free_val(&ret);
+	if (width > height) {
+		return FALSE;
 	} else {
-		g_printerr("ERROR: Call do DBus failed\n");
+		return TRUE;
 	}
-
-	return result;
 }
 
 /*

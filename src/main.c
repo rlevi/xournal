@@ -14,13 +14,7 @@
 #include <errno.h>
 #include <hildon/hildon-note.h>
 #include <dbus/dbus.h>
-#include <mce/mode-names.h>
-#include <mce/dbus-names.h>
 #include "xo-hildon_ui.h"
-#define MCE_SIGNAL_MATCH "type='signal',"  \
-	"sender='"    MCE_SERVICE                "'," \
-	"path='"      MCE_SIGNAL_PATH            "'," \
-	"interface='" MCE_SIGNAL_IF              "'"
 #endif
 
 #include "xournal.h"
@@ -50,7 +44,8 @@ double DEFAULT_ZOOM;
 #ifdef USE_HILDON
 osso_context_t *ctx;
 char *theme_name;
-int grab_volume_keys;
+gint grab_volume_keys;
+gint volume_keys_bind_thickness;
 gboolean autosave_disabled;
 GtkWidget *hildon_toolbars[HILDON_NUM_TOOLBARS];
 #endif
@@ -230,6 +225,13 @@ void init_stuff (int argc, char *argv[])
   ui.screen_width = gdk_screen_get_width(screen);
   ui.screen_height = gdk_screen_get_height(screen);
   
+#ifdef USE_HILDON
+  hildon_gtk_window_set_portrait_flags(GTK_WINDOW(winMain),
+            HILDON_PORTRAIT_MODE_SUPPORT);
+  g_signal_connect (screen, "size-changed",
+		    G_CALLBACK (hildon_orientationChanged_process), NULL);
+#endif
+
   can_xinput = FALSE;
   dev_list = gdk_devices_list();
   while (dev_list != NULL) {
@@ -399,10 +401,10 @@ int
 main (int argc, char *argv[])
 {
   gchar *path, *path1, *path2;
-  gchar *tmppath;
+  gchar *tmppath; 
  
 #ifdef USE_HILDON
-  gchar title[30];
+  gchar title[100];
   osso_return_t osso_ret;
   DBusConnection *sys_conn;
 
@@ -456,6 +458,7 @@ main (int argc, char *argv[])
   add_pixmap_directory (PACKAGE_DATA_DIR "/pixmaps/" PACKAGE);
   theme_name = calloc (1024,1);
   grab_volume_keys = 1;
+  volume_keys_bind_thickness = 0;
 #else
   gtk_init (&argc, &argv);
   add_pixmap_directory (PACKAGE_DATA_DIR "/" PACKAGE "/pixmaps");
@@ -482,7 +485,7 @@ main (int argc, char *argv[])
   ui.default_page.bg = g_new(struct Background, 1);
 
   // initialize config file names
-  tmppath = g_build_filename(PACKAGE_DATA_DIR, CONFIG_DIR, NULL);
+  tmppath = g_build_filename(g_get_home_dir(), CONFIG_DIR, NULL);
   mkdir(tmppath, 0700); // safer (MRU data may be confidential)
   ui.mrufile = g_build_filename(tmppath, MRU_FILE, NULL);
   ui.configfile = g_build_filename(tmppath, CONFIG_FILE, NULL);
@@ -503,31 +506,14 @@ main (int argc, char *argv[])
   // initialize preferences
   init_config_default();
   load_config_from_file();
-  //
-  // listen to rotation
-  // enable accelerator
-  if (osso_rpc_run_system(ctx, MCE_SERVICE, MCE_REQUEST_PATH,
-          MCE_REQUEST_IF, MCE_ACCELEROMETER_ENABLE_REQ, NULL, DBUS_TYPE_INVALID) == OSSO_OK) {
-	g_printerr("INFO: Accelerometers enabled\n");
-  } else {
-        g_printerr("WARN: Cannot enable accelerometers\n");
-  }
-
-  sys_conn = osso_get_sys_dbus_connection(ctx);
-  if (sys_conn) {
-	DBusError error;
-	dbus_error_init (&error);
-	dbus_bus_add_match (sys_conn, MCE_SIGNAL_MATCH, &error);
-	if (dbus_error_is_set(&error)){
-		printf("dbus_bus_add_match failed: %s\n", error.message);
-		dbus_error_free(&error);
-	}
-
-	dbus_connection_add_filter (sys_conn,
-		  (DBusHandleMessageFunction) mce_filter_func, NULL, NULL);
-  }
 
   winMain = create_winMain (ctx);
+
+  if (device_is_portrait_mode ()) {
+  	gtk_widget_show_all (GTK_WIDGET (hildon_cur_toolbar_portrait));
+  } else {
+  	gtk_widget_show_all (GTK_WIDGET (hildon_cur_toolbar_landscape));
+  }
 
 #else
   winMain = create_winMain ();
@@ -542,21 +528,23 @@ main (int argc, char *argv[])
 #ifdef USE_HILDON
   hildon_grab_volume_keys (grab_volume_keys);
 
-  // Update the title with current page info
-  sprintf (title, "%s - %2d/%2d", _("Xournal"), ui.pageno+1, journal.npages);
+  // Update the title with current page inf
+  if (ui.filename == NULL) {
+    g_snprintf (title, 100, "%d/%d %s", ui.pageno+1, journal.npages, _("Xournal"));
+  } else {
+    gchar *p;
+    p = g_utf8_strrchr(ui.filename, -1, '/');
+    if (p == NULL) p = ui.filename; 
+    else p = g_utf8_next_char(p);
+    g_snprintf (title, 100, "%d/%d %s", ui.pageno+1, journal.npages, p);
+  }
+  
   gtk_window_set_title (GTK_WINDOW(winMain), title);
 #endif
 
   gtk_main ();
 
 #ifdef USE_HILDON
-  if (osso_rpc_run_system(ctx, MCE_SERVICE, MCE_REQUEST_PATH,
-          MCE_REQUEST_IF, MCE_ACCELEROMETER_DISABLE_REQ, NULL, DBUS_TYPE_INVALID) == OSSO_OK) {
-	g_printerr("INFO: Accelerometers disable\n");
-  } else {
-        g_printerr("WARN: Cannot disable accelerometers\n");
-  }
-
   /* Clean hildon stuff */
   osso_mime_unset_cb (ctx);
   osso_application_unset_autosave_cb (ctx, on_ossoAutosave_handler,

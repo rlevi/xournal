@@ -1045,13 +1045,10 @@ void pdf_draw_page(struct Page *pg, GString *str, gboolean *use_hiliter,
   }
 
   for (layerlist = pg->layers; layerlist!=NULL; layerlist = layerlist->next) {
-    g_print ("PDF handling layer\n");
     l = (struct Layer *)layerlist->data;
     for (itemlist = l->items; itemlist!=NULL; itemlist = itemlist->next) {
-    g_print ("PDF handling item\n");
       item = (struct Item *)itemlist->data;
       if (item->type == ITEM_STROKE) {
-    g_print ("Item is a stroke\n");
         if ((item->brush.color_rgba & ~0xff) != old_rgba)
           g_string_append_printf(str, "%.2f %.2f %.2f RG ",
             RGBA_RGB(item->brush.color_rgba));
@@ -1071,12 +1068,10 @@ void pdf_draw_page(struct Page *pg, GString *str, gboolean *use_hiliter,
           g_string_append_printf(str,"S\n");
           old_thickness = item->brush.thickness;
         } else {
-          g_print ("Item has variable width\n");
           for (i=0; i<item->path->num_points-1; i++, pt+=2) {
-            g_print ( "%.2f w %.2f %.2f m %.2f %.2f l S\n", 
-               item->widths[i], pt[0], pt[1], pt[2], pt[3]);
             g_string_append_printf(str, "%.2f w %.2f %.2f m %.2f %.2f l S\n", 
                item->widths[i], pt[0], pt[1], pt[2], pt[3]);
+	    int a;
 	  }
           old_thickness = 0.0;
         }
@@ -1440,7 +1435,11 @@ gboolean print_to_pngs (Journal *ptrjournal, PangoLayout *layout, gchar *filenam
   cr = cairo_create (crSurface);
 
   for (i=1, pagelist = ptrjournal->pages; pagelist != NULL; i++, pagelist = pagelist->next) {
-     tmpfilename = g_strdup_printf ("%s - Page %d.png", filenameprefix, i);
+     if (i>1) {
+        tmpfilename = g_strdup_printf ("%s - Page %d.png", filenameprefix, i);
+     } else {
+	tmpfilename = g_strdup_printf ("%s.png", filenameprefix);
+     }
      cairo_save (cr);
      print_to_cairo_surface (pagelist->data, layout, cr);
      cairo_restore (cr);
@@ -1499,12 +1498,9 @@ void print_to_cairo_surface (Page *pg, PangoLayout *layout, cairo_t *cr)
 
   for (layerlist = pg->layers; layerlist != NULL; layerlist = layerlist->next) {
      l = (struct Layer *) layerlist->data;
-     g_print ("Handling layer\n");
      for (itemlist = l->items; itemlist != NULL; itemlist = itemlist->next) {
-        g_print ("Handling item\n");
 	item = (struct Item *) itemlist->data;
 	if (item->type == ITEM_STROKE || item->type == ITEM_TEXT) {
-	  g_print ("setting color \n");
           if (item->brush.color_rgba != old_rgba)
             cairo_set_source_rgba (cr, RGBA_RGB (item->brush.color_rgba),
 			    RGBA_ALPHA (item->brush.color_rgba));
@@ -1512,11 +1508,9 @@ void print_to_cairo_surface (Page *pg, PangoLayout *layout, cairo_t *cr)
 	}
 
 	if (item->type == ITEM_STROKE) {
-          g_print ("Handling STROKE: %d num points\n", item->path->num_points);
 	  if (item->brush.thickness != old_thickness)
 	    cairo_set_line_width (cr, item->brush.thickness);
 	  pt = item->path->coords;
-	  g_print ("Brush has varialble width: %d\n", item->brush.variable_width);
 	  if (!item->brush.variable_width) {
 	    cairo_move_to (cr, pt[0], pt[1]);
 	    for (i=1, pt+=2; i < item->path->num_points; i++, pt+=2)
@@ -1526,7 +1520,6 @@ void print_to_cairo_surface (Page *pg, PangoLayout *layout, cairo_t *cr)
 	  } else {
 	   double *widths = item->widths;
 	   for (i=0; i < item->path->num_points-1; i++, pt+=2, widths++) {
-	     g_print ("pt=%p - Line width %.2f (%.2f,%.2f)-(%.2f,%.2f)\n", pt, widths[0], pt[0], pt[1], pt[2], pt[3]);
 	     cairo_move_to (cr, pt[0], pt[1]);
 	     cairo_set_line_width (cr, *widths);
 	     cairo_line_to (cr, pt[2], pt[3]);
@@ -1537,7 +1530,6 @@ void print_to_cairo_surface (Page *pg, PangoLayout *layout, cairo_t *cr)
 	}
 
 	if (item->type == ITEM_TEXT) {
-          g_print ("Handling TEXT\n");
 	  font_desc = pango_font_description_from_string (item->font_name);
 	  if (item->font_size)
 	    pango_font_description_set_absolute_size (font_desc,

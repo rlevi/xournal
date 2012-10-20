@@ -17,7 +17,7 @@
 
 #define HILDON_NUM_TOOLBARS		12
 
-extern char *hildonToolbars[HILDON_NUM_TOOLBARS];
+char *hildonToolbars[HILDON_NUM_TOOLBARS];
 
 enum
 {
@@ -46,6 +46,8 @@ GtkWidget *hildon_cur_toolbar_portrait;
 GtkWidget *switch_to_toolbar_landscape;
 GtkWidget *switch_to_toolbar_portrait;
 
+extern gboolean hildon_cur_toolbar_visible;
+
 //HildonColorButton *buttonColor;
 HeColorButton *buttonColor;
 GtkWidget *pickerButton;
@@ -68,12 +70,11 @@ HildonAppMenu *hildon_create_stack_menu (void);
 GtkWidget *hildon_create_tools_view (void);
 GtkWidget *hildon_create_journal_view (void);
 GtkWidget *hildon_create_settings_view (void);
-gboolean device_is_portrait_mode(osso_context_t *);
+gboolean device_is_portrait_mode();
 
 extern GtkWidget *tools_view, *settings_view, *journal_view;
 void hildon_show_view (GtkWidget *, gpointer);
 void hildon_grab_volume_keys (int);
-DBusHandlerResult mce_filter_func (DBusConnection *, DBusMessage *, void *);
 
 void hildon_draw_switch (GtkWidget *, gpointer);
 void hildon_pdf_switch (GtkWidget *, gpointer);
@@ -87,6 +88,7 @@ void hildon_zoom_activate (GtkWidget *, gpointer);
 void hildon_layer_activate (GtkWidget *, gpointer);
 void hildon_page_activate (GtkWidget *, gpointer);
 void hildon_paper_activate (GtkWidget *, gpointer);
+void hildon_orientationChanged_process (GdkScreen *, GtkWidget *);
 
 /* Menu Actions */
 static GtkActionEntry hildon_menu_entries[] = {
@@ -118,8 +120,8 @@ static GtkActionEntry hildon_menu_entries[] = {
   { "Save", GTK_STOCK_SAVE, N_("_Save"), "<control>S", NULL, G_CALLBACK(on_fileSave_activate) },
   { "SaveAs", GTK_STOCK_SAVE, N_("Save _as"), NULL, NULL, G_CALLBACK(on_fileSaveAs_activate) },
   { "ExportPDF", GTK_STOCK_SAVE, N_("_Export to PDF"), NULL, NULL, G_CALLBACK(on_filePrintPDF_activate) },
-  { "Undo", "general_undo", N_("_Undo"), "<control>Z", NULL, G_CALLBACK(on_editUndo_activate) },
-  { "Redo", "general_redo", N_("_Redo"), "<control>Y", NULL, G_CALLBACK(on_editRedo_activate) },
+  { "Undo", "hi_xo_undo", N_("_Undo"), "<control>Z", NULL, G_CALLBACK(on_editUndo_activate) },
+  { "Redo", "hi_xo_redo", N_("_Redo"), "<control>Y", NULL, G_CALLBACK(on_editRedo_activate) },
   { "Cut", GTK_STOCK_CUT, N_("_Cu_t"), "<control>X", NULL, G_CALLBACK(on_editCut_activate) },
   { "Copy", GTK_STOCK_COPY, N_("_Copy"), "<control>C", NULL, G_CALLBACK(on_editCopy_activate) },
   { "Paste", GTK_STOCK_PASTE, N_("_Paste"), "<control>V", NULL, G_CALLBACK(on_editPaste_activate) },
@@ -130,15 +132,15 @@ static GtkActionEntry hildon_menu_entries[] = {
   { "PageWidth", GTK_STOCK_ZOOM_FIT, N_("Page _Width"), "<control><shift>0", NULL, G_CALLBACK(on_viewPageWidth_activate) },
   { "SetZoom", NULL, N_("_Set zoom"), NULL, NULL, G_CALLBACK(on_viewSetZoom_activate) },
   { "FirstPage", GTK_STOCK_GOTO_FIRST, N_("_First page"), NULL, NULL, G_CALLBACK(on_viewFirstPage_activate) },
-  { "PreviousPage", "hi_xo_prev", N_("_Previous page"), NULL, NULL, G_CALLBACK(on_viewPreviousPage_activate) },
-  { "NextPage", "hi_xo_next", N_("_Next page"), NULL, NULL, G_CALLBACK(on_viewNextPage_activate) },
+  { "PreviousPage", "hi_xo_prevpage", N_("_Previous page"), NULL, NULL, G_CALLBACK(on_viewPreviousPage_activate) },
+  { "NextPage", "hi_xo_nextpage", N_("_Next page"), NULL, NULL, G_CALLBACK(on_viewNextPage_activate) },
   { "LastPage", GTK_STOCK_GOTO_LAST, N_("_Last page"), NULL, NULL, G_CALLBACK(on_viewLastPage_activate) },
   { "ShowLayers", GTK_STOCK_REMOVE, N_("Select _layer"), NULL, NULL, G_CALLBACK(on_HildonShowLayer_activate) },
   { "ShowLayer", GTK_STOCK_ADD, N_("_Show layer"), NULL, NULL, G_CALLBACK(on_viewShowLayer_activate) },
   { "HideLayer", GTK_STOCK_REMOVE, N_("_Hide layer"), NULL, NULL, G_CALLBACK(on_viewHideLayer_activate) },
   { "NewPageBefore", "hi_xo_newpagebefore", N_("New page _before"), NULL, NULL, G_CALLBACK(on_journalNewPageBefore_activate) },
   { "NewPageAfter", "hi_xo_newpageafter", N_("New page _after"), NULL, NULL, G_CALLBACK(on_journalNewPageAfter_activate) },
-  { "NewPageEnd", "hi_xo_newpageafter", N_("New page at _end"), NULL, NULL, G_CALLBACK(on_journalNewPageEnd_activate) },
+  { "NewPageEnd", "hi_xo_newpageend", N_("New page at _end"), NULL, NULL, G_CALLBACK(on_journalNewPageEnd_activate) },
   { "DeletePage", "hi_xo_deletepage", N_("_Delete page"), NULL, NULL, G_CALLBACK(on_journalDeletePage_activate) },
   { "NewLayer", NULL, N_("_New layer"), NULL, NULL, G_CALLBACK(on_journalNewLayer_activate) },
   { "DeleteLayer", NULL, N_("_Delete layer"), NULL, NULL, G_CALLBACK(on_journalDeleteLayer_activate) },
@@ -163,7 +165,7 @@ static GtkActionEntry hildon_menu_entries[] = {
   { "About", NULL, N_("_About..."), NULL, NULL, G_CALLBACK(on_helpAbout_activate) },
   { "Quit", NULL, N_("_Quit"), "<control>Q", NULL, G_CALLBACK(on_fileQuit_activate) },
   { "Exit", NULL, N_("E_xit"), "<control>X", NULL, G_CALLBACK(on_winMain_delete_event) },
-  { "Color", "hi_xo_colorselector", N_("_Color"), NULL, NULL, G_CALLBACK(on_colorButton_activate) }
+  { "ColorSelector", "hi_xo_colorselector", N_("_Color"), NULL, NULL, G_CALLBACK(on_colorButton_activate) }
 };
 
 static GtkActionEntry hildon_toggle_entries[] = {
@@ -221,7 +223,7 @@ static GtkRadioActionEntry hildon_penColor_radio_entries[] = {
   { "Green", "hi_xo_green", NULL, NULL, NULL, COLOR_GREEN },
   { "Yellow", "hi_xo_yellow", NULL, NULL, NULL, COLOR_YELLOW },
   { "Orange", "hi_xo_orange", NULL, NULL, NULL, COLOR_ORANGE },
-  { "Magenta", "hi_xo_magenta", NULL, NULL, NULL, COLOR_MAGENTA }
+  { "Fuchsia", "hi_xo_fuchsia", NULL, NULL, NULL, COLOR_FUCHSIA }
 };
 
 static GtkRadioActionEntry hildon_penOptions_radio_entries[] = {
@@ -233,9 +235,9 @@ static GtkRadioActionEntry hildon_penOptions_radio_entries[] = {
 };
 
 static GtkRadioActionEntry hildon_eraserThicknessOptions_radio_entries[] = {
-  { "EraserFine", NULL, N_("_fine"), NULL, NULL, 0 },
-  { "EraserMedium", NULL, N_("_medium"), NULL, NULL, 1 },
-  { "EraserThick", NULL, N_("_thick"), NULL, NULL, 2 }
+  { "EraserFine", "hi_xo_fine", N_("_fine"), NULL, NULL, 0 },
+  { "EraserMedium", "hi_xo_medium", N_("_medium"), NULL, NULL, 1 },
+  { "EraserThick", "hi_xo_thick", N_("_thick"), NULL, NULL, 2 }
 };
 
 static GtkRadioActionEntry hildon_eraserTypeOptions_radio_entries[] = {
@@ -245,9 +247,9 @@ static GtkRadioActionEntry hildon_eraserTypeOptions_radio_entries[] = {
 };
 
 static GtkRadioActionEntry hildon_highlighterThicknessOptions_radio_entries[] = {
-  { "HighlighterFine", NULL, N_("_fine"), NULL, NULL, 0 },
-  { "HighlighterMedium", NULL, N_("_medium"), NULL, NULL, 1 },
-  { "HighlighterThick", NULL, N_("_thick"), NULL, NULL, 2 }
+  { "HighlighterFine", "hi_xo_fine", N_("_fine"), NULL, NULL, 0 },
+  { "HighlighterMedium", "hi_xo_medium", N_("_medium"), NULL, NULL, 1 },
+  { "HighlighterThick", "hi_xo_thick", N_("_thick"), NULL, NULL, 2 }
 };
 
 /* Fremantle app menu */
@@ -295,20 +297,21 @@ static struct {
   gchar *filename;
   gchar *stock_id;
 } hildon_stock_icons[] = {
-  { PACKAGE_PIXMAP_DIR"/%s/draw-ink.png", "hi_xo_pressure" },
+  { PACKAGE_PIXMAP_DIR"/%s/pressure.png", "hi_xo_pressure" },
   { PACKAGE_PIXMAP_DIR"/%s/ruler.png", "hi_xo_ruler" },
   { PACKAGE_PIXMAP_DIR"/%s/highlighter.png", "hi_xo_highlighter" },
   { PACKAGE_PIXMAP_DIR"/%s/hand.png", "hi_xo_hand" },
   { PACKAGE_PIXMAP_DIR"/%s/pen.png", "hi_xo_pen" },
-  { PACKAGE_PIXMAP_DIR"/%s/draw-ing.png", "hi_xo_pencolor" },
+  { PACKAGE_PIXMAP_DIR"/%s/pencolor.png", "hi_xo_pencolor" },
   { PACKAGE_PIXMAP_DIR"/%s/eraser.png", "hi_xo_eraser" },
   { PACKAGE_PIXMAP_DIR"/%s/color_selector.png", "hi_xo_colorselector" },
   { PACKAGE_PIXMAP_DIR"/%s/vertical_space.png", "hi_xo_verticalspace" },
-  { PACKAGE_PIXMAP_DIR"/%s/draw-text.png", "hi_xo_text" },
-  { PACKAGE_PIXMAP_DIR"/%s/prev.png", "hi_xo_prev" },
-  { PACKAGE_PIXMAP_DIR"/%s/next.png", "hi_xo_next" },
+  { PACKAGE_PIXMAP_DIR"/%s/text.png", "hi_xo_text" },
+  { PACKAGE_PIXMAP_DIR"/%s/prevPage.png", "hi_xo_prevpage" },
+  { PACKAGE_PIXMAP_DIR"/%s/nextPage.png", "hi_xo_nextpage" },
   { PACKAGE_PIXMAP_DIR"/%s/newPageBefore.png", "hi_xo_newpagebefore" },
   { PACKAGE_PIXMAP_DIR"/%s/newPageAfter.png", "hi_xo_newpageafter" },
+  { PACKAGE_PIXMAP_DIR"/%s/newPageEnd.png", "hi_xo_newpageend" },
   { PACKAGE_PIXMAP_DIR"/%s/deletePage.png", "hi_xo_deletepage" },
   { PACKAGE_PIXMAP_DIR"/%s/veryFine.png", "hi_xo_veryfine" },
   { PACKAGE_PIXMAP_DIR"/%s/fine.png", "hi_xo_fine" },
@@ -321,6 +324,8 @@ static struct {
   { PACKAGE_PIXMAP_DIR"/%s/green.png", "hi_xo_green" },
   { PACKAGE_PIXMAP_DIR"/%s/yellow.png", "hi_xo_yellow" },
   { PACKAGE_PIXMAP_DIR"/%s/orange.png", "hi_xo_orange" },
-  { PACKAGE_PIXMAP_DIR"/%s/magenta.png", "hi_xo_magenta" },
+  { PACKAGE_PIXMAP_DIR"/%s/fuchsia.png", "hi_xo_fuchsia" },
+  { PACKAGE_PIXMAP_DIR"/%s/undo.png", "hi_xo_undo" },
+  { PACKAGE_PIXMAP_DIR"/%s/redo.png", "hi_xo_redo" },
 };
 #endif

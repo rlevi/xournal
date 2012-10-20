@@ -4,8 +4,8 @@ set -x
 glib-gettextize --copy --force
 libtoolize --automake
 intltoolize --automake --copy --force
-aclocal-1.8
+aclocal
 autoconf
 autoheader
-automake-1.8 --add-missing --foreign
+automake --add-missing --foreign
 ./configure --prefix=/usr
