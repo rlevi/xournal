@@ -1,3 +1,8 @@
+xournal (0.4.5-2fremantle17) unstable; urgency=low
+  * applied remember last page patch
+
+ -- Ilya Levin <rlevi@sdf.org>  Sun, 21 Oct 2012 02:35:27 +0400
+
 xournal (0.4.5-1fremantle17) stable; urgency=low
   * ENH: Next Page won't add new pages at the end
 
